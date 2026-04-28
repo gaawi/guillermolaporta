@@ -1,0 +1,42 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { portfolio } from '../data/site.js';
+---
+<SiteLayout title='Portfolio - Guillermo Laporta'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Portfolio</div>
+        <h1>Visual / Stage / Media</h1>
+        <p class='intro'>Selected works as visual artist, stage designer, composer, filmmaker, dramaturg and multimedia creator.</p>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='grid-2'>
+        {portfolio.map((item) => (
+          <article class='card'>
+            <div class='meta'>{item.year} / {item.type}</div>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+            <div class='tag-row'>
+              {item.tags.map((tag) => <span class='tag'>{tag}</span>)}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Areas</div>
+        <div class='grid-4'>
+          <div class='card light'><div class='meta'>Video</div><h3>Moving image</h3><p>Concert films, projected visuals, multimedia works and video-based performance.</p></div>
+          <div class='card'><div class='meta'>Installation</div><h3>Site work</h3><p>Scenic environments, objects, lights and spatial interventions for concert settings.</p></div>
+          <div class='card'><div class='meta'>Scenography</div><h3>Stage</h3><p>Set design, lighting concepts, projection mapping and concert architecture.</p></div>
+          <div class='card'><div class='meta'>Direction</div><h3>Dramaturgy</h3><p>Opera, ballet, theater and musical narratives shaped through sound and image.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
