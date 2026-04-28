@@ -1,4 +1,11 @@
 ---
+const cdn = 'https://creartbox-media-cdn.b-cdn.net';
+const heroImage = `${cdn}/about-guillermo.png`;
+const performanceImage = `${cdn}/_DSC03402.jpg`;
+const portraitImage = `${cdn}/_DSC0409.jpg`;
+const visualityImage = `${cdn}/visuality01.jpg`;
+const adarImage = `${cdn}/venue-festival.jpg`;
+const twoRoadsImage = `${cdn}/Two%20Roads,%20Opera%20dance%20by%20Guillermo%20Laporta%2007.jpg`;
 ---
 <!DOCTYPE html>
 <html lang='en'>
@@ -20,13 +27,8 @@
         --max: 1180px;
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
 
       body {
         margin: 0;
@@ -38,17 +40,8 @@
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
       }
 
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
       .site-header {
         position: fixed;
@@ -84,9 +77,7 @@
         font-size: 0.9rem;
       }
 
-      .nav-links a:hover {
-        color: var(--text);
-      }
+      .nav-links a:hover { color: var(--text); }
 
       .hero {
         width: min(var(--max), calc(100% - 32px));
@@ -110,12 +101,7 @@
         letter-spacing: 0.19em;
       }
 
-      .eyebrow::before {
-        content: '';
-        width: 32px;
-        height: 1px;
-        background: var(--accent);
-      }
+      .eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
 
       h1 {
         max-width: 860px;
@@ -134,12 +120,7 @@
         line-height: 1.45;
       }
 
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 34px;
-      }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
 
       .button {
         display: inline-flex;
@@ -155,20 +136,9 @@
         transition: transform 0.2s ease, background 0.2s ease;
       }
 
-      .button.primary {
-        background: var(--paper);
-        color: var(--dark);
-        border-color: var(--paper);
-      }
-
-      .button:hover {
-        transform: translateY(-1px);
-        background: rgba(243, 237, 227, 0.1);
-      }
-
-      .button.primary:hover {
-        background: #ffffff;
-      }
+      .button.primary { background: var(--paper); color: var(--dark); border-color: var(--paper); }
+      .button:hover { transform: translateY(-1px); background: rgba(243, 237, 227, 0.1); }
+      .button.primary:hover { background: #ffffff; }
 
       .hero-card {
         min-height: 640px;
@@ -178,10 +148,6 @@
         background: #15161a;
         position: relative;
         box-shadow: 0 40px 120px rgba(0, 0, 0, 0.48);
-      }
-
-      .hero-card img {
-        filter: saturate(0.92) contrast(1.08);
       }
 
       .hero-card::after {
@@ -215,16 +181,9 @@
         font-weight: 400;
       }
 
-      .hero-card-caption span {
-        color: rgba(243, 237, 227, 0.76);
-        font-size: 0.92rem;
-        max-width: 180px;
-        text-align: right;
-      }
+      .hero-card-caption span { color: rgba(243, 237, 227, 0.76); font-size: 0.92rem; max-width: 180px; text-align: right; }
 
-      main {
-        overflow: hidden;
-      }
+      main { overflow: hidden; }
 
       section {
         width: min(var(--max), calc(100% - 32px));
@@ -233,19 +192,8 @@
         border-top: 1px solid var(--line);
       }
 
-      .section-grid {
-        display: grid;
-        grid-template-columns: 0.34fr 0.66fr;
-        gap: 58px;
-      }
-
-      .section-label {
-        color: var(--accent);
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        font-size: 0.76rem;
-        font-weight: 900;
-      }
+      .section-grid { display: grid; grid-template-columns: 0.34fr 0.66fr; gap: 58px; }
+      .section-label { color: var(--accent); text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.76rem; font-weight: 900; }
 
       h2 {
         margin: 0;
@@ -256,68 +204,16 @@
         line-height: 0.94;
       }
 
-      .lead {
-        margin: 24px 0 0;
-        color: var(--muted);
-        font-size: clamp(1.08rem, 1.7vw, 1.34rem);
-        line-height: 1.62;
-      }
+      .lead { margin: 24px 0 0; color: var(--muted); font-size: clamp(1.08rem, 1.7vw, 1.34rem); line-height: 1.62; }
 
-      .text-block p {
-        margin: 0 0 22px;
-        color: var(--muted);
-        line-height: 1.78;
-        font-size: 1.02rem;
-      }
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 34px; }
+      .stat { padding: 22px; border: 1px solid var(--line); border-radius: 24px; background: var(--soft); }
+      .stat strong { display: block; margin-bottom: 6px; font-family: Georgia, Times New Roman, serif; font-weight: 400; font-size: 2.1rem; }
+      .stat span { color: var(--muted); font-size: 0.88rem; }
 
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-        margin-top: 34px;
-      }
-
-      .stat {
-        padding: 22px;
-        border: 1px solid var(--line);
-        border-radius: 24px;
-        background: var(--soft);
-      }
-
-      .stat strong {
-        display: block;
-        margin-bottom: 6px;
-        font-family: Georgia, Times New Roman, serif;
-        font-weight: 400;
-        font-size: 2.1rem;
-      }
-
-      .stat span {
-        color: var(--muted);
-        font-size: 0.88rem;
-      }
-
-      .image-strip {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr 1fr;
-        gap: 14px;
-        margin-top: 42px;
-      }
-
-      .image-strip figure {
-        margin: 0;
-        min-height: 330px;
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        overflow: hidden;
-        background: var(--soft);
-        position: relative;
-      }
-
-      .image-strip figure:nth-child(2) {
-        transform: translateY(38px);
-      }
-
+      .image-strip { display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 14px; margin-top: 42px; }
+      .image-strip figure { margin: 0; min-height: 330px; border: 1px solid var(--line); border-radius: 28px; overflow: hidden; background: var(--soft); position: relative; }
+      .image-strip figure:nth-child(2) { transform: translateY(38px); }
       .image-strip figcaption {
         position: absolute;
         left: 16px;
@@ -332,191 +228,37 @@
         font-size: 0.85rem;
       }
 
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-      }
+      .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .card { min-height: 260px; padding: 24px; border: 1px solid var(--line); border-radius: 26px; background: var(--soft); }
+      .card h3 { margin: 0 0 10px; font-family: Georgia, Times New Roman, serif; font-weight: 400; letter-spacing: -0.04em; font-size: 1.75rem; line-height: 1; }
+      .card .meta { margin-bottom: 22px; color: var(--accent); font-size: 0.78rem; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.12em; }
+      .card p { margin: 0; color: var(--muted); line-height: 1.62; }
 
-      .card {
-        min-height: 260px;
-        padding: 24px;
-        border: 1px solid var(--line);
-        border-radius: 26px;
-        background: var(--soft);
-      }
+      .split-feature { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 18px; align-items: stretch; }
+      .feature-image { min-height: 560px; border: 1px solid var(--line); border-radius: 32px; overflow: hidden; background: var(--soft); }
+      .feature-list { display: grid; gap: 12px; }
+      .feature-row { padding: 22px; border: 1px solid var(--line); border-radius: 24px; background: rgba(243, 237, 227, 0.045); }
+      .feature-row h3 { margin: 0 0 8px; font-family: Georgia, Times New Roman, serif; font-size: 1.55rem; font-weight: 400; letter-spacing: -0.035em; }
+      .feature-row p { margin: 0; color: var(--muted); line-height: 1.58; }
 
-      .card h3 {
-        margin: 0 0 10px;
-        font-family: Georgia, Times New Roman, serif;
-        font-weight: 400;
-        letter-spacing: -0.04em;
-        font-size: 1.75rem;
-        line-height: 1;
-      }
+      .project-links { display: grid; gap: 12px; }
+      .project-link { display: grid; grid-template-columns: 0.75fr 1.25fr auto; gap: 24px; align-items: center; padding: 22px; border: 1px solid var(--line); border-radius: 24px; background: var(--soft); }
+      .project-link strong { font-family: Georgia, Times New Roman, serif; font-weight: 400; font-size: 1.7rem; letter-spacing: -0.04em; }
+      .project-link span { color: var(--muted); line-height: 1.55; }
+      .project-link em { color: var(--accent); font-style: normal; }
 
-      .card .meta {
-        margin-bottom: 22px;
-        color: var(--accent);
-        font-size: 0.78rem;
-        line-height: 1.35;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-      }
+      .press-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+      .quote { min-height: 170px; padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: rgba(203, 165, 106, 0.08); }
+      .quote strong { display: block; margin-bottom: 12px; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; }
+      .quote span { color: var(--muted); line-height: 1.5; font-size: 0.95rem; }
 
-      .card p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.62;
-      }
-
-      .split-feature {
-        display: grid;
-        grid-template-columns: 0.95fr 1.05fr;
-        gap: 18px;
-        align-items: stretch;
-      }
-
-      .feature-image {
-        min-height: 560px;
-        border: 1px solid var(--line);
-        border-radius: 32px;
-        overflow: hidden;
-        background: var(--soft);
-      }
-
-      .feature-list {
-        display: grid;
-        gap: 12px;
-      }
-
-      .feature-row {
-        padding: 22px;
-        border: 1px solid var(--line);
-        border-radius: 24px;
-        background: rgba(243, 237, 227, 0.045);
-      }
-
-      .feature-row h3 {
-        margin: 0 0 8px;
-        font-family: Georgia, Times New Roman, serif;
-        font-size: 1.55rem;
-        font-weight: 400;
-        letter-spacing: -0.035em;
-      }
-
-      .feature-row p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.58;
-      }
-
-      .project-links {
-        display: grid;
-        gap: 12px;
-      }
-
-      .project-link {
-        display: grid;
-        grid-template-columns: 0.75fr 1.25fr auto;
-        gap: 24px;
-        align-items: center;
-        padding: 22px;
-        border: 1px solid var(--line);
-        border-radius: 24px;
-        background: var(--soft);
-      }
-
-      .project-link strong {
-        font-family: Georgia, Times New Roman, serif;
-        font-weight: 400;
-        font-size: 1.7rem;
-        letter-spacing: -0.04em;
-      }
-
-      .project-link span {
-        color: var(--muted);
-        line-height: 1.55;
-      }
-
-      .project-link em {
-        color: var(--accent);
-        font-style: normal;
-      }
-
-      .press-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-      }
-
-      .quote {
-        min-height: 170px;
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: 22px;
-        background: rgba(203, 165, 106, 0.08);
-      }
-
-      .quote strong {
-        display: block;
-        margin-bottom: 12px;
-        color: var(--accent);
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-      }
-
-      .quote span {
-        color: var(--muted);
-        line-height: 1.5;
-        font-size: 0.95rem;
-      }
-
-      .contact-panel {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        align-items: stretch;
-      }
-
-      .contact-card {
-        padding: 32px;
-        border: 1px solid var(--line);
-        border-radius: 30px;
-        background: var(--paper);
-        color: var(--dark);
-      }
-
-      .contact-card h2 {
-        color: var(--dark);
-      }
-
-      .contact-card p {
-        color: rgba(8, 9, 11, 0.7);
-        line-height: 1.65;
-      }
-
-      .contact-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 24px;
-      }
-
-      .contact-links a {
-        border: 1px solid rgba(8, 9, 11, 0.16);
-        border-radius: 999px;
-        padding: 12px 14px;
-        color: var(--dark);
-      }
-
-      .contact-image {
-        min-height: 420px;
-        border-radius: 30px;
-        overflow: hidden;
-        border: 1px solid var(--line);
-      }
+      .contact-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch; }
+      .contact-card { padding: 32px; border: 1px solid var(--line); border-radius: 30px; background: var(--paper); color: var(--dark); }
+      .contact-card h2 { color: var(--dark); }
+      .contact-card p { color: rgba(8, 9, 11, 0.7); line-height: 1.65; }
+      .contact-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+      .contact-links a { border: 1px solid rgba(8, 9, 11, 0.16); border-radius: 999px; padding: 12px 14px; color: var(--dark); }
+      .contact-image { min-height: 420px; border-radius: 30px; overflow: hidden; border: 1px solid var(--line); }
 
       footer {
         width: min(var(--max), calc(100% - 32px));
@@ -531,65 +273,21 @@
       }
 
       @media (max-width: 920px) {
-        .nav-links {
-          display: none;
-        }
-
-        .hero,
-        .section-grid,
-        .split-feature,
-        .contact-panel {
-          grid-template-columns: 1fr;
-        }
-
-        .hero {
-          padding-top: 118px;
-          gap: 36px;
-        }
-
-        .hero-card {
-          min-height: 520px;
-        }
-
-        .stats,
-        .cards,
-        .press-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .image-strip {
-          grid-template-columns: 1fr;
-        }
-
-        .image-strip figure:nth-child(2) {
-          transform: none;
-        }
-
-        .project-link {
-          grid-template-columns: 1fr;
-        }
+        .nav-links { display: none; }
+        .hero, .section-grid, .split-feature, .contact-panel { grid-template-columns: 1fr; }
+        .hero { padding-top: 118px; gap: 36px; }
+        .hero-card { min-height: 520px; }
+        .stats, .cards, .press-grid { grid-template-columns: repeat(2, 1fr); }
+        .image-strip { grid-template-columns: 1fr; }
+        .image-strip figure:nth-child(2) { transform: none; }
+        .project-link { grid-template-columns: 1fr; }
       }
 
       @media (max-width: 560px) {
-        .hero-card,
-        .feature-image,
-        .contact-image {
-          min-height: 390px;
-        }
-
-        section {
-          padding: 70px 0;
-        }
-
-        .stats,
-        .cards,
-        .press-grid {
-          grid-template-columns: 1fr;
-        }
-
-        footer {
-          flex-direction: column;
-        }
+        .hero-card, .feature-image, .contact-image { min-height: 390px; }
+        section { padding: 70px 0; }
+        .stats, .cards, .press-grid { grid-template-columns: 1fr; }
+        footer { flex-direction: column; }
       }
     </style>
   </head>
@@ -619,7 +317,7 @@
           </div>
         </div>
         <figure class='hero-card'>
-          <img src='https://www.media.creartbox.nyc/about-guillermo@2x.png' alt='Portrait of Guillermo Laporta' />
+          <img src={heroImage} alt='Portrait of Guillermo Laporta' />
           <figcaption class='hero-card-caption'>
             <strong>music / image / space</strong>
             <span>Performance as a visual and spatial experience.</span>
@@ -642,18 +340,9 @@
           </div>
         </div>
         <div class='image-strip' aria-label='Selected images'>
-          <figure>
-            <img src='https://www.media.creartbox.nyc/_DSC03402.jpg' alt='Guillermo Laporta performing' loading='lazy' />
-            <figcaption>Performance and chamber music</figcaption>
-          </figure>
-          <figure>
-            <img src='https://www.media.creartbox.nyc/visuality01.jpg' alt='Visual concert stage image' loading='lazy' />
-            <figcaption>Visual concert design</figcaption>
-          </figure>
-          <figure>
-            <img src='https://www.media.creartbox.nyc/venue-festival.jpg' alt='Rural festival venue' loading='lazy' />
-            <figcaption>Artistic work in rural spaces</figcaption>
-          </figure>
+          <figure><img src={performanceImage} alt='Guillermo Laporta performing' loading='lazy' /><figcaption>Performance and chamber music</figcaption></figure>
+          <figure><img src={visualityImage} alt='Visual concert stage image' loading='lazy' /><figcaption>Visual concert design</figcaption></figure>
+          <figure><img src={adarImage} alt='Rural festival venue' loading='lazy' /><figcaption>Artistic work in rural spaces</figcaption></figure>
         </div>
       </section>
 
@@ -666,62 +355,24 @@
           </div>
         </div>
         <div class='cards' style='margin-top:42px'>
-          <article class='card'>
-            <h3>Architecture of a Common Man</h3>
-            <div class='meta'>Opera / ballet / film - 2023</div>
-            <p>Music, dramaturgy, libretto and screenplay for a staged work combining live performance, cinema and movement.</p>
-          </article>
-          <article class='card'>
-            <h3>Fragile Form</h3>
-            <div class='meta'>Visual concert trilogy - 2022</div>
-            <p>Concept and design for Equilibrium, Rupture and Metamorphosis, an immersive project about fragility, matter and transformation.</p>
-          </article>
-          <article class='card'>
-            <h3>Queens Preludes</h3>
-            <div class='meta'>Multimedia chamber work - 2021</div>
-            <p>Music for flute and piano presented as a multimedia concert in New York, Madrid and Tokyo.</p>
-          </article>
-          <article class='card'>
-            <h3>Two Roads</h3>
-            <div class='meta'>Opera and ballet - 2019</div>
-            <p>Music, dramaturgy and libretto for a stage work exploring choice, memory and the paths that shape a life.</p>
-          </article>
-          <article class='card'>
-            <h3>AWAVE</h3>
-            <div class='meta'>Album and video performance - 2018-2020</div>
-            <p>A collection of works for flute, piano, electronics and video inspired by travel, landscape and motion.</p>
-          </article>
-          <article class='card'>
-            <h3>Visuality</h3>
-            <div class='meta'>Concert theater - 2014-2016</div>
-            <p>A concert-theater production merging live classical music, visual art and technology.</p>
-          </article>
+          <article class='card'><h3>Architecture of a Common Man</h3><div class='meta'>Opera / ballet / film - 2023</div><p>Music, dramaturgy, libretto and screenplay for a staged work combining live performance, cinema and movement.</p></article>
+          <article class='card'><h3>Fragile Form</h3><div class='meta'>Visual concert trilogy - 2022</div><p>Concept and design for Equilibrium, Rupture and Metamorphosis, an immersive project about fragility, matter and transformation.</p></article>
+          <article class='card'><h3>Queens Preludes</h3><div class='meta'>Multimedia chamber work - 2021</div><p>Music for flute and piano presented as a multimedia concert in New York, Madrid and Tokyo.</p></article>
+          <article class='card'><h3>Two Roads</h3><div class='meta'>Opera and ballet - 2019</div><p>Music, dramaturgy and libretto for a stage work exploring choice, memory and the paths that shape a life.</p></article>
+          <article class='card'><h3>AWAVE</h3><div class='meta'>Album and video performance - 2018-2020</div><p>A collection of works for flute, piano, electronics and video inspired by travel, landscape and motion.</p></article>
+          <article class='card'><h3>Visuality</h3><div class='meta'>Concert theater - 2014-2016</div><p>A concert-theater production merging live classical music, visual art and technology.</p></article>
         </div>
       </section>
 
       <section id='practice'>
         <div class='split-feature'>
-          <figure class='feature-image'>
-            <img src='https://www.media.creartbox.nyc/Two%20Roads,%20Opera%20dance%20by%20Guillermo%20Laporta%2007.jpg' alt='Two Roads stage production by Guillermo Laporta' loading='lazy' />
-          </figure>
+          <figure class='feature-image'><img src={twoRoadsImage} alt='Two Roads stage production by Guillermo Laporta' loading='lazy' /></figure>
           <div class='feature-list'>
             <div class='section-label'>Artistic practice</div>
-            <div class='feature-row'>
-              <h3>Flute and chamber music</h3>
-              <p>Laporta has performed symphonic, opera and chamber repertoire in Europe, Japan and the United States, including appearances connected to Carnegie Hall and Lincoln Center.</p>
-            </div>
-            <div class='feature-row'>
-              <h3>Composition and transcription</h3>
-              <p>He develops new flute repertoire through original compositions, arrangements and chamber versions of works originally written for other instrumental forces.</p>
-            </div>
-            <div class='feature-row'>
-              <h3>Stage and visual design</h3>
-              <p>His productions use lighting, projection and spatial design as musical partners, creating environments where image and sound shape one dramaturgical arc.</p>
-            </div>
-            <div class='feature-row'>
-              <h3>Rural cultural projects</h3>
-              <p>Through Festival ADAR, he develops itinerant artistic experiences in rural Asturias, activating heritage spaces, landscapes and local communities through music and visual creation.</p>
-            </div>
+            <div class='feature-row'><h3>Flute and chamber music</h3><p>Laporta has performed symphonic, opera and chamber repertoire in Europe, Japan and the United States, including appearances connected to Carnegie Hall and Lincoln Center.</p></div>
+            <div class='feature-row'><h3>Composition and transcription</h3><p>He develops new flute repertoire through original compositions, arrangements and chamber versions of works originally written for other instrumental forces.</p></div>
+            <div class='feature-row'><h3>Stage and visual design</h3><p>His productions use lighting, projection and spatial design as musical partners, creating environments where image and sound shape one dramaturgical arc.</p></div>
+            <div class='feature-row'><h3>Rural cultural projects</h3><p>Through Festival ADAR, he develops itinerant artistic experiences in rural Asturias, activating heritage spaces, landscapes and local communities through music and visual creation.</p></div>
           </div>
         </div>
       </section>
@@ -733,21 +384,9 @@
             <h2>Platforms for creation and performance.</h2>
             <p class='lead'>These projects are part of Laporta's broader artistic ecosystem. The personal practice remains the center: music, design, performance and cultural imagination.</p>
             <div class='project-links' style='margin-top:38px'>
-              <a class='project-link' href='https://creartbox.nyc' target='_blank' rel='noopener'>
-                <strong>CreArtBox</strong>
-                <span>A New York based chamber music and multimedia ensemble co-founded by Guillermo Laporta and Josefina Urraca.</span>
-                <em>Visit</em>
-              </a>
-              <a class='project-link' href='https://festivaladar.com' target='_blank' rel='noopener'>
-                <strong>Festival ADAR</strong>
-                <span>An itinerant arts festival and residency project rooted in rural Asturias, Spain.</span>
-                <em>Visit</em>
-              </a>
-              <a class='project-link' href='https://play.creartbox.nyc' target='_blank' rel='noopener'>
-                <strong>Digital Concert Hall</strong>
-                <span>A digital archive of performances, chamber works and visual concert projects.</span>
-                <em>Watch</em>
-              </a>
+              <a class='project-link' href='https://creartbox.nyc' target='_blank' rel='noopener'><strong>CreArtBox</strong><span>A New York based chamber music and multimedia ensemble co-founded by Guillermo Laporta and Josefina Urraca.</span><em>Visit</em></a>
+              <a class='project-link' href='https://festivaladar.com' target='_blank' rel='noopener'><strong>Festival ADAR</strong><span>An itinerant arts festival and residency project rooted in rural Asturias, Spain.</span><em>Visit</em></a>
+              <a class='project-link' href='https://play.creartbox.nyc' target='_blank' rel='noopener'><strong>Digital Concert Hall</strong><span>A digital archive of performances, chamber works and visual concert projects.</span><em>Watch</em></a>
             </div>
           </div>
         </div>
@@ -793,14 +432,12 @@
             <h2>Performances, commissions and collaborations.</h2>
             <p>For concerts, visual concert projects, commissions, media requests or artistic collaborations, please get in touch.</p>
             <div class='contact-links'>
-              <a href='mailto:info@creartbox.nyc'>info@creartbox.nyc</a>
+              <a href='mailto:guillermo@creartbox.nyc'>guillermo@creartbox.nyc</a>
               <a href='https://creartbox.nyc/pages/guillermo-laporta' target='_blank' rel='noopener'>Extended bio</a>
               <a href='https://www.instagram.com/creartbox' target='_blank' rel='noopener'>Instagram</a>
             </div>
           </div>
-          <figure class='contact-image'>
-            <img src='https://www.media.creartbox.nyc/_DSC0409.jpg' alt='Guillermo Laporta portrait and performance image' loading='lazy' />
-          </figure>
+          <figure class='contact-image'><img src={portraitImage} alt='Guillermo Laporta portrait and performance image' loading='lazy' /></figure>
         </div>
       </section>
     </main>
