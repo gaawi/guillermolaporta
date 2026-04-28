@@ -1,30 +1,42 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { calendar, portfolio, albums } from '../data/site.js';
+import { homeImages } from '../data/media.js';
 const featured = portfolio.slice(0, 4);
 ---
-<SiteLayout title='Guillermo Laporta - Personal Website'>
+<SiteLayout title='Guillermo Laporta - Flutist, Composer, Visual Artist'>
   <main class='page'>
     <section class='page-hero'>
       <div>
         <div class='eyebrow'>Flutist / Composer / Visual Artist</div>
         <h1>Guillermo Laporta</h1>
-        <p class='intro'>A personal archive for music, visual concerts, opera, video, installation, stage design, recordings and rural cultural projects between New York City and Asturias.</p>
+        <p class='intro'>Spanish flutist, composer and visual artist based between New York City and Asturias. His work connects chamber music, opera, video, stage design and site-specific creation.</p>
         <div class='button-row'>
           <a class='button primary' href='/portfolio/'>Portfolio</a>
           <a class='button' href='/catalogue/'>Composer Catalogue</a>
-          <a class='button' href='/calendar/'>Calendar</a>
+          <a class='button' href='/discography/'>Discography</a>
           <a class='button' href='/bio/'>Bio</a>
         </div>
       </div>
     </section>
 
     <section class='section'>
+      <div class='grid-3'>
+        {homeImages.map((item) => (
+          <figure class='image-card'>
+            <img src={item.src} alt={item.alt} loading='lazy' />
+            <figcaption>{item.title} / {item.category}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <section class='section'>
       <div class='section-grid'>
-        <div class='label'>Statement</div>
+        <div class='label'>Practice</div>
         <div>
-          <h2>Music as image, theater and space.</h2>
-          <p class='lead'>My work moves between flute performance, composition, stage design, video, cultural production and place-based projects. I am interested in concerts as total experiences, where sound, light, movement and architecture belong to the same score.</p>
+          <h2>Music, image and space.</h2>
+          <p class='lead'>Laporta develops performances where sound, light, movement, projection and architecture become part of the same dramaturgical arc. His work moves between flute performance, composition, visual concert design, opera, ballet, installation and rural cultural projects.</p>
         </div>
       </div>
     </section>
@@ -32,17 +44,17 @@ const featured = portfolio.slice(0, 4);
     <section class='section'>
       <div class='grid-3'>
         <a class='card light' href='/portfolio/'>
-          <div class='meta'>01 / Visual Work</div>
+          <div class='meta'>Visual work</div>
           <h3>Portfolio</h3>
           <p>Opera, video, installations, visual concerts, scenography and multimedia performance.</p>
         </a>
         <a class='card' href='/catalogue/'>
-          <div class='meta'>02 / Music</div>
+          <div class='meta'>Composition</div>
           <h3>Catalogue</h3>
-          <p>A composer catalogue organized by work, year, category, instrumentation and duration.</p>
+          <p>Original works organized by title, year, category, instrumentation and duration.</p>
         </a>
         <a class='card' href='/discography/'>
-          <div class='meta'>03 / Recordings</div>
+          <div class='meta'>Recordings</div>
           <h3>Discography</h3>
           <p>Albums, flute repertoire, transcriptions and multimedia recording projects.</p>
         </a>
@@ -66,7 +78,7 @@ const featured = portfolio.slice(0, 4);
 
     <section class='section'>
       <div class='section-grid'>
-        <div class='label'>Upcoming / recent</div>
+        <div class='label'>Calendar</div>
         <div class='table-list'>
           {calendar.map((event) => (
             <a class='row' href={event.url} target='_blank' rel='noopener'>
@@ -76,17 +88,6 @@ const featured = portfolio.slice(0, 4);
               <span>{event.location}</span>
             </a>
           ))}
-        </div>
-      </div>
-    </section>
-
-    <section class='section'>
-      <div class='grid-2'>
-        <div class='visual-block' data-title='Visual Concert'></div>
-        <div>
-          <div class='label'>Design note</div>
-          <h2>Brutalist, minimal, high contrast.</h2>
-          <p class='lead'>This version intentionally avoids broken external images. The visual language is built first through typography, grid, contrast and abstract blocks. Real images can be added later only when we have verified URLs.</p>
         </div>
       </div>
     </section>
