@@ -1,0 +1,37 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { albums } from '../data/site.js';
+---
+<SiteLayout title='Discography - Guillermo Laporta'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Discography</div>
+        <h1>Albums / Recordings</h1>
+        <p class='intro'>Original music, transcriptions, flute repertoire and multimedia recording projects.</p>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='grid-3'>
+        {albums.map((album, index) => (
+          <article class={index === 0 ? 'card light' : 'card'}>
+            <div class='meta'>{album.year} / {album.format}</div>
+            <h3>{album.title}</h3>
+            <p>{album.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Recording focus</div>
+        <div>
+          <h2>Flute as a chamber, visual and theatrical voice.</h2>
+          <p class='lead'>The recordings connect original music with expanded approaches to repertoire, including arrangements of violin literature and works for flute, piano, electronics and video.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
