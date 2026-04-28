@@ -1,27 +1,27 @@
 export const mediaImages = [
   {
-    title: 'CreArtBox performance',
-    category: 'performance archive',
-    src: 'https://www.media.creartbox.nyc/CreArtBox-Photo-01916.jpg',
-    alt: 'CreArtBox performance archive image'
+    title: 'Architecture of a Common Man',
+    category: 'opera / film / ballet',
+    src: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/acm/acm06.jpg',
+    alt: 'Architecture of a Common Man production image'
   },
   {
-    title: 'Artist profile',
-    category: 'portrait / ensemble',
-    src: 'https://www.media.creartbox.nyc/CreArtBox-Profile-LR.jpg',
-    alt: 'CreArtBox artist profile image'
+    title: 'Musica Ricercata',
+    category: 'NYC series',
+    src: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_DSC0350.jpg',
+    alt: 'Musica Ricercata performance image'
   },
   {
-    title: 'Chamber ensemble',
-    category: 'performance',
-    src: 'https://www.media.creartbox.nyc/CreArtQuintet.jpg',
-    alt: 'CreArtBox quintet image'
+    title: 'Musica de Cristal',
+    category: 'Festival ADAR',
+    src: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251004/LNB_MUSICA%20DE%20CRISTAL_IVAN%20MARTINEZ_7780.jpg',
+    alt: 'Musica de Cristal performance image'
   },
   {
-    title: 'DiMenna Center',
-    category: 'New York series',
-    src: 'https://www.media.creartbox.nyc/homedimenna.jpg',
-    alt: 'CreArtBox performance at DiMenna Center'
+    title: 'Festival ADAR 2025',
+    category: 'rural arts',
+    src: 'https://cdn.shopify.com/s/files/1/0071/7134/2393/files/IMG_3528.jpg?v=1761686900',
+    alt: 'Festival ADAR 2025 image'
   },
   {
     title: 'Visuality',
@@ -30,29 +30,11 @@ export const mediaImages = [
     alt: 'Visuality stage and projection image'
   },
   {
-    title: 'Tokyo / Cervantes',
-    category: 'international project',
-    src: 'https://www.media.creartbox.nyc/tokyocervantes.jpg',
-    alt: 'Tokyo Cervantes performance image'
-  },
-  {
-    title: 'Festival image',
-    category: 'festival / visual archive',
-    src: 'https://www.media.creartbox.nyc/festbanner.jpg',
-    alt: 'Festival banner image'
-  },
-  {
     title: 'Queens Preludes',
     category: 'composition / performance',
     src: 'https://www.media.creartbox.nyc/pressreleasequeenspreludes.jpg',
     alt: 'Queens Preludes press image'
-  },
-  {
-    title: 'Series venue',
-    category: 'space / performance',
-    src: 'https://www.media.creartbox.nyc/series-slider-venue@2x.png',
-    alt: 'Performance venue image'
   }
 ];
 
-export const homeImages = mediaImages.slice(0, 4);
+export const homeImages = mediaImages.slice(0, 3);
