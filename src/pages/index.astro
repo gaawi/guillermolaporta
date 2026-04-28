@@ -1,450 +1,109 @@
 ---
-const cdn = 'https://creartbox-media-cdn.b-cdn.net';
-const heroImage = `${cdn}/about-guillermo.png`;
-const performanceImage = `${cdn}/_DSC03402.jpg`;
-const portraitImage = `${cdn}/_DSC0409.jpg`;
-const visualityImage = `${cdn}/visuality01.jpg`;
-const adarImage = `${cdn}/venue-festival.jpg`;
-const twoRoadsImage = `${cdn}/Two%20Roads,%20Opera%20dance%20by%20Guillermo%20Laporta%2007.jpg`;
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { calendar, portfolio, albums } from '../data/site.js';
+const featured = portfolio.slice(0, 4);
 ---
-<!DOCTYPE html>
-<html lang='en'>
-  <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <meta name='description' content='Guillermo Laporta is a Spanish flutist, composer, designer and multimedia artist based between New York City and Asturias, Spain.' />
-    <title>Guillermo Laporta - Flutist, Composer, Designer</title>
-    <style>
-      :root {
-        --bg: #08090b;
-        --paper: #f3ede3;
-        --text: #f3ede3;
-        --muted: rgba(243, 237, 227, 0.72);
-        --line: rgba(243, 237, 227, 0.16);
-        --soft: rgba(243, 237, 227, 0.06);
-        --accent: #cba56a;
-        --dark: #08090b;
-        --max: 1180px;
-      }
-
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-
-      body {
-        margin: 0;
-        color: var(--text);
-        background:
-          radial-gradient(circle at top left, rgba(203, 165, 106, 0.2), transparent 36rem),
-          radial-gradient(circle at 85% 10%, rgba(243, 237, 227, 0.08), transparent 30rem),
-          linear-gradient(135deg, #060709 0%, #111216 48%, #050506 100%);
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
-      }
-
-      a { color: inherit; text-decoration: none; }
-      img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-      .site-header {
-        position: fixed;
-        inset: 0 0 auto 0;
-        z-index: 50;
-        background: rgba(8, 9, 11, 0.72);
-        border-bottom: 1px solid var(--line);
-        backdrop-filter: blur(18px);
-      }
-
-      .nav {
-        width: min(var(--max), calc(100% - 32px));
-        min-height: 68px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 24px;
-      }
-
-      .brand {
-        font-size: 0.78rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        font-weight: 800;
-      }
-
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-
-      .nav-links a:hover { color: var(--text); }
-
-      .hero {
-        width: min(var(--max), calc(100% - 32px));
-        min-height: 100svh;
-        margin: 0 auto;
-        padding: 140px 0 80px;
-        display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(330px, 0.95fr);
-        gap: 56px;
-        align-items: center;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--accent);
-        font-size: 0.76rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.19em;
-      }
-
-      .eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-
-      h1 {
-        max-width: 860px;
-        margin: 22px 0 20px;
-        font-family: Georgia, Times New Roman, serif;
-        font-size: clamp(4rem, 11vw, 10rem);
-        line-height: 0.83;
-        letter-spacing: -0.08em;
-        font-weight: 400;
-      }
-
-      .hero-subtitle {
-        max-width: 720px;
-        color: var(--muted);
-        font-size: clamp(1.12rem, 2vw, 1.55rem);
-        line-height: 1.45;
-      }
-
-      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
-
-      .button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        padding: 0 18px;
-        border-radius: 999px;
-        border: 1px solid var(--line);
-        background: rgba(243, 237, 227, 0.05);
-        color: var(--text);
-        font-size: 0.92rem;
-        transition: transform 0.2s ease, background 0.2s ease;
-      }
-
-      .button.primary { background: var(--paper); color: var(--dark); border-color: var(--paper); }
-      .button:hover { transform: translateY(-1px); background: rgba(243, 237, 227, 0.1); }
-      .button.primary:hover { background: #ffffff; }
-
-      .hero-card {
-        min-height: 640px;
-        border-radius: 34px;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        background: #15161a;
-        position: relative;
-        box-shadow: 0 40px 120px rgba(0, 0, 0, 0.48);
-      }
-
-      .hero-card::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(180deg, rgba(8, 9, 11, 0.05), rgba(8, 9, 11, 0.82)),
-          linear-gradient(90deg, rgba(8, 9, 11, 0.22), transparent 45%);
-      }
-
-      .hero-card-caption {
-        position: absolute;
-        z-index: 2;
-        left: 28px;
-        right: 28px;
-        bottom: 28px;
-        color: var(--paper);
-        display: flex;
-        justify-content: space-between;
-        gap: 18px;
-        align-items: end;
-      }
-
-      .hero-card-caption strong {
-        display: block;
-        font-family: Georgia, Times New Roman, serif;
-        font-size: clamp(2rem, 4vw, 4.5rem);
-        line-height: 0.92;
-        letter-spacing: -0.06em;
-        font-weight: 400;
-      }
-
-      .hero-card-caption span { color: rgba(243, 237, 227, 0.76); font-size: 0.92rem; max-width: 180px; text-align: right; }
-
-      main { overflow: hidden; }
-
-      section {
-        width: min(var(--max), calc(100% - 32px));
-        margin: 0 auto;
-        padding: 92px 0;
-        border-top: 1px solid var(--line);
-      }
-
-      .section-grid { display: grid; grid-template-columns: 0.34fr 0.66fr; gap: 58px; }
-      .section-label { color: var(--accent); text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.76rem; font-weight: 900; }
-
-      h2 {
-        margin: 0;
-        font-family: Georgia, Times New Roman, serif;
-        font-weight: 400;
-        letter-spacing: -0.055em;
-        font-size: clamp(2.7rem, 6vw, 5.7rem);
-        line-height: 0.94;
-      }
-
-      .lead { margin: 24px 0 0; color: var(--muted); font-size: clamp(1.08rem, 1.7vw, 1.34rem); line-height: 1.62; }
-
-      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 34px; }
-      .stat { padding: 22px; border: 1px solid var(--line); border-radius: 24px; background: var(--soft); }
-      .stat strong { display: block; margin-bottom: 6px; font-family: Georgia, Times New Roman, serif; font-weight: 400; font-size: 2.1rem; }
-      .stat span { color: var(--muted); font-size: 0.88rem; }
-
-      .image-strip { display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 14px; margin-top: 42px; }
-      .image-strip figure { margin: 0; min-height: 330px; border: 1px solid var(--line); border-radius: 28px; overflow: hidden; background: var(--soft); position: relative; }
-      .image-strip figure:nth-child(2) { transform: translateY(38px); }
-      .image-strip figcaption {
-        position: absolute;
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-        padding: 12px 14px;
-        border: 1px solid rgba(243, 237, 227, 0.18);
-        border-radius: 16px;
-        background: rgba(8, 9, 11, 0.58);
-        backdrop-filter: blur(12px);
-        color: rgba(243, 237, 227, 0.82);
-        font-size: 0.85rem;
-      }
-
-      .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-      .card { min-height: 260px; padding: 24px; border: 1px solid var(--line); border-radius: 26px; background: var(--soft); }
-      .card h3 { margin: 0 0 10px; font-family: Georgia, Times New Roman, serif; font-weight: 400; letter-spacing: -0.04em; font-size: 1.75rem; line-height: 1; }
-      .card .meta { margin-bottom: 22px; color: var(--accent); font-size: 0.78rem; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.12em; }
-      .card p { margin: 0; color: var(--muted); line-height: 1.62; }
-
-      .split-feature { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 18px; align-items: stretch; }
-      .feature-image { min-height: 560px; border: 1px solid var(--line); border-radius: 32px; overflow: hidden; background: var(--soft); }
-      .feature-list { display: grid; gap: 12px; }
-      .feature-row { padding: 22px; border: 1px solid var(--line); border-radius: 24px; background: rgba(243, 237, 227, 0.045); }
-      .feature-row h3 { margin: 0 0 8px; font-family: Georgia, Times New Roman, serif; font-size: 1.55rem; font-weight: 400; letter-spacing: -0.035em; }
-      .feature-row p { margin: 0; color: var(--muted); line-height: 1.58; }
-
-      .project-links { display: grid; gap: 12px; }
-      .project-link { display: grid; grid-template-columns: 0.75fr 1.25fr auto; gap: 24px; align-items: center; padding: 22px; border: 1px solid var(--line); border-radius: 24px; background: var(--soft); }
-      .project-link strong { font-family: Georgia, Times New Roman, serif; font-weight: 400; font-size: 1.7rem; letter-spacing: -0.04em; }
-      .project-link span { color: var(--muted); line-height: 1.55; }
-      .project-link em { color: var(--accent); font-style: normal; }
-
-      .press-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-      .quote { min-height: 170px; padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: rgba(203, 165, 106, 0.08); }
-      .quote strong { display: block; margin-bottom: 12px; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; }
-      .quote span { color: var(--muted); line-height: 1.5; font-size: 0.95rem; }
-
-      .contact-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch; }
-      .contact-card { padding: 32px; border: 1px solid var(--line); border-radius: 30px; background: var(--paper); color: var(--dark); }
-      .contact-card h2 { color: var(--dark); }
-      .contact-card p { color: rgba(8, 9, 11, 0.7); line-height: 1.65; }
-      .contact-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
-      .contact-links a { border: 1px solid rgba(8, 9, 11, 0.16); border-radius: 999px; padding: 12px 14px; color: var(--dark); }
-      .contact-image { min-height: 420px; border-radius: 30px; overflow: hidden; border: 1px solid var(--line); }
-
-      footer {
-        width: min(var(--max), calc(100% - 32px));
-        margin: 0 auto;
-        padding: 34px 0 46px;
-        border-top: 1px solid var(--line);
-        color: var(--muted);
-        font-size: 0.9rem;
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-      }
-
-      @media (max-width: 920px) {
-        .nav-links { display: none; }
-        .hero, .section-grid, .split-feature, .contact-panel { grid-template-columns: 1fr; }
-        .hero { padding-top: 118px; gap: 36px; }
-        .hero-card { min-height: 520px; }
-        .stats, .cards, .press-grid { grid-template-columns: repeat(2, 1fr); }
-        .image-strip { grid-template-columns: 1fr; }
-        .image-strip figure:nth-child(2) { transform: none; }
-        .project-link { grid-template-columns: 1fr; }
-      }
-
-      @media (max-width: 560px) {
-        .hero-card, .feature-image, .contact-image { min-height: 390px; }
-        section { padding: 70px 0; }
-        .stats, .cards, .press-grid { grid-template-columns: 1fr; }
-        footer { flex-direction: column; }
-      }
-    </style>
-  </head>
-  <body>
-    <header class='site-header'>
-      <nav class='nav' aria-label='Main navigation'>
-        <a class='brand' href='#top'>Guillermo Laporta</a>
-        <div class='nav-links'>
-          <a href='#about'>About</a>
-          <a href='#work'>Work</a>
-          <a href='#projects'>Projects</a>
-          <a href='#press'>Press</a>
-          <a href='#contact'>Contact</a>
+<SiteLayout title='Guillermo Laporta - Personal Website'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Flutist / Composer / Visual Artist</div>
+        <h1>Guillermo Laporta</h1>
+        <p class='intro'>A personal archive for music, visual concerts, opera, video, installation, stage design, recordings and rural cultural projects between New York City and Asturias.</p>
+        <div class='button-row'>
+          <a class='button primary' href='/portfolio/'>Portfolio</a>
+          <a class='button' href='/catalogue/'>Composer Catalogue</a>
+          <a class='button' href='/calendar/'>Calendar</a>
+          <a class='button' href='/bio/'>Bio</a>
         </div>
-      </nav>
-    </header>
+      </div>
+    </section>
 
-    <main id='top'>
-      <section class='hero' aria-label='Introduction'>
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Statement</div>
         <div>
-          <div class='eyebrow'>Flutist / Composer / Designer</div>
-          <h1>Guillermo Laporta</h1>
-          <p class='hero-subtitle'>Spanish flutist, composer, stage designer and multimedia artist based between New York City and Asturias, Spain. His work connects music, image, theater, dance, video and place.</p>
-          <div class='hero-actions'>
-            <a class='button primary' href='#work'>Explore selected work</a>
-            <a class='button' href='#contact'>Contact</a>
-          </div>
+          <h2>Music as image, theater and space.</h2>
+          <p class='lead'>My work moves between flute performance, composition, stage design, video, cultural production and place-based projects. I am interested in concerts as total experiences, where sound, light, movement and architecture belong to the same score.</p>
         </div>
-        <figure class='hero-card'>
-          <img src={heroImage} alt='Portrait of Guillermo Laporta' />
-          <figcaption class='hero-card-caption'>
-            <strong>music / image / space</strong>
-            <span>Performance as a visual and spatial experience.</span>
-          </figcaption>
-        </figure>
-      </section>
+      </div>
+    </section>
 
-      <section id='about'>
-        <div class='section-grid'>
-          <div class='section-label'>About</div>
-          <div>
-            <h2>A practice built between sound, image and place.</h2>
-            <p class='lead'>Laporta works across performance, composition, dramaturgy and stage design. At the center of his artistic practice is the visual concert, a way of presenting classical and contemporary music through light, projection, spatial design and theatrical thinking while preserving the integrity of the score.</p>
-            <div class='stats'>
-              <div class='stat'><strong>NYC</strong><span>Creative base</span></div>
-              <div class='stat'><strong>Asturias</strong><span>Rural arts work</span></div>
-              <div class='stat'><strong>3</strong><span>Studio albums</span></div>
-              <div class='stat'><strong>2013</strong><span>CreArtBox founded</span></div>
-            </div>
-          </div>
-        </div>
-        <div class='image-strip' aria-label='Selected images'>
-          <figure><img src={performanceImage} alt='Guillermo Laporta performing' loading='lazy' /><figcaption>Performance and chamber music</figcaption></figure>
-          <figure><img src={visualityImage} alt='Visual concert stage image' loading='lazy' /><figcaption>Visual concert design</figcaption></figure>
-          <figure><img src={adarImage} alt='Rural festival venue' loading='lazy' /><figcaption>Artistic work in rural spaces</figcaption></figure>
-        </div>
-      </section>
+    <section class='section'>
+      <div class='grid-3'>
+        <a class='card light' href='/portfolio/'>
+          <div class='meta'>01 / Visual Work</div>
+          <h3>Portfolio</h3>
+          <p>Opera, video, installations, visual concerts, scenography and multimedia performance.</p>
+        </a>
+        <a class='card' href='/catalogue/'>
+          <div class='meta'>02 / Music</div>
+          <h3>Catalogue</h3>
+          <p>A composer catalogue organized by work, year, category, instrumentation and duration.</p>
+        </a>
+        <a class='card' href='/discography/'>
+          <div class='meta'>03 / Recordings</div>
+          <h3>Discography</h3>
+          <p>Albums, flute repertoire, transcriptions and multimedia recording projects.</p>
+        </a>
+      </div>
+    </section>
 
-      <section id='work'>
-        <div class='section-grid'>
-          <div class='section-label'>Selected work</div>
-          <div>
-            <h2>Opera, ballet, chamber music and visual performance.</h2>
-            <p class='lead'>His projects often begin with live music and expand into layered theatrical environments: moving images, projection, lighting, choreography and scenography.</p>
-          </div>
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Selected projects</div>
+        <div class='grid-2'>
+          {featured.map((item) => (
+            <article class='card'>
+              <div class='meta'>{item.year} / {item.type}</div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))}
         </div>
-        <div class='cards' style='margin-top:42px'>
-          <article class='card'><h3>Architecture of a Common Man</h3><div class='meta'>Opera / ballet / film - 2023</div><p>Music, dramaturgy, libretto and screenplay for a staged work combining live performance, cinema and movement.</p></article>
-          <article class='card'><h3>Fragile Form</h3><div class='meta'>Visual concert trilogy - 2022</div><p>Concept and design for Equilibrium, Rupture and Metamorphosis, an immersive project about fragility, matter and transformation.</p></article>
-          <article class='card'><h3>Queens Preludes</h3><div class='meta'>Multimedia chamber work - 2021</div><p>Music for flute and piano presented as a multimedia concert in New York, Madrid and Tokyo.</p></article>
-          <article class='card'><h3>Two Roads</h3><div class='meta'>Opera and ballet - 2019</div><p>Music, dramaturgy and libretto for a stage work exploring choice, memory and the paths that shape a life.</p></article>
-          <article class='card'><h3>AWAVE</h3><div class='meta'>Album and video performance - 2018-2020</div><p>A collection of works for flute, piano, electronics and video inspired by travel, landscape and motion.</p></article>
-          <article class='card'><h3>Visuality</h3><div class='meta'>Concert theater - 2014-2016</div><p>A concert-theater production merging live classical music, visual art and technology.</p></article>
-        </div>
-      </section>
+      </div>
+    </section>
 
-      <section id='practice'>
-        <div class='split-feature'>
-          <figure class='feature-image'><img src={twoRoadsImage} alt='Two Roads stage production by Guillermo Laporta' loading='lazy' /></figure>
-          <div class='feature-list'>
-            <div class='section-label'>Artistic practice</div>
-            <div class='feature-row'><h3>Flute and chamber music</h3><p>Laporta has performed symphonic, opera and chamber repertoire in Europe, Japan and the United States, including appearances connected to Carnegie Hall and Lincoln Center.</p></div>
-            <div class='feature-row'><h3>Composition and transcription</h3><p>He develops new flute repertoire through original compositions, arrangements and chamber versions of works originally written for other instrumental forces.</p></div>
-            <div class='feature-row'><h3>Stage and visual design</h3><p>His productions use lighting, projection and spatial design as musical partners, creating environments where image and sound shape one dramaturgical arc.</p></div>
-            <div class='feature-row'><h3>Rural cultural projects</h3><p>Through Festival ADAR, he develops itinerant artistic experiences in rural Asturias, activating heritage spaces, landscapes and local communities through music and visual creation.</p></div>
-          </div>
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Upcoming / recent</div>
+        <div class='table-list'>
+          {calendar.map((event) => (
+            <a class='row' href={event.url} target='_blank' rel='noopener'>
+              <strong>{event.displayDate}</strong>
+              <span>{event.title}</span>
+              <span>{event.subtitle}</span>
+              <span>{event.location}</span>
+            </a>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id='projects'>
-        <div class='section-grid'>
-          <div class='section-label'>Projects</div>
-          <div>
-            <h2>Platforms for creation and performance.</h2>
-            <p class='lead'>These projects are part of Laporta's broader artistic ecosystem. The personal practice remains the center: music, design, performance and cultural imagination.</p>
-            <div class='project-links' style='margin-top:38px'>
-              <a class='project-link' href='https://creartbox.nyc' target='_blank' rel='noopener'><strong>CreArtBox</strong><span>A New York based chamber music and multimedia ensemble co-founded by Guillermo Laporta and Josefina Urraca.</span><em>Visit</em></a>
-              <a class='project-link' href='https://festivaladar.com' target='_blank' rel='noopener'><strong>Festival ADAR</strong><span>An itinerant arts festival and residency project rooted in rural Asturias, Spain.</span><em>Visit</em></a>
-              <a class='project-link' href='https://play.creartbox.nyc' target='_blank' rel='noopener'><strong>Digital Concert Hall</strong><span>A digital archive of performances, chamber works and visual concert projects.</span><em>Watch</em></a>
-            </div>
-          </div>
+    <section class='section'>
+      <div class='grid-2'>
+        <div class='visual-block' data-title='Visual Concert'></div>
+        <div>
+          <div class='label'>Design note</div>
+          <h2>Brutalist, minimal, high contrast.</h2>
+          <p class='lead'>This version intentionally avoids broken external images. The visual language is built first through typography, grid, contrast and abstract blocks. Real images can be added later only when we have verified URLs.</p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id='recordings'>
-        <div class='section-grid'>
-          <div class='section-label'>Recordings</div>
-          <div>
-            <h2>Flute repertoire, albums and chamber versions.</h2>
-            <p class='lead'>Laporta's recording work includes original pieces, chamber arrangements and repertoire for flute with piano, strings, harp and electronics.</p>
-            <div class='feature-list' style='margin-top:36px'>
-              <div class='feature-row'><h3>Debussy & Respighi Violin Sonatas</h3><p>Arrangements and recordings that bring violin repertoire into the flute chamber music world.</p></div>
-              <div class='feature-row'><h3>AWAVE</h3><p>Original music for flute, piano, electronics and video.</p></div>
-              <div class='feature-row'><h3>12 Preludes</h3><p>Original pieces for flute and piano connected to memory, image and travel.</p></div>
-              <div class='feature-row'><h3>Chamber versions</h3><p>Live chamber arrangements and performances of works by Granados, Mahler, Bach, Haydn and others.</p></div>
-            </div>
-          </div>
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Discography</div>
+        <div class='grid-3'>
+          {albums.map((album) => (
+            <article class='card'>
+              <div class='meta'>{album.year} / {album.format}</div>
+              <h3>{album.title}</h3>
+              <p>{album.description}</p>
+            </article>
+          ))}
         </div>
-      </section>
-
-      <section id='press'>
-        <div class='section-grid'>
-          <div class='section-label'>Press</div>
-          <div>
-            <h2>Recognition and critical response.</h2>
-            <p class='lead'>Laporta's work and the projects he has built have been described through their distinctive combination of music, staging, visual design and multidisciplinary performance.</p>
-          </div>
-        </div>
-        <div class='press-grid' style='margin-top:40px'>
-          <div class='quote'><strong>The New Yorker</strong><span>Art and music top picks.</span></div>
-          <div class='quote'><strong>Time Out</strong><span>A new ensemble devoted to multidisciplinary events.</span></div>
-          <div class='quote'><strong>El Pais</strong><span>A striking staging.</span></div>
-          <div class='quote'><strong>Times Ledger</strong><span>A unique take on classical music.</span></div>
-          <div class='quote'><strong>Broadway World</strong><span>Visually and aurally compelling.</span></div>
-        </div>
-      </section>
-
-      <section id='contact'>
-        <div class='contact-panel'>
-          <div class='contact-card'>
-            <div class='section-label' style='color:#8d6b37'>Contact</div>
-            <h2>Performances, commissions and collaborations.</h2>
-            <p>For concerts, visual concert projects, commissions, media requests or artistic collaborations, please get in touch.</p>
-            <div class='contact-links'>
-              <a href='mailto:guillermo@creartbox.nyc'>guillermo@creartbox.nyc</a>
-              <a href='https://creartbox.nyc/pages/guillermo-laporta' target='_blank' rel='noopener'>Extended bio</a>
-              <a href='https://www.instagram.com/creartbox' target='_blank' rel='noopener'>Instagram</a>
-            </div>
-          </div>
-          <figure class='contact-image'><img src={portraitImage} alt='Guillermo Laporta portrait and performance image' loading='lazy' /></figure>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <span>© 2026 Guillermo Laporta</span>
-      <span>Flutist / Composer / Designer</span>
-    </footer>
-  </body>
-</html>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
