@@ -1,0 +1,16 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { bio } from '../data/site.js';
+---
+<SiteLayout title='Long Bio - Guillermo Laporta'>
+  <main class='print-page'>
+    <div class='no-print button-row'>
+      <a class='button primary' href='javascript:window.print()'>Save / Print as PDF</a>
+      <a class='button' href='/bio/'>Back to Bio</a>
+    </div>
+    <p class='meta'>Long biography</p>
+    <h1>Guillermo Laporta</h1>
+    {bio.long.map((paragraph) => <p style='font-size:18px; line-height:1.62; max-width:900px'>{paragraph}</p>)}
+    <p style='margin-top:48px; color:rgba(5,5,5,.55)'>guillermo@creartbox.nyc · guillermolaporta.com</p>
+  </main>
+</SiteLayout>
