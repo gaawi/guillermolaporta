@@ -1,0 +1,47 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { bio } from '../data/site.js';
+---
+<SiteLayout title='Bio - Guillermo Laporta'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Biography</div>
+        <h1>Short / Long Bio</h1>
+        <p class='intro'>Two versions for programs, presenters, grants, media and institutional use.</p>
+        <div class='button-row'>
+          <a class='button primary' href='/bio-short-print/' target='_blank'>Short bio PDF version</a>
+          <a class='button' href='/bio-long-print/' target='_blank'>Long bio PDF version</a>
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Short bio</div>
+        <div>
+          <h2>Short version.</h2>
+          <p class='lead'>{bio.short}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Long bio</div>
+        <div>
+          <h2>Long version.</h2>
+          {bio.long.map((paragraph) => <p class='lead'>{paragraph}</p>)}
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='grid-3'>
+        <div class='card light'><div class='meta'>Role</div><h3>Flutist</h3><p>Performance, chamber music and repertoire development.</p></div>
+        <div class='card'><div class='meta'>Role</div><h3>Composer</h3><p>Opera, ballet, chamber music, video and multimedia works.</p></div>
+        <div class='card'><div class='meta'>Role</div><h3>Designer</h3><p>Stage design, lighting concepts, projection and visual concerts.</p></div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
