@@ -1,0 +1,3 @@
+Guillermo Laporta personal website
+Version: 2026-04-28-v2
+Latest intended deployment: personal homepage with hero, about, work, projects, press and contact.
