@@ -1,0 +1,42 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { calendar } from '../data/site.js';
+---
+<SiteLayout title='Calendar - Guillermo Laporta'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Calendar</div>
+        <h1>Upcoming / Recent</h1>
+        <p class='intro'>Performances, presentations, projects and selected public appearances. This page is data-driven so new dates can be added quickly without rebuilding the design.</p>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Events</div>
+        <div class='table-list'>
+          {calendar.map((event) => (
+            <a class='row' href={event.url} target='_blank' rel='noopener'>
+              <strong>{event.displayDate}</strong>
+              <span>{event.title}</span>
+              <span>{event.subtitle}</span>
+              <span>{event.location}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='grid-2'>
+        <div class='visual-block' data-title='Calendar'></div>
+        <div>
+          <div class='label'>Maintenance</div>
+          <h2>Simple to update.</h2>
+          <p class='lead'>Events are stored in <code>src/data/site.js</code>. Add a new item there and the Calendar page updates automatically after Cloudflare deploys.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
