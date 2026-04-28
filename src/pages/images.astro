@@ -1,0 +1,40 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { imageIndex } from '../data/site.js';
+---
+<SiteLayout title='Images - Guillermo Laporta'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Images</div>
+        <h1>Gallery / Archive</h1>
+        <p class='intro'>A visual index for portraits, performances, installations, scenography and rural arts projects. Real image URLs can be added here after verification.</p>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='grid-3'>
+        {imageIndex.map((item) => (
+          <article>
+            <div class='visual-block' data-title={item.title}></div>
+            <div class='card'>
+              <div class='meta'>{item.category}</div>
+              <h3>{item.title}</h3>
+              <p>{item.note}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Image policy</div>
+        <div>
+          <h2>No broken images.</h2>
+          <p class='lead'>This page currently uses designed placeholders. Once the exact Bunny or public CDN URLs are confirmed, each visual block can be replaced with real photography without changing the structure.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
