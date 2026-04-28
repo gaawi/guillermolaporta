@@ -182,6 +182,33 @@ export const bio = {
   ]
 };
 
+export const mediaImages = [
+  {
+    title: 'CreArtBox performance',
+    category: 'performance',
+    src: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20240930/01.jpg',
+    alt: 'CreArtBox performance image'
+  },
+  {
+    title: 'Stage and projections',
+    category: 'visual concert',
+    src: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20240930/02.jpg',
+    alt: 'Stage design and projection image'
+  },
+  {
+    title: 'Architecture of a Common Man',
+    category: 'opera / film / ballet',
+    src: 'https://creartbox-media-cdn.b-cdn.net/webimg/acm2.jpg',
+    alt: 'Architecture of a Common Man production image'
+  },
+  {
+    title: 'Festival ADAR',
+    category: 'rural arts',
+    src: 'https://creartbox-media-cdn.b-cdn.net/adarimages/2025/01.jpg',
+    alt: 'Festival ADAR rural arts image'
+  }
+];
+
 export const imageIndex = [
   { title: 'Portrait', category: 'artist image', note: 'Primary portrait and media image' },
   { title: 'Performance', category: 'flute / chamber music', note: 'Concert photography and rehearsal documentation' },
