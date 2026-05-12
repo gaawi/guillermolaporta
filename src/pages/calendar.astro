@@ -1,6 +1,8 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { calendar } from '../data/site.js';
+const today = new Date().toISOString().split('T')[0];
+const upcoming = calendar.filter(e => e.date >= today);
 ---
 <SiteLayout title='Calendar - Guillermo Laporta'>
   <main class='page'>
@@ -16,7 +18,7 @@ import { calendar } from '../data/site.js';
       <div class='section-grid'>
         <div class='label'>Events</div>
         <div class='table-list'>
-          {calendar.map((event) => (
+          {upcoming.map((event) => (
             <a class='row' href={event.url} target='_blank' rel='noopener'>
               <strong>{event.displayDate}</strong>
               <span>{event.title}</span>
