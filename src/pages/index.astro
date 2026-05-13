@@ -3,6 +3,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { calendar, portfolio, albums } from '../data/site.js';
 import { homeImages } from '../data/media.js';
 const featured = portfolio.slice(0, 4);
+const today = new Date().toISOString().split('T')[0];
+const upcoming = calendar.filter(e => e.date >= today);
 ---
 <SiteLayout title='Guillermo Laporta - Flutist, Composer, Visual Artist'>
   <main class='page'>
@@ -10,7 +12,7 @@ const featured = portfolio.slice(0, 4);
       <div>
         <div class='eyebrow'>Flutist / Composer / Visual Artist</div>
         <h1>Guillermo Laporta</h1>
-        <p class='intro'>Spanish flutist, composer and visual artist based between New York City and Asturias. His work connects chamber music, opera, video, stage design and site-specific creation.</p>
+        <p class='intro'>Composer, flutist and concert designer working to bring classical music to larger and more diverse audiences — through original composition, visual performance and arts entrepreneurship.</p>
         <div class='button-row'>
           <a class='button primary' href='/portfolio/'>Portfolio</a>
           <a class='button' href='/catalogue/'>Composer Catalogue</a>
@@ -35,8 +37,8 @@ const featured = portfolio.slice(0, 4);
       <div class='section-grid'>
         <div class='label'>Practice</div>
         <div>
-          <h2>Music, image and space.</h2>
-          <p class='lead'>Laporta develops performances where sound, light, movement, projection and architecture become part of the same dramaturgical arc. His work moves between flute performance, composition, visual concert design, opera, ballet, installation and rural cultural projects.</p>
+          <h2>Classical music for larger audiences.</h2>
+          <p class='lead'>Laporta's work is built around a conviction: that classical music can speak to far broader audiences when it is given the right visual, theatrical and spatial language. His practice runs across three areas — original composition and concert design that integrates image, light and space into the performance; and cultural entrepreneurship, building organizations and programs that create meaningful access to classical music for audiences who rarely encounter it.</p>
         </div>
       </div>
     </section>
@@ -80,7 +82,7 @@ const featured = portfolio.slice(0, 4);
       <div class='section-grid'>
         <div class='label'>Calendar</div>
         <div class='table-list'>
-          {calendar.map((event) => (
+          {upcoming.map((event) => (
             <a class='row' href={event.url} target='_blank' rel='noopener'>
               <strong>{event.displayDate}</strong>
               <span>{event.title}</span>
