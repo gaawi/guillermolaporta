@@ -1,0 +1,156 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { bio, catalogue, albums } from '../data/site.js';
+import { projects } from '../data/projects.js';
+---
+<SiteLayout title='Resume - Guillermo Laporta'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Curriculum Vitae</div>
+        <h1>Resume</h1>
+        <p class='intro'>Full professional record — leadership, artistic work, compositions, recordings and training.</p>
+        <div class='button-row'>
+          <a class='button primary' href='/bio/'>Bio page</a>
+          <a class='button' href='/contact/'>Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Leadership</div>
+        <div>
+          <div class='resume-entry'>
+            <div class='resume-header'>
+              <strong>CreArtBox</strong>
+              <span class='resume-date'>2013 – present</span>
+            </div>
+            <div class='resume-role'>Co-founder &amp; Executive Director · New York, NY</div>
+            <p>Chamber music and multimedia performing arts organization. Produces original visual concerts, residencies, educational programs and community engagement initiatives. Commissions new works and develops collaborative projects between classical music, dance, visual art and technology.</p>
+          </div>
+          <div class='resume-entry'>
+            <div class='resume-header'>
+              <strong>Festival ADAR</strong>
+              <span class='resume-date'>2020 – present</span>
+            </div>
+            <div class='resume-role'>Founder &amp; Artistic Director · Asturias, Spain</div>
+            <p>Rural arts platform activating villages, monasteries, landscapes and heritage spaces in Asturias through contemporary music, visual art, site-specific creation, residencies and community programs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Artistic Practice</div>
+        <div>
+          <div class='resume-entry'>
+            <div class='resume-header'>
+              <strong>Flutist</strong>
+            </div>
+            <p>Concert performer specializing in chamber music, visual concerts and contemporary repertoire. Performed symphonic, operatic and chamber programs in Europe, Japan and the United States with ensembles including Oviedo Filarmonía, BBC Orchestra, Orquesta del Principado de Asturias, Orquesta Sinfónica de Euskadi, Le Train Bleu Ensemble and New York International Orchestra.</p>
+          </div>
+          <div class='resume-entry'>
+            <div class='resume-header'>
+              <strong>Composer</strong>
+            </div>
+            <p>Works across opera, ballet, chamber music, multimedia and video. Compositions developed in collaboration with dancers, filmmakers, visual artists and theatrical directors. Committed to formats that expand the audience for classical music.</p>
+          </div>
+          <div class='resume-entry'>
+            <div class='resume-header'>
+              <strong>Visual Concert Designer</strong>
+            </div>
+            <p>Develops performance formats integrating image, light, projection, spatial design and movement into the musical experience. Created visual concert productions at venues in New York, Tokyo, Madrid and Asturias.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Selected projects</div>
+        <div>
+          {projects.map((p) => (
+            <div class='resume-entry'>
+              <div class='resume-header'>
+                <strong>{p.title}</strong>
+                <span class='resume-date'>{p.year}</span>
+              </div>
+              <div class='resume-role'>{p.type} · {p.roles.join(', ')}</div>
+              <p>{p.long}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Composition catalogue</div>
+        <div>
+          {catalogue.map((work) => (
+            <div class='resume-entry'>
+              <div class='resume-header'>
+                <strong>{work.title}</strong>
+                <span class='resume-date'>{work.year}</span>
+              </div>
+              <div class='resume-role'>{work.category} · {work.instrumentation}{work.duration ? ` · ${work.duration}` : ''}</div>
+              {work.notes && <p>{work.notes}</p>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Discography</div>
+        <div>
+          {albums.map((album) => (
+            <div class='resume-entry'>
+              <div class='resume-header'>
+                <strong>{album.title}</strong>
+                <span class='resume-date'>{album.year}</span>
+              </div>
+              <div class='resume-role'>{album.format}</div>
+              <p>{album.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Education</div>
+        <div>
+          <div class='resume-entry'>
+            <div class='resume-header'>
+              <strong>Royal College of Music</strong>
+              <span class='resume-date'>London, UK</span>
+            </div>
+            <div class='resume-role'>Flute Performance</div>
+          </div>
+          <div class='resume-entry'>
+            <div class='resume-header'>
+              <strong>Musikene</strong>
+              <span class='resume-date'>San Sebastián, Spain</span>
+            </div>
+            <div class='resume-role'>Flute Performance</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
+
+<style>
+  .resume-entry{padding:22px 0;border-bottom:1px solid var(--line)}
+  .resume-entry:last-child{border-bottom:none}
+  .resume-header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:4px}
+  .resume-header strong{font-size:1.05rem;letter-spacing:-.02em}
+  .resume-date{color:var(--clay);font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+  .resume-role{color:var(--clay);font-size:.82rem;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  .resume-entry p{color:var(--muted);margin:0;font-size:.95rem;line-height:1.6}
+</style>
