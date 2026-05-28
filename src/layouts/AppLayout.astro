@@ -13,6 +13,7 @@ const nav = [
   { href: '/discography/', label: 'Records', icon: 'record' },
   { href: '/images/', label: 'Images', icon: 'image' },
   { href: '/bio/', label: 'Bio', icon: 'user' },
+  { href: '/resume/', label: 'Resume', icon: 'resume' },
   { href: '/contact/', label: 'Contact', icon: 'mail' }
 ];
 const currentPath = Astro.url.pathname;
@@ -25,6 +26,7 @@ const icons = {
   record: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>',
   image: '<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m6.5 17 4.5-4 3 3 2-2 1.5 3"/></svg>',
   user: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>',
+  resume: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>',
   mail: '<svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="m5 8 7 5 7-5"/></svg>'
 };
 ---
