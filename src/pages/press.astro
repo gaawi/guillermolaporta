@@ -1,0 +1,52 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { press } from '../data/site.js';
+---
+<SiteLayout title='Press - Guillermo Laporta'>
+  <main class='page'>
+    <section class='page-hero'>
+      <div>
+        <div class='eyebrow'>Press</div>
+        <h1>Selected press.</h1>
+        <p class='intro'>Coverage of CreArtBox, Festival ADAR and Guillermo Laporta's productions.</p>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Quotes</div>
+        <div class='press-list'>
+          {press.map((item) => (
+            <blockquote class='press-item'>
+              <p>"{item.quote}"</p>
+              <cite>— {item.source}</cite>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Press kit</div>
+        <div>
+          <p class='lead'>Press photos, CV and bio available for download.</p>
+          <div class='button-row'>
+            <a class='button primary' href='/downloads/guillermo-laporta-cv.pdf' target='_blank'>CV — PDF</a>
+            <a class='button' href='/downloads/laporta-press-photo-1.jpg' target='_blank'>Press photo 1</a>
+            <a class='button' href='/downloads/laporta-press-photo-2.jpg' target='_blank'>Press photo 2</a>
+            <a class='button' href='mailto:guillermo@creartbox.nyc'>Press enquiries</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
+
+<style>
+  .press-list{display:grid;gap:0}
+  .press-item{margin:0;padding:28px 0;border-bottom:1px solid var(--line-strong)}
+  .press-item:first-child{border-top:1px solid var(--line-strong)}
+  .press-item p{color:var(--white);font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.5;margin:0 0 10px}
+  .press-item cite{color:var(--clay);font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;font-style:normal}
+</style>
