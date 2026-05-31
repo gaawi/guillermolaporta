@@ -1,0 +1,711 @@
+---
+import { catalogue, albums, liveRecordings, funders } from '../data/site.js';
+import { projects } from '../data/projects.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+const initial = {
+  leadership: [
+    {
+      id: 'creartbox',
+      title: 'CreArtBox',
+      date: 'New York, NY · 2013 – present',
+      role: 'Co-founder & Executive Director',
+      body: 'Chamber music and multimedia performing arts organization. Produces original visual concerts, residencies, educational programs and community engagement initiatives. 20+ professional artists, 20+ annual performances at The DiMenna Center, Mark Morris Center, The William Vale, Greenwich House Music School and more. Sustained support from the New York State Council on the Arts (NYSCA). Covered by The New Yorker, Broadway World, Time Out New York, New York Resident, Queens Ledger.',
+      link: 'https://creartbox.nyc',
+      notes: '',
+    },
+    {
+      id: 'adar',
+      title: 'Festival ADAR',
+      date: 'Asturias, Spain · 2020 – present',
+      role: 'Founder & Artistic Director',
+      body: 'Rural arts platform activating villages, monasteries, landscapes and heritage spaces in Asturias through contemporary music, visual art, site-specific creation, residencies and community programs. Supported by the Government of the Principality of Asturias with €120,000 across four competitive awards (2021–25). Presents world premieres, artistic residencies and installations in collaboration with international artists and composers.',
+      link: 'https://festivaladar.com',
+      notes: '',
+    },
+    {
+      id: 'creartmusic',
+      title: 'CreArt Music Series',
+      date: 'New York, NY · 2008 – 2013',
+      role: 'Founder & Artistic Director',
+      body: 'Annual concert series at the Kosciuszko Foundation (Manhattan) presenting chamber music with international soloists and emerging composers. 25+ concerts over six seasons. Predecessor organization to the CreArtBox nonprofit.',
+      link: '',
+      notes: '',
+    },
+  ],
+  practice: [
+    { id: 'flutist', title: 'Flutist', body: 'Concert performer specializing in chamber music, visual concerts and contemporary repertoire. Co-Principal Flute of the Oviedo Filarmonía (2009–12), Principal Flute of the Herald Chamber Orchestra (2012–15) and the New York International Chamber Orchestra (2013–18). Performed with the BBC Orchestra, Orquesta del Principado de Asturias, Le Train Bleu Ensemble and Orquesta Sinfónica de Euskadi. Recorded for Warner, EMI and Naxos. Toured to New York, London, Madrid, Tokyo, Bilbao and Asturias.', notes: '' },
+    { id: 'composer', title: 'Composer', body: 'Works across opera, ballet, chamber music, multimedia and video. Original compositions developed in collaboration with dancers, filmmakers, visual artists and theatrical directors. Committed to formats that expand the audience for classical music through visual storytelling and theatrical presentation.', notes: '' },
+    { id: 'designer', title: 'Visual Concert Designer', body: 'Develops performance formats integrating image, light, projection, spatial design and movement into the musical experience. Designs original video art for concert productions. Created visual concert productions at venues in New York City, Tokyo, Madrid, Grado, Oviedo and Asturias.', notes: '' },
+  ],
+  projects: projects.map(p => ({ ...p, notes: '' })),
+  catalogue: catalogue.map(w => ({ ...w, notes: w.notes || '' })),
+  education: [
+    { id: 'rcm', title: 'M.Mus. Advanced Performance — Flute', date: 'London, 2010–12', institution: 'Royal College of Music', body: 'Studied with Jaime Martín, Paul Edmund Davies and Sue Thomas. Full scholarship.', notes: '' },
+    { id: 'uah', title: 'M.A. Arts Management', date: 'Madrid, 2012–14', institution: 'University of Alcalá de Henares', body: '', notes: '' },
+    { id: 'musikene', title: 'Superior Degree in Music — Flute', date: 'San Sebastián, 2004–09', institution: 'Musikene — Superior Conservatory of Music of the Basque Country', body: 'With distinction. Studies with Jaime Martín.', notes: '' },
+  ],
+  albums: albums.map(a => ({ ...a, notes: '' })),
+  funders: {
+    us: funders.us.join('\n'),
+    europe: funders.europe.join('\n'),
+    usNotes: '',
+    europeNotes: '',
+  },
+  generalNotes: '',
+};
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resume Editor — Guillermo Laporta</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f8f6;
+      --surface: #ffffff;
+      --border: #e2ddd6;
+      --ink: #1a1614;
+      --muted: #888078;
+      --accent: #8a4b2b;
+      --note-bg: #fffbe6;
+      --note-border: #f0c040;
+      --changed-bg: #f0faf0;
+      --changed-border: #72b87a;
+      --font: system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Mono', monospace;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.6; }
+
+    /* ── Gate ── */
+    #gate { position: fixed; inset: 0; background: #1a1614; display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    #gate.hidden { display: none; }
+    .gate-box { background: #fff; padding: 40px; border-radius: 8px; width: 320px; text-align: center; }
+    .gate-box h2 { font-size: 18px; margin-bottom: 8px; }
+    .gate-box p { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+    .gate-box input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 16px; text-align: center; letter-spacing: .2em; margin-bottom: 12px; outline: none; }
+    .gate-box input:focus { border-color: var(--accent); }
+    .gate-box button { width: 100%; padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; }
+    #gate-error { color: #c0392b; font-size: 12px; margin-top: 8px; min-height: 16px; }
+
+    /* ── Header ── */
+    .topbar { position: sticky; top: 0; background: var(--surface); border-bottom: 1px solid var(--border); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 12px; }
+    .topbar-title { font-size: 14px; font-weight: 600; }
+    .topbar-status { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+    .topbar-actions { display: flex; gap: 8px; }
+    .btn { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--ink); transition: background .15s; }
+    .btn:hover { background: #f0ece6; }
+    .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn.primary:hover { background: #7a3f24; }
+    .btn.danger { background: #c0392b; color: #fff; border-color: #c0392b; }
+
+    /* ── Layout ── */
+    .main { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* ── General Notes ── */
+    .general-notes { background: var(--note-bg); border: 1px solid var(--note-border); border-radius: 8px; padding: 20px; margin-bottom: 32px; }
+    .general-notes label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; color: #8a6a00; margin-bottom: 8px; display: block; }
+    .general-notes textarea { width: 100%; border: none; background: transparent; font-family: var(--font); font-size: 14px; line-height: 1.6; resize: vertical; min-height: 80px; outline: none; color: var(--ink); }
+
+    /* ── Section ── */
+    .section { margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; }
+    .section-header:hover { background: #f8f5f0; }
+    .section-header.open { border-bottom-color: var(--border); }
+    .section-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+    .section-title { font-size: 15px; font-weight: 600; flex: 1; }
+    .section-count { font-size: 12px; color: var(--muted); }
+    .chevron { color: var(--muted); transition: transform .2s; font-size: 12px; }
+    .open .chevron { transform: rotate(180deg); }
+    .section-body { display: none; padding: 0; }
+    .section-body.open { display: block; }
+
+    /* ── Entry ── */
+    .entry { border-bottom: 1px solid var(--border); padding: 20px; }
+    .entry:last-child { border-bottom: none; }
+    .entry.modified { background: var(--changed-bg); border-left: 3px solid var(--changed-border); padding-left: 17px; }
+    .entry-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+    .entry-num { font-family: var(--mono); font-size: 11px; color: var(--muted); flex-shrink: 0; }
+    .entry-heading { font-size: 15px; font-weight: 600; flex: 1; }
+    .entry-meta { font-size: 12px; color: var(--muted); }
+    .field { margin-bottom: 12px; }
+    .field label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; display: block; }
+    .field input, .field textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 14px; line-height: 1.5; background: #fdfcfb; outline: none; color: var(--ink); transition: border-color .15s; }
+    .field input:focus, .field textarea:focus { border-color: var(--accent); background: #fff; }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field textarea.tall { min-height: 120px; }
+
+    /* ── Notes field ── */
+    .notes-field { background: var(--note-bg); border: 1px solid var(--note-border); border-radius: 6px; padding: 12px; }
+    .notes-field label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8a6a00; font-weight: 700; margin-bottom: 6px; display: block; }
+    .notes-field textarea { width: 100%; border: none; background: transparent; font-family: var(--font); font-size: 13px; line-height: 1.5; resize: vertical; min-height: 60px; outline: none; color: var(--ink); }
+    .notes-field textarea::placeholder { color: #b8a060; }
+
+    /* ── Funders ── */
+    .funders-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+    @media(max-width:600px) { .funders-grid { grid-template-columns: 1fr; } }
+
+    /* ── Toast ── */
+    #toast { position: fixed; bottom: 24px; right: 24px; background: #1a1614; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 9999; }
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- Gate -->
+<div id="gate">
+  <div class="gate-box">
+    <h2>Resume Editor</h2>
+    <p>Introduce el PIN para acceder</p>
+    <input type="password" id="pin-input" placeholder="····" maxlength="20" autocomplete="off" />
+    <button onclick="checkPin()">Entrar</button>
+    <div id="gate-error"></div>
+  </div>
+</div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-title">Resume Editor</div>
+  <div class="topbar-status" id="save-status">—</div>
+  <div class="topbar-actions">
+    <button class="btn" onclick="resetToDefault()">Restablecer</button>
+    <button class="btn primary" onclick="copyForClaude()">Copiar para Claude ↗</button>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- General notes -->
+  <div class="general-notes">
+    <label>Notas generales para Claude</label>
+    <textarea id="general-notes" placeholder="Escribe aquí cualquier indicación general para mejorar el resume: tono, estructura, prioridades, qué añadir o quitar..." data-key="generalNotes"></textarea>
+  </div>
+
+  <!-- ── LEADERSHIP ── -->
+  <div class="section" id="sec-leadership">
+    <div class="section-header" onclick="toggleSection('leadership')">
+      <span class="section-tag">01</span>
+      <span class="section-title">Leadership</span>
+      <span class="section-count">3 entradas</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-leadership">
+      <div id="entries-leadership"></div>
+    </div>
+  </div>
+
+  <!-- ── ARTISTIC PRACTICE ── -->
+  <div class="section" id="sec-practice">
+    <div class="section-header" onclick="toggleSection('practice')">
+      <span class="section-tag">02</span>
+      <span class="section-title">Artistic Practice</span>
+      <span class="section-count">3 entradas</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-practice">
+      <div id="entries-practice"></div>
+    </div>
+  </div>
+
+  <!-- ── PROJECTS ── -->
+  <div class="section" id="sec-projects">
+    <div class="section-header" onclick="toggleSection('projects')">
+      <span class="section-tag">03</span>
+      <span class="section-title">Selected Projects</span>
+      <span class="section-count" id="count-projects"></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-projects">
+      <div id="entries-projects"></div>
+    </div>
+  </div>
+
+  <!-- ── CATALOGUE ── -->
+  <div class="section" id="sec-catalogue">
+    <div class="section-header" onclick="toggleSection('catalogue')">
+      <span class="section-tag">04</span>
+      <span class="section-title">Composition Catalogue</span>
+      <span class="section-count" id="count-catalogue"></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-catalogue">
+      <div id="entries-catalogue"></div>
+    </div>
+  </div>
+
+  <!-- ── EDUCATION ── -->
+  <div class="section" id="sec-education">
+    <div class="section-header" onclick="toggleSection('education')">
+      <span class="section-tag">05</span>
+      <span class="section-title">Education</span>
+      <span class="section-count">3 entradas</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-education">
+      <div id="entries-education"></div>
+    </div>
+  </div>
+
+  <!-- ── DISCOGRAPHY ── -->
+  <div class="section" id="sec-albums">
+    <div class="section-header" onclick="toggleSection('albums')">
+      <span class="section-tag">06</span>
+      <span class="section-title">Discography — Studio Albums</span>
+      <span class="section-count" id="count-albums"></span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-albums">
+      <div id="entries-albums"></div>
+    </div>
+  </div>
+
+  <!-- ── FUNDERS ── -->
+  <div class="section" id="sec-funders">
+    <div class="section-header" onclick="toggleSection('funders')">
+      <span class="section-tag">07</span>
+      <span class="section-title">Grants & Support</span>
+      <span class="section-count">US + Europa</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body" id="body-funders">
+      <div class="funders-grid">
+        <div>
+          <div class="field">
+            <label>Estados Unidos (una por línea)</label>
+            <textarea class="tall" data-key="funders.us" id="funder-us"></textarea>
+          </div>
+          <div class="notes-field">
+            <label>Notas para Claude — US</label>
+            <textarea placeholder="Ej: Añadir X funder, eliminar Y..." data-key="funders.usNotes" id="funder-us-notes"></textarea>
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label>Europa (una por línea)</label>
+            <textarea class="tall" data-key="funders.europe" id="funder-eu"></textarea>
+          </div>
+          <div class="notes-field">
+            <label>Notas para Claude — Europa</label>
+            <textarea placeholder="Ej: Actualizar importes, añadir año..." data-key="funders.europeNotes" id="funder-eu-notes"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script define:vars={{ initial }}>
+const PIN = 'laporta';
+const STORAGE_KEY = 'gl_resume_editor_v1';
+
+// ── Gate ──────────────────────────────────────────────
+function checkPin() {
+  const val = document.getElementById('pin-input').value.trim().toLowerCase();
+  if (val === PIN) {
+    document.getElementById('gate').classList.add('hidden');
+    init();
+  } else {
+    document.getElementById('gate-error').textContent = 'PIN incorrecto.';
+  }
+}
+document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin(); });
+
+// ── State ─────────────────────────────────────────────
+let state;
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      state = JSON.parse(saved);
+      // Merge any new initial fields not in saved state
+      return;
+    }
+  } catch(e) {}
+  state = JSON.parse(JSON.stringify(initial));
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  const el = document.getElementById('save-status');
+  el.textContent = 'Guardado ' + new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+}
+
+function resetToDefault() {
+  if (!confirm('¿Restablecer todo al contenido original? Se perderán los cambios.')) return;
+  state = JSON.parse(JSON.stringify(initial));
+  saveState();
+  renderAll();
+  showToast('Restablecido al contenido original');
+}
+
+// ── Render ────────────────────────────────────────────
+function el(tag, attrs = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') node.className = v;
+    else if (k.startsWith('data-')) node.dataset[k.slice(5)] = v;
+    else node[k] = v;
+  }
+  for (const c of children) {
+    if (typeof c === 'string') node.appendChild(document.createTextNode(c));
+    else if (c) node.appendChild(c);
+  }
+  return node;
+}
+
+function field(label, value, multiline, key, onChange, tall = false) {
+  const wrap = el('div', { class: 'field' });
+  const lbl = el('label', {}, label);
+  wrap.appendChild(lbl);
+  let input;
+  if (multiline) {
+    input = el('textarea', { class: tall ? 'tall' : '' });
+    input.value = value || '';
+  } else {
+    input = el('input', { type: 'text' });
+    input.value = value || '';
+  }
+  input.addEventListener('input', () => { onChange(input.value); markModified(key); schedSave(); });
+  wrap.appendChild(input);
+  return wrap;
+}
+
+function notesField(value, onChange, section) {
+  const wrap = el('div', { class: 'notes-field' });
+  wrap.appendChild(el('label', {}, '📝 Notas para Claude'));
+  const ta = el('textarea', {});
+  ta.placeholder = 'Escribe aquí correcciones, añadidos o cualquier indicación...';
+  ta.value = value || '';
+  ta.addEventListener('input', () => { onChange(ta.value); schedSave(); });
+  wrap.appendChild(ta);
+  return wrap;
+}
+
+const modifiedEntries = new Set();
+function markModified(key) {
+  modifiedEntries.add(key);
+}
+
+// Debounce save
+let saveTimer;
+function schedSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveState, 800); }
+
+function renderLeadership() {
+  const container = document.getElementById('entries-leadership');
+  container.innerHTML = '';
+  (state.leadership || initial.leadership).forEach((entry, i) => {
+    const wrap = el('div', { class: 'entry' });
+    const hdr = el('div', { class: 'entry-header' });
+    hdr.appendChild(el('span', { class: 'entry-num' }, String(i + 1).padStart(2, '0')));
+    hdr.appendChild(el('span', { class: 'entry-heading' }, entry.title));
+    hdr.appendChild(el('span', { class: 'entry-meta' }, entry.date));
+    wrap.appendChild(hdr);
+    wrap.appendChild(field('Título', entry.title, false, `leadership[${i}].title`, v => { state.leadership[i].title = v; }));
+    wrap.appendChild(field('Fecha / Lugar', entry.date, false, `leadership[${i}].date`, v => { state.leadership[i].date = v; }));
+    wrap.appendChild(field('Rol', entry.role, false, `leadership[${i}].role`, v => { state.leadership[i].role = v; }));
+    wrap.appendChild(field('Descripción', entry.body, true, `leadership[${i}].body`, v => { state.leadership[i].body = v; }, true));
+    wrap.appendChild(field('Link', entry.link, false, `leadership[${i}].link`, v => { state.leadership[i].link = v; }));
+    wrap.appendChild(notesField(entry.notes, v => { state.leadership[i].notes = v; }, `leadership-${i}`));
+    container.appendChild(wrap);
+  });
+}
+
+function renderPractice() {
+  const container = document.getElementById('entries-practice');
+  container.innerHTML = '';
+  (state.practice || initial.practice).forEach((entry, i) => {
+    const wrap = el('div', { class: 'entry' });
+    const hdr = el('div', { class: 'entry-header' });
+    hdr.appendChild(el('span', { class: 'entry-num' }, String(i + 1).padStart(2, '0')));
+    hdr.appendChild(el('span', { class: 'entry-heading' }, entry.title));
+    wrap.appendChild(hdr);
+    wrap.appendChild(field('Título', entry.title, false, `practice[${i}].title`, v => { state.practice[i].title = v; }));
+    wrap.appendChild(field('Descripción', entry.body, true, `practice[${i}].body`, v => { state.practice[i].body = v; }, true));
+    wrap.appendChild(notesField(entry.notes, v => { state.practice[i].notes = v; }));
+    container.appendChild(wrap);
+  });
+}
+
+function renderProjects() {
+  const container = document.getElementById('entries-projects');
+  container.innerHTML = '';
+  const items = state.projects || initial.projects;
+  document.getElementById('count-projects').textContent = `${items.length} proyectos`;
+  items.forEach((p, i) => {
+    const wrap = el('div', { class: 'entry' });
+    const hdr = el('div', { class: 'entry-header' });
+    hdr.appendChild(el('span', { class: 'entry-num' }, String(i + 1).padStart(2, '0')));
+    hdr.appendChild(el('span', { class: 'entry-heading' }, p.title));
+    hdr.appendChild(el('span', { class: 'entry-meta' }, p.year));
+    wrap.appendChild(hdr);
+    wrap.appendChild(field('Título', p.title, false, `projects[${i}].title`, v => { state.projects[i].title = v; }));
+    wrap.appendChild(field('Año', p.year, false, `projects[${i}].year`, v => { state.projects[i].year = v; }));
+    wrap.appendChild(field('Tipo', p.type, false, `projects[${i}].type`, v => { state.projects[i].type = v; }));
+    wrap.appendChild(field('Roles (separados por coma)', (p.roles || []).join(', '), false, `projects[${i}].roles`, v => { state.projects[i].roles = v.split(',').map(x => x.trim()).filter(Boolean); }));
+    wrap.appendChild(field('Descripción larga', p.long, true, `projects[${i}].long`, v => { state.projects[i].long = v; }, true));
+    wrap.appendChild(field('URL', p.url, false, `projects[${i}].url`, v => { state.projects[i].url = v; }));
+    wrap.appendChild(notesField(p.notes, v => { state.projects[i].notes = v; }));
+    container.appendChild(wrap);
+  });
+}
+
+function renderCatalogue() {
+  const container = document.getElementById('entries-catalogue');
+  container.innerHTML = '';
+  const items = state.catalogue || initial.catalogue;
+  document.getElementById('count-catalogue').textContent = `${items.length} obras`;
+  items.forEach((w, i) => {
+    const wrap = el('div', { class: 'entry' });
+    const hdr = el('div', { class: 'entry-header' });
+    hdr.appendChild(el('span', { class: 'entry-num' }, String(i + 1).padStart(2, '0')));
+    hdr.appendChild(el('span', { class: 'entry-heading' }, w.title));
+    hdr.appendChild(el('span', { class: 'entry-meta' }, w.year + ' · ' + w.category));
+    wrap.appendChild(hdr);
+    wrap.appendChild(field('Título', w.title, false, `catalogue[${i}].title`, v => { state.catalogue[i].title = v; }));
+    wrap.appendChild(field('Año', w.year, false, `catalogue[${i}].year`, v => { state.catalogue[i].year = v; }));
+    wrap.appendChild(field('Categoría', w.category, false, `catalogue[${i}].category`, v => { state.catalogue[i].category = v; }));
+    wrap.appendChild(field('Instrumentación', w.instrumentation, false, `catalogue[${i}].instrumentation`, v => { state.catalogue[i].instrumentation = v; }));
+    wrap.appendChild(field('Duración', w.duration, false, `catalogue[${i}].duration`, v => { state.catalogue[i].duration = v; }));
+    wrap.appendChild(field('Notas (visibles en CV)', w.notes, true, `catalogue[${i}].notes`, v => { state.catalogue[i].notes = v; }));
+    wrap.appendChild(notesField(w.editorNotes || '', v => { state.catalogue[i].editorNotes = v; }));
+    container.appendChild(wrap);
+  });
+}
+
+function renderEducation() {
+  const container = document.getElementById('entries-education');
+  container.innerHTML = '';
+  (state.education || initial.education).forEach((entry, i) => {
+    const wrap = el('div', { class: 'entry' });
+    const hdr = el('div', { class: 'entry-header' });
+    hdr.appendChild(el('span', { class: 'entry-num' }, String(i + 1).padStart(2, '0')));
+    hdr.appendChild(el('span', { class: 'entry-heading' }, entry.title));
+    hdr.appendChild(el('span', { class: 'entry-meta' }, entry.date));
+    wrap.appendChild(hdr);
+    wrap.appendChild(field('Título del grado', entry.title, false, `education[${i}].title`, v => { state.education[i].title = v; }));
+    wrap.appendChild(field('Fecha / Lugar', entry.date, false, `education[${i}].date`, v => { state.education[i].date = v; }));
+    wrap.appendChild(field('Institución', entry.institution, false, `education[${i}].institution`, v => { state.education[i].institution = v; }));
+    wrap.appendChild(field('Descripción adicional', entry.body, true, `education[${i}].body`, v => { state.education[i].body = v; }));
+    wrap.appendChild(notesField(entry.notes, v => { state.education[i].notes = v; }));
+    container.appendChild(wrap);
+  });
+}
+
+function renderAlbums() {
+  const container = document.getElementById('entries-albums');
+  container.innerHTML = '';
+  const items = state.albums || initial.albums;
+  document.getElementById('count-albums').textContent = `${items.length} álbumes`;
+  items.forEach((a, i) => {
+    const wrap = el('div', { class: 'entry' });
+    const hdr = el('div', { class: 'entry-header' });
+    hdr.appendChild(el('span', { class: 'entry-num' }, String(i + 1).padStart(2, '0')));
+    hdr.appendChild(el('span', { class: 'entry-heading' }, a.title));
+    hdr.appendChild(el('span', { class: 'entry-meta' }, a.year));
+    wrap.appendChild(hdr);
+    wrap.appendChild(field('Título', a.title, false, `albums[${i}].title`, v => { state.albums[i].title = v; }));
+    wrap.appendChild(field('Año', a.year, false, `albums[${i}].year`, v => { state.albums[i].year = v; }));
+    wrap.appendChild(field('Formato', a.format, false, `albums[${i}].format`, v => { state.albums[i].format = v; }));
+    wrap.appendChild(field('Descripción', a.description, true, `albums[${i}].description`, v => { state.albums[i].description = v; }));
+    wrap.appendChild(notesField(a.notes, v => { state.albums[i].notes = v; }));
+    container.appendChild(wrap);
+  });
+}
+
+function renderFunders() {
+  const f = state.funders || initial.funders;
+  document.getElementById('funder-us').value = f.us || '';
+  document.getElementById('funder-eu').value = f.europe || '';
+  document.getElementById('funder-us-notes').value = f.usNotes || '';
+  document.getElementById('funder-eu-notes').value = f.europeNotes || '';
+
+  document.getElementById('funder-us').addEventListener('input', e => { state.funders.us = e.target.value; schedSave(); });
+  document.getElementById('funder-eu').addEventListener('input', e => { state.funders.europe = e.target.value; schedSave(); });
+  document.getElementById('funder-us-notes').addEventListener('input', e => { state.funders.usNotes = e.target.value; schedSave(); });
+  document.getElementById('funder-eu-notes').addEventListener('input', e => { state.funders.europeNotes = e.target.value; schedSave(); });
+}
+
+function renderGeneral() {
+  const ta = document.getElementById('general-notes');
+  ta.value = state.generalNotes || '';
+  ta.addEventListener('input', () => { state.generalNotes = ta.value; schedSave(); });
+}
+
+function renderAll() {
+  renderGeneral();
+  renderLeadership();
+  renderPractice();
+  renderProjects();
+  renderCatalogue();
+  renderEducation();
+  renderAlbums();
+  renderFunders();
+}
+
+// ── Toggle sections ───────────────────────────────────
+function toggleSection(id) {
+  const body = document.getElementById('body-' + id);
+  const header = body.previousElementSibling;
+  body.classList.toggle('open');
+  header.classList.toggle('open');
+}
+
+// ── Copy for Claude ───────────────────────────────────
+function copyForClaude() {
+  const s = state;
+  const lines = [];
+  const hr = '═'.repeat(60);
+  const div = '─'.repeat(40);
+
+  lines.push('RESUME EDITOR — ' + new Date().toLocaleString('es'));
+  lines.push(hr);
+
+  if (s.generalNotes?.trim()) {
+    lines.push('');
+    lines.push('NOTAS GENERALES');
+    lines.push(div);
+    lines.push(s.generalNotes.trim());
+  }
+
+  // Leadership
+  lines.push('');
+  lines.push('── LEADERSHIP ' + '─'.repeat(46));
+  (s.leadership || []).forEach((e, i) => {
+    lines.push('');
+    lines.push(`[${i+1}] ${e.title}`);
+    lines.push(`  Fecha:  ${e.date}`);
+    lines.push(`  Rol:    ${e.role}`);
+    lines.push(`  Texto:  ${e.body}`);
+    if (e.link) lines.push(`  Link:   ${e.link}`);
+    if (e.notes?.trim()) lines.push(`  ✏ NOTAS: ${e.notes.trim()}`);
+  });
+
+  // Artistic Practice
+  lines.push('');
+  lines.push('── ARTISTIC PRACTICE ' + '─'.repeat(39));
+  (s.practice || []).forEach((e, i) => {
+    lines.push('');
+    lines.push(`[${i+1}] ${e.title}`);
+    lines.push(`  Texto: ${e.body}`);
+    if (e.notes?.trim()) lines.push(`  ✏ NOTAS: ${e.notes.trim()}`);
+  });
+
+  // Projects
+  lines.push('');
+  lines.push('── SELECTED PROJECTS ' + '─'.repeat(39));
+  (s.projects || []).forEach((p, i) => {
+    lines.push('');
+    lines.push(`[${i+1}] ${p.title} (${p.year})`);
+    lines.push(`  Tipo:   ${p.type}`);
+    lines.push(`  Roles:  ${(p.roles||[]).join(', ')}`);
+    lines.push(`  Texto:  ${p.long}`);
+    if (p.url) lines.push(`  URL:    ${p.url}`);
+    if (p.notes?.trim()) lines.push(`  ✏ NOTAS: ${p.notes.trim()}`);
+  });
+
+  // Catalogue
+  lines.push('');
+  lines.push('── COMPOSITION CATALOGUE ' + '─'.repeat(35));
+  (s.catalogue || []).forEach((w, i) => {
+    lines.push('');
+    lines.push(`[${i+1}] ${w.title} (${w.year})`);
+    lines.push(`  Cat:    ${w.category}`);
+    lines.push(`  Instr:  ${w.instrumentation}`);
+    if (w.duration) lines.push(`  Dur:    ${w.duration}`);
+    if (w.notes) lines.push(`  Notas CV: ${w.notes}`);
+    if (w.editorNotes?.trim()) lines.push(`  ✏ NOTAS: ${w.editorNotes.trim()}`);
+  });
+
+  // Education
+  lines.push('');
+  lines.push('── EDUCATION ' + '─'.repeat(47));
+  (s.education || []).forEach((e, i) => {
+    lines.push('');
+    lines.push(`[${i+1}] ${e.title}`);
+    lines.push(`  Fecha:  ${e.date}`);
+    lines.push(`  Centro: ${e.institution}`);
+    if (e.body) lines.push(`  Texto:  ${e.body}`);
+    if (e.notes?.trim()) lines.push(`  ✏ NOTAS: ${e.notes.trim()}`);
+  });
+
+  // Albums
+  lines.push('');
+  lines.push('── DISCOGRAPHY / STUDIO ALBUMS ' + '─'.repeat(29));
+  (s.albums || []).forEach((a, i) => {
+    lines.push('');
+    lines.push(`[${i+1}] ${a.title} (${a.year})`);
+    lines.push(`  Formato: ${a.format}`);
+    if (a.description) lines.push(`  Desc:    ${a.description}`);
+    if (a.notes?.trim()) lines.push(`  ✏ NOTAS: ${a.notes.trim()}`);
+  });
+
+  // Funders
+  lines.push('');
+  lines.push('── GRANTS & SUPPORT ' + '─'.repeat(40));
+  lines.push('');
+  lines.push('  ESTADOS UNIDOS:');
+  (s.funders?.us || '').split('\n').filter(Boolean).forEach(f => lines.push('  · ' + f));
+  if (s.funders?.usNotes?.trim()) lines.push(`  ✏ NOTAS US: ${s.funders.usNotes.trim()}`);
+  lines.push('');
+  lines.push('  EUROPA:');
+  (s.funders?.europe || '').split('\n').filter(Boolean).forEach(f => lines.push('  · ' + f));
+  if (s.funders?.europeNotes?.trim()) lines.push(`  ✏ NOTAS EU: ${s.funders.europeNotes.trim()}`);
+
+  lines.push('');
+  lines.push(hr);
+
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('¡Copiado! Pégalo en el chat con Claude.');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('¡Copiado!');
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Init ──────────────────────────────────────────────
+function init() {
+  loadState();
+  renderAll();
+}
+
+// Auto-open if already authenticated this session
+if (sessionStorage.getItem('gl_editor_auth') === PIN) {
+  document.getElementById('gate').classList.add('hidden');
+  init();
+}
+
+document.getElementById('pin-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPin();
+});
+
+// Patch checkPin to set session flag
+const _checkPin = checkPin;
+window.checkPin = function() {
+  const val = document.getElementById('pin-input').value.trim().toLowerCase();
+  if (val === PIN) sessionStorage.setItem('gl_editor_auth', PIN);
+  _checkPin();
+};
+</script>
+</body>
+</html>
