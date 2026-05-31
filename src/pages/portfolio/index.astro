@@ -1,9 +1,16 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
 import { projects } from '../../data/projects.js';
+import { projectDetails } from '../../data/portfolio-detail.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
+
+function imgSrc(src) {
+  if (!src) return '';
+  if (src.startsWith('http')) return src;
+  return `${b}${src.replace(/^\//, '')}`;
+}
 
 const catLabels = {
   opera:            'Opera & Ballet',
@@ -69,20 +76,51 @@ const arrangementSections = [
   <section class="section cat-cv-section" style="padding-top:0">
     <div class="cv-label">Stage Works</div>
     <div class="cv-entries">
-      {stageWorks.map((w) => (
-        <div class="cv-entry cv-entry-compact">
-          <div class="cv-entry-head">
-            <div class="cv-entry-title">{w.title}</div>
-            <div class="cv-entry-date">{w.year}</div>
+      {stageWorks.map((w) => {
+        const detail = projectDetails.find(p => p.slug === w.slug);
+        const images = (detail?.gallery?.length > 1) ? detail.gallery : null;
+        return (
+          <div class="cv-entry stage-entry">
+            {images ? (
+              <div class="stage-gallery" data-count={images.length}>
+                <div class="stage-carousel">
+                  {images.map((img, i) => (
+                    <div class="stage-slide">
+                      <img
+                        src={imgSrc(img)}
+                        alt={`${w.title} — photo ${i + 1}`}
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                        draggable="false"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div class="stage-counter" aria-live="polite">
+                  <span class="sc-cur">1</span><span class="sc-sep"> / </span><span class="sc-tot">{images.length}</span>
+                </div>
+              </div>
+            ) : (
+              <div class="stage-single">
+                <img src={imgSrc(w.image)} alt={w.title} loading="lazy" draggable="false" />
+              </div>
+            )}
+            <div class="stage-body">
+              <div class="cv-entry-head">
+                <div class="cv-entry-title">{w.title}</div>
+                <div class="cv-entry-date">{w.year}</div>
+              </div>
+              <div class="cv-entry-role">{catLabels[w.cat] || w.cat} · {w.roles}</div>
+              <p class="cv-entry-body">{w.desc}</p>
+              <a class="stage-cta" href={`${b}portfolio/${w.slug}/`}>
+                Ver proyecto completo
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
+              </a>
+            </div>
           </div>
-          <div class="cv-entry-role">{catLabels[w.cat] || w.cat} · {w.roles}</div>
-          <p class="cv-entry-body">{w.desc}</p>
-          <div class="cv-entry-links">
-            <a class="cv-entry-link" href={`${b}portfolio/${w.slug}/`}>Gallery & details ↗</a>
-            {w.url && <a class="cv-entry-link" href={w.url} target="_blank" rel="noopener">Project page ↗</a>}
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   </section>
 
@@ -127,6 +165,44 @@ const arrangementSections = [
     </div>
   </section>
 
+  <script>
+    document.querySelectorAll('.stage-gallery').forEach(gallery => {
+      const carousel = gallery.querySelector('.stage-carousel');
+      const curEl    = gallery.querySelector('.sc-cur');
+
+      /* ── counter ── */
+      function updateCounter() {
+        const w   = carousel.offsetWidth;
+        const idx = w > 0 ? Math.round(carousel.scrollLeft / w) : 0;
+        curEl.textContent = idx + 1;
+      }
+      carousel.addEventListener('scroll', updateCounter, { passive: true });
+
+      /* ── mouse drag ── */
+      let down = false, originX = 0, originScroll = 0;
+
+      carousel.addEventListener('mousedown', e => {
+        down         = true;
+        originX      = e.clientX;
+        originScroll = carousel.scrollLeft;
+        carousel.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (!down) return;
+        down = false;
+        carousel.style.cursor = '';
+      });
+
+      window.addEventListener('mousemove', e => {
+        if (!down) return;
+        const dx = (e.clientX - originX) * 1.4;
+        carousel.scrollLeft = originScroll - dx;
+      });
+    });
+  </script>
+
   <style>
     .cat-cv-section{display:grid;grid-template-columns:220px 1fr;gap:40px;border-bottom:1px solid var(--line-soft);padding-top:56px;padding-bottom:56px}
     .cat-cv-section:last-of-type{border-bottom:none}
@@ -144,15 +220,72 @@ const arrangementSections = [
     .cv-entry-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
     .cv-entry-date{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
     .cv-entry-role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:10px;letter-spacing:-.005em}
-    .cv-entry-body{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;max-width:72ch;margin-bottom:10px}
-
-    .cv-entry-links{display:flex;flex-wrap:wrap;gap:20px}
-    .cv-entry-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;text-decoration:none}
-    .cv-entry-link:hover{text-decoration:underline}
+    .cv-entry-body{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;max-width:72ch;margin-bottom:16px}
 
     @media(max-width:600px){
       .cv-entry-head{flex-direction:column;gap:4px}
       .cv-entry-title{font-size:18px}
     }
+
+    /* ── stage entry ── */
+    .stage-entry{padding:0 0 32px;display:flex;flex-direction:column;gap:0}
+
+    /* gallery */
+    .stage-gallery{position:relative;overflow:hidden;margin-bottom:0}
+    .stage-carousel{
+      display:flex;
+      overflow-x:scroll;
+      scroll-snap-type:x mandatory;
+      scrollbar-width:none;
+      -webkit-overflow-scrolling:touch;
+      cursor:grab;
+      aspect-ratio:3/2;
+    }
+    .stage-carousel::-webkit-scrollbar{display:none}
+    .stage-slide{
+      flex:0 0 100%;
+      scroll-snap-align:start;
+      aspect-ratio:3/2;
+      overflow:hidden;
+      background:var(--line-soft);
+    }
+    .stage-slide img{
+      width:100%;height:100%;
+      object-fit:cover;display:block;
+      transition:opacity .2s;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    /* counter */
+    .stage-counter{
+      position:absolute;bottom:14px;right:16px;
+      font-family:var(--mono);font-size:10px;letter-spacing:.10em;
+      color:#fff;
+      background:rgba(0,0,0,.45);
+      padding:4px 10px;
+      backdrop-filter:blur(4px);
+      pointer-events:none;
+    }
+
+    /* single image fallback */
+    .stage-single{aspect-ratio:3/2;overflow:hidden;background:var(--line-soft)}
+    .stage-single img{width:100%;height:100%;object-fit:cover;display:block}
+
+    /* body below gallery */
+    .stage-body{padding:20px 0 0}
+
+    /* CTA button */
+    .stage-cta{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--ink);text-decoration:none;
+      border:1px solid var(--line-soft);
+      padding:8px 16px;
+      transition:all .15s;
+    }
+    .stage-cta svg{width:12px;height:12px;flex-shrink:0;transition:transform .15s}
+    .stage-cta:hover{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+    .stage-cta:hover svg{transform:translateX(3px)}
   </style>
 </AppLayout>

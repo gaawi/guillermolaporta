@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
 import { visualWork } from '../../data/site.js';
+import { projectDetails } from '../../data/portfolio-detail.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -19,6 +20,12 @@ const filters = [
   { key: 'video-art',   label: 'Video Art' },
   { key: 'design',      label: 'Theater Design' },
 ];
+
+function getGallery(slug, fallbackImage) {
+  const detail = projectDetails.find(p => p.slug === slug);
+  if (detail?.gallery?.length > 1) return detail.gallery;
+  return null;
+}
 ---
 <AppLayout title="Visual Art — Guillermo Laporta" description="Installation, video art and theater design — visual works by Guillermo Laporta.">
   <div class="subpage-head">
@@ -38,32 +45,62 @@ const filters = [
     </div>
 
     <div class="proj-grid" id="projGrid">
-      {works.map((p) => (
-        <article class="proj-card" data-cat={p.cat}>
-          <a class="proj-card-link" href={`${b}portfolio/${p.slug}/`}>
-            <div class="proj-img-wrap">
-              {p.image
-                ? <img class="proj-img" src={imgSrc(p.image)} alt={p.title} loading="lazy" />
-                : <div class="proj-img-placeholder" />}
-            </div>
+      {works.map((p) => {
+        const gallery = getGallery(p.slug, p.image);
+        return (
+          <article class="proj-card" data-cat={p.cat}>
+            {gallery ? (
+              <div class="proj-gallery-wrap" data-count={gallery.length}>
+                <div class="proj-carousel">
+                  {gallery.map((img, i) => (
+                    <div class="proj-slide">
+                      <img
+                        src={imgSrc(img)}
+                        alt={`${p.title} — ${i + 1}`}
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                        draggable="false"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div class="proj-counter">
+                  <span class="pc-cur">1</span> / {gallery.length}
+                </div>
+              </div>
+            ) : (
+              <div class="proj-img-wrap">
+                {p.image
+                  ? <img class="proj-img" src={imgSrc(p.image)} alt={p.title} loading="lazy" />
+                  : <div class="proj-img-placeholder" />}
+              </div>
+            )}
             <div class="proj-body">
               <div class="proj-meta">
                 <span class="proj-year">{p.year}</span>
                 <span class="proj-kind">{p.kind}</span>
               </div>
-              <h2 class="proj-title">{p.title}</h2>
+              <a class="proj-title-link" href={`${b}portfolio/${p.slug}/`}>
+                <h2 class="proj-title">{p.title}</h2>
+              </a>
               {p.desc && <p class="proj-desc">{p.desc}</p>}
+              <a class="proj-cta" href={`${b}portfolio/${p.slug}/`}>
+                Ver proyecto completo
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
+              </a>
             </div>
-          </a>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
   </section>
 
   <script>
-    const bar = document.getElementById('filterBar');
+    /* ── filter ── */
+    const bar  = document.getElementById('filterBar');
     const grid = document.getElementById('projGrid');
-    bar.addEventListener('click', (e) => {
+    bar.addEventListener('click', e => {
       const btn = e.target.closest('.filter-btn');
       if (!btn) return;
       bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -71,6 +108,33 @@ const filters = [
       const cat = btn.dataset.cat;
       grid.querySelectorAll('.proj-card').forEach(card => {
         card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+
+    /* ── carousels ── */
+    document.querySelectorAll('.proj-gallery-wrap').forEach(wrap => {
+      const carousel = wrap.querySelector('.proj-carousel');
+      const curEl    = wrap.querySelector('.pc-cur');
+
+      function updateCounter() {
+        const w   = carousel.offsetWidth;
+        const idx = w > 0 ? Math.round(carousel.scrollLeft / w) : 0;
+        curEl.textContent = idx + 1;
+      }
+      carousel.addEventListener('scroll', updateCounter, { passive: true });
+
+      let down = false, originX = 0, originScroll = 0;
+      carousel.addEventListener('mousedown', e => {
+        down         = true;
+        originX      = e.clientX;
+        originScroll = carousel.scrollLeft;
+        carousel.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+      window.addEventListener('mouseup', () => { if (down) { down = false; carousel.style.cursor = ''; } });
+      window.addEventListener('mousemove', e => {
+        if (!down) return;
+        carousel.scrollLeft = originScroll - (e.clientX - originX) * 1.4;
       });
     });
   </script>
@@ -93,19 +157,68 @@ const filters = [
     @media(max-width:600px){.proj-grid{grid-template-columns:1fr}}
 
     .proj-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-soft);overflow:hidden}
-    .proj-card-link{display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit}
+
+    /* single image */
     .proj-img-wrap{aspect-ratio:16/9;overflow:hidden;background:var(--line-soft)}
     .proj-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
     .proj-img-placeholder{width:100%;height:100%;background:var(--line-soft)}
     .proj-card:hover .proj-img{transform:scale(1.03)}
 
+    /* carousel */
+    .proj-gallery-wrap{position:relative;aspect-ratio:16/9;overflow:hidden}
+    .proj-carousel{
+      display:flex;
+      width:100%;height:100%;
+      overflow-x:scroll;
+      scroll-snap-type:x mandatory;
+      scrollbar-width:none;
+      -webkit-overflow-scrolling:touch;
+      cursor:grab;
+    }
+    .proj-carousel::-webkit-scrollbar{display:none}
+    .proj-slide{
+      flex:0 0 100%;
+      scroll-snap-align:start;
+      overflow:hidden;
+    }
+    .proj-slide img{
+      width:100%;height:100%;
+      object-fit:cover;display:block;
+      user-select:none;-webkit-user-drag:none;
+    }
+    .proj-counter{
+      position:absolute;bottom:10px;right:12px;
+      font-family:var(--mono);font-size:9px;letter-spacing:.10em;
+      color:#fff;background:rgba(0,0,0,.45);
+      padding:3px 8px;
+      backdrop-filter:blur(4px);
+      pointer-events:none;
+    }
+
+    /* body */
     .proj-body{padding:24px 28px 28px;display:flex;flex-direction:column;flex:1}
     @media(max-width:600px){.proj-body{padding:18px}}
     .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
     .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
     .proj-kind{font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--line);padding-left:12px;border-left:1px solid var(--line-soft)}
-    .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:10px}
+
+    .proj-title-link{text-decoration:none;color:inherit}
+    .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:10px;transition:color .15s}
+    .proj-title-link:hover .proj-title{color:var(--accent)}
     @media(max-width:600px){.proj-title{font-size:19px}}
-    .proj-desc{font-size:13px;line-height:1.65;color:var(--ink-2);font-weight:350;flex:1;max-width:54ch}
+
+    .proj-desc{font-size:13px;line-height:1.65;color:var(--ink-2);font-weight:350;flex:1;max-width:54ch;margin-bottom:16px}
+
+    .proj-cta{
+      display:inline-flex;align-items:center;gap:6px;margin-top:auto;
+      font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--muted);text-decoration:none;
+      transition:color .15s;
+      border-top:1px solid var(--line-soft);
+      padding-top:14px;
+    }
+    .proj-cta svg{width:11px;height:11px;flex-shrink:0;transition:transform .15s}
+    .proj-cta:hover{color:var(--accent)}
+    .proj-cta:hover svg{transform:translateX(3px)}
   </style>
 </AppLayout>
