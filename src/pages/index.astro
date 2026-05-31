@@ -7,7 +7,7 @@ const b = _base.endsWith('/') ? _base : _base + '/';
 const today = new Date().toISOString().split('T')[0];
 const upcoming = calendar.filter(e => e.date >= today).slice(0, 4);
 const featuredWork = visualWork.slice(0, 3);
-const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
+const portraitImg = `${b}downloads/laporta-press-photo-1.jpg`;
 ---
 <AppLayout
   title="Guillermo Laporta — Flutist · Composer · Director"
@@ -41,15 +41,15 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
       <div>
         <div class="hero-card">
           <div class="img">
-            <img src={heroImg} alt="Musica Ricercata — CreArtBox, DiMenna Center" loading="eager" />
+            <img src={portraitImg} alt="Guillermo Laporta" loading="eager" />
           </div>
           <div class="body">
             <div>
-              <div class="meta">Latest production</div>
-              <h3>Musica Ricercata</h3>
-              <div class="where">DiMenna Center · NYC · Dec 2025</div>
+              <div class="meta">Upcoming · Aug 2026</div>
+              <h3>Festival ADAR 2026</h3>
+              <div class="where">Multiple venues · Asturias, Spain</div>
             </div>
-            <span class="badge">Visual concert</span>
+            <span class="badge">Festival</span>
           </div>
         </div>
       </div>
