@@ -12,19 +12,19 @@ export const bio = {
 };
 
 export const calendar = [
-  { date: '2026-03-29', displayDate: 'Mar 29', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'On sale' },
-  { date: '2026-03-30', displayDate: 'Mar 30', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'On sale' },
+  { date: '2026-03-29', displayDate: 'Mar 29', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'On sale' },
+  { date: '2026-03-30', displayDate: 'Mar 30', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'On sale' },
   { date: '2026-08-16', displayDate: 'Aug 3–16', year: '2026', title: 'Festival ADAR 2026', subtitle: 'Festival', location: 'Multiple venues · Asturias, Spain', url: 'https://festivaladar.com', image: '/images/2025-08-festival-adar.jpg', status: 'Announced' },
-  { date: '2026-10-30', displayDate: 'Oct 30', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
-  { date: '2026-12-11', displayDate: 'Dec 11', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
-  { date: '2027-02-28', displayDate: 'Feb 28', year: '2027', title: 'University of Louisville', subtitle: 'School of Music', location: 'Comstock Hall · Louisville, KY', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
-  { date: '2027-03-23', displayDate: 'Mar 23', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
-  { date: '2027-05-07', displayDate: 'May 7', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
-  { date: '2027-09-28', displayDate: 'Sep 28', year: '2027', title: 'Gettysburg Community Concert', subtitle: 'Touring', location: 'St. James Lutheran Church · Gettysburg, PA', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
+  { date: '2026-10-30', displayDate: 'Oct 30', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
+  { date: '2026-12-11', displayDate: 'Dec 11', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
+  { date: '2027-02-28', displayDate: 'Feb 28', year: '2027', title: 'University of Louisville', subtitle: 'School of Music', location: 'Comstock Hall · Louisville, KY', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
+  { date: '2027-03-23', displayDate: 'Mar 23', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
+  { date: '2027-05-07', displayDate: 'May 7', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
+  { date: '2027-09-28', displayDate: 'Sep 28', year: '2027', title: 'Gettysburg Community Concert', subtitle: 'Touring', location: 'St. James Lutheran Church · Gettysburg, PA', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
 ];
 
 export const visualWork = [
-  { slug: 'musica-de-cristal',    num: '01', cat: 'installation', year: '2025', kind: 'Installation',    title: 'Música de Cristal',                  desc: 'Site-specific installation for flute, electronics and amplified glass. Capilla de los Dolores, Grado, Asturias (Festival ADAR).', image: '/images/2025-10-musica-cristal.jpg', url: 'https://festivaladar.com/en/musica-de-cristal/' },
+  { slug: 'musica-de-cristal',    num: '01', cat: 'installation', year: '2025', kind: 'Installation',    title: 'Música de Cristal',                  desc: 'Site-specific installation for flute, electronics and amplified glass. Capilla de los Dolores, Grado, Asturias (Festival ADAR).', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251004/LNB_MUSICA%20DE%20CRISTAL_IVAN%20MARTINEZ_7515.jpg', url: 'https://festivaladar.com/en/musica-de-cristal/' },
   { slug: 'progress-defiance',    num: '02', cat: 'installation', year: '2023', kind: 'Installation',    title: 'Progress > Defiance',                desc: 'Performance art installation score. Live flute and electronics. 25 min. Site-specific work on the intrusion of man-made materials into the natural environment. Capilla de los Dolores, Grado, Asturias — Festival ADAR.', image: 'https://creartbox-media-cdn.b-cdn.net/adarimages/ADAR_Eventos/2023/10_Micro_concierto_en_la_Capilla_de_los_Dolores_Grado_2023/31.jpg', url: 'https://festivaladar.com/en/micro-concert-capilla-dolores-grado-2023/' },
   { slug: 'circle-noir',          num: '03', cat: 'installation', year: '2023', kind: 'Installation',    title: 'Circle Noir',                        desc: 'Multimedia chamber music installation across two evenings at The William Vale, Brooklyn.', image: '/images/circle-noir.jpg', url: 'https://creartbox.nyc/pages/circle-noir-part2' },
   { slug: 'lighting-the-dark',    num: '04', cat: 'installation', year: '2021', kind: 'Installation',    title: 'Lighting the Dark',                  desc: 'Concert-installation for flute, piano and projection. Culture Lab Theater, Queens.', image: '/images/lighting-the-dark.jpg', url: 'https://creartbox.nyc/pages/lighting-the-dark' },
@@ -302,10 +302,10 @@ export const funders = {
 };
 
 export const archive = [
-  { date: '2025-12', year: 2025, series: 'Series', title: 'Musica Ricercata', venue: 'DiMenna Center · NYC', image: '/images/2025-12-musica-ricercata.jpg' },
+  { date: '2025-12', year: 2025, series: 'Series', title: 'Musica Ricercata', venue: 'DiMenna Center · NYC', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0161.jpg' },
   { date: '2025-11', year: 2025, series: 'Series', title: 'Music on Madison', venue: 'Madison Ave Presbyterian · NYC', image: '/images/2025-11-music-on-madison.jpg' },
   { date: '2025-10', year: 2025, series: 'NYC Series', title: 'Beyond the Surface', venue: 'DiMenna Center · NYC', image: '/images/2025-10-beyond-surface.jpg' },
-  { date: '2025-10', year: 2025, series: 'Festival ADAR', title: 'Música de Cristal', venue: 'Oviedo, Spain', image: '/images/2025-10-musica-cristal.jpg' },
+  { date: '2025-10', year: 2025, series: 'Festival ADAR', title: 'Música de Cristal', venue: 'Oviedo, Spain', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251004/LNB_MUSICA%20DE%20CRISTAL_IVAN%20MARTINEZ_7515.jpg' },
   { date: '2025-08', year: 2025, series: 'Festival ADAR', title: 'Festival ADAR 2025', venue: 'Asturias, Spain', image: '/images/2025-08-festival-adar.jpg' },
   { date: '2025-06', year: 2025, series: 'Queens Rising', title: 'Approaching Zero', venue: 'Flushing Town Hall · NY', image: '/images/2025-06-approaching-zero.jpg' },
   { date: '2025-05', year: 2025, series: 'NYC Series', title: 'Perennial', venue: 'Mark Morris Center · Brooklyn', image: '/images/2025-05-perennial.jpg' },
@@ -361,8 +361,8 @@ export const archive = [
 
 export const mediaImages = [
   { title: 'Architecture of a Common Man', category: 'opera / film / ballet', src: '/images/2023-03-architecture.jpg', alt: 'Architecture of a Common Man production image' },
-  { title: 'Musica Ricercata', category: 'NYC series', src: '/images/2025-12-musica-ricercata.jpg', alt: 'Musica Ricercata performance image' },
-  { title: 'Música de Cristal', category: 'Festival ADAR', src: '/images/2025-10-musica-cristal.jpg', alt: 'Musica de Cristal performance image' },
+  { title: 'Musica Ricercata', category: 'NYC series', src: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0161.jpg', alt: 'Musica Ricercata performance image' },
+  { title: 'Música de Cristal', category: 'Festival ADAR', src: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251004/LNB_MUSICA%20DE%20CRISTAL_IVAN%20MARTINEZ_7515.jpg', alt: 'Música de Cristal performance image' },
   { title: 'Festival ADAR 2025', category: 'rural arts', src: '/images/2025-08-festival-adar.jpg', alt: 'Festival ADAR 2025 image' },
   { title: 'Circle Noir', category: 'visual concert', src: '/images/circle-noir.jpg', alt: 'Circle Noir image' },
   { title: 'Queens Preludes', category: 'composition / performance', src: '/images/2021-10-queens-preludes.jpg', alt: 'Queens Preludes press image' }
