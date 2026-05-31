@@ -15,7 +15,6 @@ const navLinks = [
   { href: `${b}discography/`, label: 'Recordings' },
   { href: `${b}archive/`,     label: 'Archive' },
   { href: `${b}press/`,       label: 'Press' },
-  { href: `${b}bio/`,         label: 'About' },
   { href: `${b}resume/`,      label: 'Resume' },
 ];
 
@@ -24,7 +23,7 @@ const mobileNav = [
   { href: `${b}portfolio/`,    label: 'Compositions', icon: '<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>' },
   { href: `${b}visual-art/`,   label: 'Visual Art',   icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/></svg>' },
   { href: `${b}resume/`,       label: 'Resume',       icon: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>' },
-  { href: `${b}bio/`,          label: 'About',        icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>' },
+  { href: `${b}calendar/`,     label: 'Calendar',     icon: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' },
 ];
 
 const path = Astro.url.pathname;
@@ -182,7 +181,7 @@ button{font:inherit;cursor:pointer}
 /* ── discography ─────────────────────────────────────────── */
 .disco-section-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--line-soft);font-weight:500}
 .disco-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
-.disco-grid-dense{grid-template-columns:repeat(4,1fr);gap:24px}
+.disco-grid-dense{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
 .disco-card{display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:transform .25s ease}
 .disco-card:hover{transform:translateY(-3px)}
 .disco-cover{aspect-ratio:1/1;overflow:hidden;border-radius:4px;background:var(--bg-warm);box-shadow:0 8px 24px -8px rgba(40,30,20,.18);position:relative}

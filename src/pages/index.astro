@@ -1,6 +1,6 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { calendar, visualWork, albums, liveRecordings } from '../data/site.js';
+import { calendar, visualWork, albums, liveRecordings, bio } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -272,4 +272,69 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
       <a class="btn" href={`${b}press/`}>All press <span class="arr">→</span></a>
     </div>
   </section>
+
+  <!-- ── BIO / ABOUT ───────────────────────────────────────── -->
+  <section class="section" id="about-bio">
+    <div class="section-head">
+      <div class="lhs">
+        <div class="section-num">07 — About</div>
+        <h2 class="section-title">Flutist, composer<br /><em>&amp; producer</em>.</h2>
+      </div>
+    </div>
+
+    <div class="biostrip">
+      <div class="biostrip-text">
+        <h3>Flutist, composer <em>&amp;</em> cultural producer.</h3>
+        <p>{bio.short}</p>
+        <div class="bio-stats">
+          <div class="stat"><div class="num">13<em>+</em></div><div class="lbl">Years NYC</div></div>
+          <div class="stat"><div class="num">55<em>+</em></div><div class="lbl">Productions</div></div>
+          <div class="stat"><div class="num">2</div><div class="lbl">Companies</div></div>
+          <div class="stat"><div class="num"><em>€</em>120k</div><div class="lbl">EU Grants</div></div>
+        </div>
+      </div>
+      <div class="bio-side">
+        <div class="bio-card dark">
+          <div class="lbl">Based</div>
+          <div class="val">New York · <em>Asturias</em></div>
+          <div class="desc">Between New York City and Spain since 2012.</div>
+        </div>
+        <div class="bio-card">
+          <div class="lbl">Current status</div>
+          <div class="val">NYC · <em>Composing</em></div>
+          <div class="desc">Working on the 2026–27 season programmes.</div>
+        </div>
+        <div class="bio-card">
+          <div class="lbl">Education</div>
+          <div class="val">RCM London · <em>Musikene</em></div>
+          <div class="desc">M.Mus. Advanced Performance (Jaime Martín, Paul Edmund Davies). M.A. Arts Management.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bio-long">
+      {bio.long.map((para) => (
+        <p class="bio-para">{para}</p>
+      ))}
+    </div>
+
+    <div class="bio-kit">
+      <div class="bio-kit-label">Press kit</div>
+      <div class="bio-kit-links">
+        <a class="btn primary" href={`${b}downloads/guillermo-laporta-cv.pdf`} target="_blank">CV — PDF ↗</a>
+        <a class="btn" href={`${b}downloads/laporta-press-photo-1.jpg`} target="_blank">Press photo 1</a>
+        <a class="btn" href={`${b}downloads/laporta-press-photo-2.jpg`} target="_blank">Press photo 2</a>
+        <a class="btn" href="mailto:guillermo@creartbox.nyc">Press enquiries</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .bio-long{max-width:72ch;margin:48px 0 0}
+    .bio-para{font-size:16px;line-height:1.75;color:var(--ink-2);font-weight:350;margin-bottom:18px}
+    @media(max-width:600px){.bio-para{font-size:15px}}
+    .bio-kit{margin-top:48px;padding-top:32px;border-top:1px solid var(--line-soft)}
+    .bio-kit-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+    .bio-kit-links{display:flex;flex-wrap:wrap;gap:12px}
+  </style>
 </AppLayout>
