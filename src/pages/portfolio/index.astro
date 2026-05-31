@@ -14,6 +14,7 @@ function imgSrc(src) {
 
 const allWorks = [
   ...projects.map(p => ({
+    slug: p.slug,
     title: p.title,
     year: p.year,
     cat: p.cat,
@@ -23,6 +24,7 @@ const allWorks = [
     desc: p.desc,
   })),
   ...visualWork.map(v => ({
+    slug: v.slug,
     title: v.title,
     year: v.year,
     cat: v.cat,
