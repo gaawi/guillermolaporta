@@ -1,111 +1,193 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { albums, liveRecordings, funders } from '../data/site.js';
+import { albums, liveRecordings } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
-const producedWorks = [
-  { title: 'Queens Log', year: '2024–25', category: 'Electroacoustic', instrumentation: 'Solo flute and field recordings', duration: '18 min', notes: 'Explores the sonic identity of Queens through environmental sound capture and live flute performance. Supported by GO Queens grant (Queens Council on the Arts).' },
-  { title: 'Música de Cristal', year: '2024', category: 'Electroacoustic', instrumentation: 'Flute, electronics, and amplified glass installation', duration: '12 min', notes: 'Explores the sonic potential of unconventional materials through electroacoustic interaction.' },
-  { title: 'Harte Rate', year: '2023–24', category: 'Electroacoustic', instrumentation: 'Flute and electronics', duration: '8 min', notes: '' },
-  { title: 'Progress > Defiance', year: '2023', category: 'Performance art installation', instrumentation: 'Live flute and electronics', duration: '25 min', notes: 'Site-specific work exploring the intrusion of man-made materials into the natural environment. Festival ADAR, Grado, Asturias.' },
-  { title: 'Architecture of a Common Man', year: '2023', category: 'Chamber opera / ballet / film', instrumentation: 'Soprano, baritone, string quartet, piano, synthesizer, choir, film, and dance', duration: '68 min', notes: 'Composer, librettist, dramaturg, and designer. Culture Lab Queens, NYC. Tenri Cultural Institute, NYC.' },
-  { title: 'Fragile Form', year: '2022', category: 'Visual concert trilogy', instrumentation: 'Flute, piano, string quartet, harp, electronics, video projection, and lighting design', duration: '158 min total', notes: '"Equilibrium," "Rupture," "Metamorphosis." Blue Gallery, NYC.' },
-  { title: 'Queens Preludes', year: '2021', category: 'Multimedia chamber music', instrumentation: 'Flute and piano', duration: '48 min', notes: 'With original video art and projection design. Culture Lab (NYC), Cervantes Institute (Tokyo), Madrid.' },
-  { title: '12 Preludes for Flute', year: '2020', category: 'Solo flute', instrumentation: 'Solo flute', duration: '35 min', notes: 'Studio album released on Spotify.' },
-  { title: 'Two Roads', year: '2019', category: 'Opera / ballet', instrumentation: 'Soprano, mezzo-soprano, baritone, chamber ensemble, dancers, and film', duration: '70 min', notes: 'Composer, librettist, dramaturg, and designer. The New Yorker "Critics\' Pick." Plaxall Theater and Tank Theater, NYC.' },
-  { title: 'Suite AWAVE', year: '2019', category: 'Album / multimedia', instrumentation: 'Flute, piano, and electronics', duration: '45 min', notes: 'Nine original pieces. Studio album on Spotify. Immersive video installation at Ryogoku Monten Hall (Tokyo) and Renee Weiler Concert Hall (NYC). Funded by Spanish Embassy and Amphion Foundation.' },
+const creativeWorks = [
+  {
+    title: 'Architecture of a Common Man',
+    year: '2023',
+    roles: 'Composer · Dramaturg · Librettist · Designer',
+    desc: 'An opera-ballet-film production that follows the journey of a world-recognized photographer documenting his own life, exploring themes of legacy, success, and retrospection. Presented at Culture Lab, Queens, and Tenri Cultural Institute, NYC.',
+    url: 'https://creartbox.nyc/pages/architecture-of-a-common-man',
+  },
+  {
+    title: 'Queens Preludes',
+    year: '2021',
+    roles: 'Composer · Flutist · Video Artist',
+    desc: 'A multimedia chamber music concert for flute and piano. 48 minutes of original composition combined with original video art and projection design. Presented at Culture Lab (NYC), Cervantes Institute (Tokyo), and Madrid.',
+    url: 'https://creartbox.nyc/pages/queens-preludes',
+  },
+  {
+    title: 'Fragile Form',
+    year: '2022',
+    roles: 'Composer · Visual Designer',
+    desc: 'A trilogy — "Equilibrium," "Rupture," and "Metamorphosis" — presented as a visual concert at Blue Gallery, NYC. An immersive experience exploring the fragility of our surroundings, influenced by actions and the passage of time.',
+    url: 'https://creartbox.nyc/pages/fragile-form',
+  },
+  {
+    title: 'Two Roads',
+    year: '2019',
+    roles: 'Composer · Dramaturg · Librettist · Designer',
+    desc: 'An opera-ballet exploring the genesis of personal choices and the conscious and unconscious decisions that shape human lives — themes of addiction, routine, balance, guilt, and love. Featured as a "Critics\' Pick" in The New Yorker. Plaxall Theater & Tank Theater, NYC.',
+    url: 'https://creartbox.nyc/pages/two-roads',
+  },
+  {
+    title: 'Awave',
+    year: '2018–19',
+    roles: 'Composer · Flutist · Video Artist',
+    desc: 'A solo album with immersive video installation. Nine original pieces composed for flute, piano, electronics, and video, inspired by travels throughout Europe. Presented at Ryogoku Monten Hall (Tokyo) and Renee Weiler Concert Hall (NYC). Funded by the Spanish Embassy and the Amphion Foundation.',
+    url: 'https://creartbox.nyc/pages/awave',
+  },
+  {
+    title: 'Visuality',
+    year: '2014–16',
+    roles: 'Co-Director · Visual Designer',
+    desc: 'A concert-theater production placing live classical performance inside a theatrical visual system, using image, staging, and technology as part of the musical argument. Co-directed with Josefina Urraca. Queens Theater in the Park and Artosphere, Arlington, Virginia.',
+    url: 'https://creartbox.nyc/pages/visuality',
+  },
+  {
+    title: 'Noctum',
+    year: '2011',
+    roles: 'Dramaturg · Designer',
+    desc: 'An opera with music by Marcos Fernández. Concerto for flute and clarinet with chamber ensemble and video. Audiencia Theater (Soria), Barakaldo Theater (Bilbao), San Francisco Concert Hall (Huesca), Spain.',
+    url: '',
+  },
+  {
+    title: 'London: "The Show"',
+    year: '2009',
+    roles: 'Creator · Designer · Producer',
+    desc: 'A musical theater production featuring over 100 artists, combining cinema and live theater with jazz, drum & bass, Indian classical music, contemporary dance, acrobatics, video mapping, and narrative. Conceived and designed by Laporta at age 22. Budget exceeding $100,000. Audiencia Theater (Soria), San Francisco Concert Hall (Huesca), Palacio de Congresos (Huesca), Spain.',
+    url: '',
+  },
 ];
 
-const chamberWorks = [
-  { title: 'Piano Trio "Craziest Thing"', instrumentation: 'Violin, cello, and piano' },
-  { title: 'Traveling', instrumentation: 'Solo piano' },
-  { title: 'Balance', instrumentation: 'Solo piano' },
-  { title: 'Ballet', instrumentation: 'Solo piano' },
+const designCredits = [
+  { title: 'As One', year: '2018', role: 'Lighting and set design', venue: 'Opera by Laura Kaminsky. 14th Street Y Theater, NYC.' },
+  { title: '8 Million Protagonists', year: '2014', role: 'Lighting and set design', venue: 'Multimedia production. Here Arts Center, NYC.' },
+  { title: 'Pedro Pan', year: '2016, 2018', role: 'Lighting and set design', venue: 'Musical. The Chain Theater, NYC and Toronto Playhouse.' },
+  { title: 'Painted Alice', year: '2019', role: 'Lighting design', venue: 'Theater. Robert Moss Theater, NYC.' },
 ];
 
-const arrangementsChamber = [
-  'Mussorgsky — Pictures at an Exhibition',
-  'Stravinsky — Petrushka',
-  'De Falla — Siete canciones populares',
-  'Frank Martin — Ballade',
-  'Ligeti — Musica Ricercata',
-  'Dvořák — American Quartet & Piano Quintet No. 2',
+const mentors = [
+  { name: 'Jaime Martín', desc: 'Chief Conductor, Melbourne Symphony Orchestra & Los Angeles Chamber Orchestra' },
+  { name: 'Sue Thomas', desc: 'Principal Flute, London Philharmonic' },
+  { name: 'Paul Edmund Davies', desc: 'Principal Flute, London Symphony' },
+  { name: 'Miguel Ángel Angulo', desc: 'Principal Flute, Spanish National Orchestra' },
 ];
 
-const arrangementsFlutePiano = [
-  'Debussy — Violin Sonata',
-  'Respighi — Violin Sonata in B minor',
-  'Janáček — Violin Sonata',
+const awards = [
+  'New York State Council on the Arts (NYSCA)',
+  'National Endowment for the Arts (NEA)',
+  'NYC Department of Cultural Affairs',
+  'Flushing Town Hall',
+  'Queens Council on the Arts',
+  'New York Foundation for the Arts',
+  'The Amphion Foundation',
+  'The Alice M. Ditson Fund',
+  'Aaron Copland Fund for Music',
+  'Government of the Principality of Asturias (€120,000 · 2021–25)',
+  'City Artist Corps',
+  'Promete Foundation Talent Award',
+  'Caja Madrid Foundation',
+  'Ibercaja Foundation',
+  'Montehermoso Creation Award',
+  'Avaloch Music Institute',
+  'SMA Chamber Music Competition',
 ];
 
-const videoArtComposers = [
-  'Aaron Copland (Duo for Flute and Piano)',
-  'Lili Boulanger (Nocturne)',
-  'Claude Debussy (Arabesque No. 1; Sonata for Flute, Viola and Harp)',
-  'François Couperin (Les Barricades Mystérieuses)',
-  'Maurice Ravel (Ma Mère l\'Oye)',
-  'Olivier Messiaen (Le Merle Noir)',
-  'Michel van der Aa (Rekindle for Flute & Electronics)',
-  'Antonín Dvořák (American Quartet)',
-  'György Kurtág (Tre Pezzi)',
-  'Frank Martin (Ballade)',
-  'Enrique Granados (Piano Quintet in G minor)',
-  'Joaquín Turina (Piano Quartet in A minor)',
-  'Tatiana Nikolayeva (Trio Op. 18)',
-  'Gustav Mahler (Piano Quartet in A minor)',
-  'Carl Maria von Weber (Trio Op. 63)',
-  'Philippe Gaubert (Trois Aquarelles)',
-  'Alexander Scriabin (Romance)',
-  'Antonio Vivaldi (\'La Notte\' Concerto)',
-  'Arvo Pärt (Pari Intervallo)',
-  'Steve Reich (Piano Phase)',
-  'Henriette Renié (Légende)',
-  'Jacob TV (Lipstick)',
-  'Bryce Dessner (Murder Ballades)',
-  'George Crumb (Vox Balaenae)',
-  'Devin Cholodenko (Twilight at Dawn)',
-  'Greg Karnilaw (Breath)',
-  'Andrea Casarrubios (Afilador)',
-  'Bryan Wysocki (We Can Learn Me Together)',
-  'Guillermo Laporta (Harte Rate)',
+const pressQuotes = [
+  { quote: 'Art and music top picks.', source: 'The New Yorker' },
+  { quote: 'A new ensemble devoted to multidisciplinary events designed by flutist.', source: 'Time Out' },
+  { quote: 'A shocking staging.', source: 'El País' },
+  { quote: 'You should check out this amazing presentation of Awave.', source: 'Times Ledger' },
+  { quote: 'Impeccable sound design by Guillermo Laporta.', source: 'Mozvr' },
+  { quote: 'Guillermo Laporta knows how to design for a festival.', source: 'Theasy' },
+  { quote: 'An explosion of rhythm, color and sensitivity.', source: 'El Diario del Alto Aragón' },
+  { quote: 'Directed by Guillermo Laporta and Josefina Urraca, the remarkable production fuses art forms to create a wholly authentic, visually and aurally compelling experience.', source: 'Broadway World' },
+  { quote: 'A full scale set design and a unique visual approach.', source: 'I Care if You Listen' },
 ];
 
-const directionWork = [
-  { title: 'London: "The Show"', year: '2009', role: 'Conceived, designed, and produced by Laporta at age 22', body: 'Musical theater. 100+ artists. 90 min. Cinema, live theater, jazz, drum and bass, Indian classical music, contemporary dance, acrobatics, video mapping, and narrative. Budget exceeding $100,000. Audiencia Theater (Soria), San Francisco Concert Hall (Huesca), Palacio de Congresos (Huesca), Spain.' },
-  { title: 'Noctum', year: '2011', role: 'Dramaturg and designer', body: 'Opera. Music by Marcos Fernández. Concerto for flute and clarinet with chamber ensemble and video. Audiencia Theater (Soria), Barakaldo Theater (Bilbao), San Francisco Concert Hall (Huesca), Spain.' },
-  { title: 'Cre.Art Project 1', year: '2006', role: 'Creator and producer', body: 'Multimedia chamber music production. Quadraphonic electroacoustic music, video art, and choreography. Montehermoso Contemporary Creation Award (national prize), Spain.' },
-  { title: 'Visuality', year: '2014–16', role: 'Co-director and visual designer', body: 'Concert-theater production. Chamber ensemble with lighting, set design, and video projection. Co-directed with Josefina Urraca. Queens Theater in the Park and Artosphere, Arlington, Virginia. Funded by Queens Council on the Arts and Spanish Embassy.' },
-  { title: 'As One', year: '2018', role: 'Lighting and set design', body: 'Opera by Laura Kaminsky. 14th Street Y Theater, NYC.' },
-  { title: '8 Million Protagonists', year: '2014', role: 'Lighting and set design', body: 'Multimedia production. Here Arts Center, NYC.' },
-  { title: 'Pedro Pan', year: '2016 / 2018', role: 'Lighting and set design', body: 'Musical. The Chain Theater, NYC and Toronto Playhouse.' },
-  { title: 'Painted Alice', year: '2019', role: 'Lighting design', body: 'Theater. Robert Moss Theater, NYC.' },
-];
-
-const grants = [
-  { year: '2026', items: 'NYSCA (3 awards, $40,000) · NEA ($16,000) · NYSCA Capital Projects ($25,000) · Amphion ($7,500) · Tri-M ($10,000)' },
-  { year: '2025', items: 'NYSCA ($25,000) · NYC Dept. of Cultural Affairs ($10,000) · Flushing Town Hall ($10,000) · Queens Council on the Arts ($3,000) · Amphion ($2,000) · Mathis-Pfohl ($1,500)' },
-  { year: '2024', items: 'NYSCA ($25,000) · Aaron Copland Fund ($2,000) · Mathis-Pfohl ($1,500)' },
-  { year: '2021–25', items: 'Government of Asturias, Festival ADAR — 4 competitive awards (€120,000 total)' },
-  { year: '2020', items: 'City Artist Corps ($5,000)' },
-  { year: '2019', items: 'Queens Council on the Arts ($3,000) · Spanish Embassy — AWAVE ($2,000) · The Ditson Fund · Avaloch Music Residency · Amphion Foundation' },
+const catalogueSections = [
+  {
+    heading: 'Chamber Music — Original Compositions',
+    items: [
+      { title: 'Suite AWAVE', forces: 'Flute, piano, and electronics' },
+      { title: 'Piano Trio "Craziest Thing"', forces: 'Violin, cello, and piano' },
+      { title: 'Twelve Preludes', forces: 'Flute and piano' },
+      { title: 'Traveling', forces: 'Solo piano' },
+      { title: 'Balance', forces: 'Solo piano' },
+      { title: 'Ballet', forces: 'Solo piano' },
+    ],
+  },
+  {
+    heading: 'Opera and Ballet',
+    items: [
+      { title: 'Architecture of a Common Man', forces: 'Chamber opera — libretto and score' },
+      { title: 'Two Roads', forces: 'Ballet — libretto and score' },
+    ],
+  },
+  {
+    heading: 'Electroacoustic Works',
+    items: [
+      { title: 'Queens Log', forces: 'Solo flute + field recordings' },
+      { title: 'Música de Cristal', forces: 'Flute, electronics, and amplified glass installation' },
+      { title: 'Harte Rate', forces: 'Flute and electronics' },
+      { title: 'Progress > Defiance', forces: 'Live flute and electronics' },
+    ],
+  },
+  {
+    heading: 'Arrangements — Chamber Ensemble / Piano Quintet with Flute',
+    items: [
+      { title: 'Modest Mussorgsky — Pictures at an Exhibition', forces: 'Piano quintet with flute' },
+      { title: 'Igor Stravinsky — Petrushka', forces: 'Chamber ensemble with flute' },
+      { title: 'Manuel de Falla — Siete canciones populares españolas', forces: 'Flute + ensemble' },
+      { title: 'Frank Martin — Ballade', forces: 'Flute + chamber ensemble' },
+      { title: 'György Ligeti — Musica Ricercata', forces: 'Chamber arrangement' },
+      { title: 'Antonín Dvořák — American String Quartet, Op. 96', forces: 'Chamber ensemble with flute' },
+      { title: 'Antonín Dvořák — Piano Quintet No. 2, Op. 81', forces: 'Flute + piano quartet' },
+    ],
+  },
+  {
+    heading: 'Arrangements — Flute & Piano',
+    items: [
+      { title: 'Claude Debussy — Violin Sonata', forces: 'Flute and piano' },
+      { title: 'Ottorino Respighi — Violin Sonata in B minor', forces: 'Flute and piano' },
+      { title: 'Leoš Janáček — Violin Sonata', forces: 'Flute and piano' },
+    ],
+  },
 ];
 ---
 <AppLayout
   title="Resume — Guillermo Laporta"
-  description="Full CV: compositions, leadership, recordings, education and grants."
+  description="Full biography, compositions, recordings, education and grants — Guillermo Laporta."
 >
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">Curriculum Vitae</div>
     <h1 class="subpage-title">Full <em>resume</em>.</h1>
-    <p class="subpage-sub">Composer · Flutist · Multimedia Creator · Cultural Producer<br>Queens, New York City · <a href="mailto:guillermo@creartbox.nyc">guillermo@creartbox.nyc</a></p>
+    <p class="subpage-sub">Flutist · Composer · Multimedia Creator · Executive Director of CreArtBox and Festival ADAR</p>
     <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
       <a class="btn primary" href={`${b}downloads/guillermo-laporta-cv.pdf`} target="_blank">Download CV — PDF ↗</a>
       <a class="btn" href={`${b}bio/`}>Bio page</a>
     </div>
   </div>
+
+  <!-- ── BIO ────────────────────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Biography</div>
+    <div class="cv-entries">
+      <div class="cv-entry" style="padding-top:20px">
+        <p class="cv-entry-body">Guillermo Laporta is a flutist, composer, and performing arts entrepreneur whose multidisciplinary artistic practice presents innovative connections between music, theater, dance, and video. Through his work as a performer, composer, and cultural producer, Laporta creates immersive experiences that challenge traditional boundaries of classical music presentation and advance the accessibility of world-class art to diverse audiences regardless of economic circumstance.</p>
+      </div>
+      <div class="cv-entry" style="padding-top:20px">
+        <div class="cv-entry-title" style="font-size:17px;margin-bottom:10px">Artistic Vision: The Visual Concert</div>
+        <p class="cv-entry-body">At the center of Laporta's artistic identity lies the concept of the "visual concert" — multimedia performances that intricately weave visual art and theatrical design into the fabric of live classical and contemporary chamber music. These immersive productions enhance the audience's auditory experience while respecting the integrity of the original musical compositions, enveloping listeners in atmospheres created through innovative lighting design, projections, and spatial composition. Through these works, Guillermo advances a distinctive artistic philosophy that positions visual and theatrical elements as integral to the concert experience rather than supplementary.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- ── LEADERSHIP ─────────────────────────────────────────────── -->
   <section class="section cv-section">
@@ -117,7 +199,7 @@ const grants = [
           <div class="cv-entry-date">New York, NY · 2013 – present</div>
         </div>
         <div class="cv-entry-role">Executive Director · Co-Founder & Co-Artistic Director</div>
-        <p class="cv-entry-body">Co-founded with pianist Josefina Urraca. Nationally recognized nonprofit performing arts organization with 20+ professional artists. 20+ performances annually at DiMenna Center, Culture Lab Queens, Mark Morris Center, The William Vale, Brooklyn Public Library, NY Society for Ethical Culture, Greenwich House, and Queens Library Culture Pass. Artist in Residence at CultureLab, Queens. Origins trace to Cre.Art Project, founded in Spain in 2006 with Tagore González. Sustained support from the New York State Council on the Arts. Recognized by The New Yorker, Broadway World, Time Out, and I Care if You Listen.</p>
+        <p class="cv-entry-body">Co-founded with pianist Josefina Urraca, transforming it into a nationally recognized nonprofit arts organization. Built CreArtBox from a small ensemble into a leading cultural force with a roster of more than 20 professional artists. Curated and produced more than 20 performances annually at The DiMenna Center for Classical Music, Culture Lab Queens, Mark Morris Center, The William Vale, Greenwich House, New York Society for Ethical Culture, Brooklyn Public Library, and Queens Library Culture Pass. Sustained support from the New York State Council on the Arts. Recognized by The New Yorker, Broadway World, and Time Out. Origins trace to Cre.Art Project, founded in Spain in 2006 with Tagore González.</p>
         <a class="cv-entry-link" href="https://creartbox.nyc" target="_blank" rel="noopener">creartbox.nyc ↗</a>
       </div>
       <div class="cv-entry">
@@ -126,7 +208,7 @@ const grants = [
           <div class="cv-entry-date">Asturias, Spain · 2020 – present</div>
         </div>
         <div class="cv-entry-role">Executive Director · Co-Founder & Co-Artistic Director</div>
-        <p class="cv-entry-body">Association for the Development of the Arts in Rural Areas. Itinerant arts festival presenting world-class music, artist talks, composer commissions, visual art installations, and multimedia collaborations in underserved rural communities. Headquarters in Leiguarda, Belmonte de Miranda. Supported by the Government of the Principality of Asturias (2021, 2023, 2024, 2025; €120,000 total across four competitive awards). Site-specific light and projection installation at Capilla de los Dolores, Grado, Asturias.</p>
+        <p class="cv-entry-body">Association for the Development of the Arts in Rural Areas. An itinerant arts festival that brings internationally recognized classical music performances, artist talks, composer commissions, and multimedia collaborations to underserved rural communities. Transforms rural landscapes into immersive artistic environments, connecting isolated communities with global audiences. Headquarters in Leiguarda, Belmonte de Miranda. Supported by the Government of the Principality of Asturias (2021, 2023, 2024, 2025; €120,000 total).</p>
         <a class="cv-entry-link" href="https://festivaladar.com" target="_blank" rel="noopener">festivaladar.com ↗</a>
       </div>
       <div class="cv-entry">
@@ -135,7 +217,7 @@ const grants = [
           <div class="cv-entry-date">New York, NY · 2020 – 2025</div>
         </div>
         <div class="cv-entry-role">Associate Producer</div>
-        <p class="cv-entry-body">"Music in Context" — an innovative concert format integrating refined programming with talks by world-renowned speakers and musicians.</p>
+        <p class="cv-entry-body">"Music in Context" — an innovative concert format integrating refined programming with talks by world-renowned speakers and musicians, transforming traditional recitals into intimate, thought-provoking performances.</p>
       </div>
       <div class="cv-entry">
         <div class="cv-entry-head">
@@ -148,134 +230,63 @@ const grants = [
     </div>
   </section>
 
-  <!-- ── ORIGINAL COMPOSITIONS — PRODUCED WORKS ───────────────── -->
+  <!-- ── CREATIVE WORKS ─────────────────────────────────────────── -->
   <section class="section cv-section">
-    <div class="cv-label">Original Compositions</div>
+    <div class="cv-label">Creative Works</div>
     <div class="cv-entries">
-      <div class="cv-sublabel">Produced Works · 2019 – present</div>
-      {producedWorks.map((w, i) => (
+      {creativeWorks.map((w) => (
         <div class="cv-entry cv-entry-compact">
           <div class="cv-entry-head">
             <div class="cv-entry-title">{w.title}</div>
             <div class="cv-entry-date">{w.year}</div>
           </div>
-          <div class="cv-entry-role">{w.category} · {w.instrumentation}{w.duration ? ` · ${w.duration}` : ''}</div>
-          {w.notes && <p class="cv-entry-body">{w.notes}</p>}
+          <div class="cv-entry-role">{w.roles}</div>
+          <p class="cv-entry-body">{w.desc}</p>
+          {w.url && <a class="cv-entry-link" href={w.url} target="_blank" rel="noopener">Project page ↗</a>}
         </div>
       ))}
+    </div>
+  </section>
 
-      <div class="cv-sublabel" style="margin-top:32px">Additional Compositions</div>
-      {chamberWorks.map((w) => (
-        <div class="cv-entry cv-entry-compact">
-          <div class="cv-entry-head">
-            <div class="cv-entry-title">{w.title}</div>
-          </div>
-          <div class="cv-entry-role">{w.instrumentation}</div>
+  <!-- ── PERFORMANCE CAREER ─────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Performance</div>
+    <div class="cv-entries">
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">Flutist</div>
         </div>
-      ))}
-
-      <div class="cv-sublabel" style="margin-top:32px">Arrangements</div>
-      <div class="cv-entry cv-entry-compact" style="padding-bottom:8px">
-        <div class="cv-entry-role" style="margin-bottom:10px">For chamber ensemble / piano quintet with flute</div>
-        <ul class="cv-list cv-list-inline">
-          {arrangementsChamber.map((a) => <li>{a}</li>)}
-        </ul>
+        <p class="cv-entry-body">Co-Principal Flute of the Oviedo Filarmonía Orchestra (2009–12). Principal Flute of the Herald Chamber Orchestra (2012–15) and the New York International Chamber Orchestra (2013–18). Performed with the BBC Orchestra, Orquesta del Principado de Asturias, Le Train Bleu Ensemble, and Orquesta Sinfónica de Euskadi. Shared the stage with Sir Roger Norrington, Andrew Litton, Pablo González, Vladimir Ashkenazy, Truls Mørk, Natalia Gutman, the Labèque sisters, Ainhoa Arteta, Jiri Barta, and Heinrich Schiff. Carnegie Hall and Lincoln Center. Collaborated for Warner Music, EMI, and Naxos.</p>
       </div>
-      <div class="cv-entry cv-entry-compact">
-        <div class="cv-entry-role" style="margin-bottom:10px">For flute and piano</div>
-        <ul class="cv-list cv-list-inline">
-          {arrangementsFlutePiano.map((a) => <li>{a}</li>)}
-        </ul>
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">Repertoire Development</div>
+        </div>
+        <p class="cv-entry-body">Deeply committed to expanding the flute repertoire in chamber music — through original compositions and transcriptions of pieces written for other instruments. Three studio albums released: Debussy & Respighi Violin Sonatas: Transcriptions for Flute and Piano (2019); Awave: Original Compositions for Flute, Piano, Electronics & Video (2020); 12 Preludes for Flute (2020). Available on Spotify, Apple Music, and YouTube Music.</p>
       </div>
     </div>
   </section>
 
-  <!-- ── VIDEO ART ───────────────────────────────────────────────── -->
+  <!-- ── DESIGN & MULTIMEDIA ────────────────────────────────────── -->
   <section class="section cv-section">
-    <div class="cv-label">Video Art</div>
+    <div class="cv-label">Design &amp; Multimedia</div>
     <div class="cv-entries">
-      <div class="cv-entry" style="padding-top:20px">
-        <p class="cv-entry-body" style="margin-bottom:16px">Original video art designed for live concert performance. Medium: digital video projection, motion graphics, filmed landscapes, abstract animation. Created for works by:</p>
-        <ul class="cv-list cv-list-inline">
-          {videoArtComposers.map((c) => <li>{c}</li>)}
-        </ul>
-        <p class="cv-entry-body" style="margin-top:14px">Presented at DiMenna Center, Culture Lab Queens, Mark Morris Center, Blue Gallery, Brooklyn Public Library, Greenwich House, and other venues in New York City.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── DIRECTION & STAGE DESIGN ──────────────────────────────── -->
-  <section class="section cv-section">
-    <div class="cv-label">Direction &amp; Design</div>
-    <div class="cv-entries">
-      {directionWork.map((d) => (
+      {designCredits.map((d) => (
         <div class="cv-entry cv-entry-compact">
           <div class="cv-entry-head">
             <div class="cv-entry-title">{d.title}</div>
             <div class="cv-entry-date">{d.year}</div>
           </div>
           <div class="cv-entry-role">{d.role}</div>
-          <p class="cv-entry-body">{d.body}</p>
+          <p class="cv-entry-body">{d.venue}</p>
         </div>
       ))}
       <div class="cv-entry cv-entry-compact">
-        <div class="cv-entry-role" style="margin-bottom:6px">VR Sound Design & Composition</div>
-        <p class="cv-entry-body">Inspirit, Puzzle Rain, The Dreamsons, Alice, Letris, Blupt! (with Mozilla), Unboring, Barrabes Internet, Ivanovich Games.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── ARTISTIC PRACTICE ──────────────────────────────────────── -->
-  <section class="section cv-section">
-    <div class="cv-label">Artistic Practice</div>
-    <div class="cv-entries">
-      <div class="cv-entry">
         <div class="cv-entry-head">
-          <div class="cv-entry-title">Flutist</div>
+          <div class="cv-entry-title">VR Sound Design & Composition</div>
         </div>
-        <p class="cv-entry-body">Concert performer specializing in chamber music, visual concerts, and contemporary repertoire. Co-Principal Flute of the Oviedo Filarmonía (2009–12), Principal Flute of the Herald Chamber Orchestra (2012–15) and the New York International Chamber Orchestra (2013–18). Performed with the BBC Orchestra, Orquesta del Principado de Asturias, Le Train Bleu Ensemble and Orquesta Sinfónica de Euskadi. Shared the stage with Sir Roger Norrington, Andrew Litton, Vladimir Ashkenazy, Truls Mørk, Natalia Gutman, the Labèque sisters, and Ainhoa Arteta. Carnegie Hall, Lincoln Center. Recorded for Warner Music, EMI, and Naxos.</p>
+        <p class="cv-entry-body">Inspirit · Puzzle Rain · The Dreamsons · Alice · Letris · Blupt! (with Mozilla) · Unboring · Barrabes Internet · Ivanovich Games.</p>
       </div>
-      <div class="cv-entry">
-        <div class="cv-entry-head">
-          <div class="cv-entry-title">Composer</div>
-        </div>
-        <p class="cv-entry-body">Works across chamber opera, electroacoustic music, multimedia concert pieces, and site-specific sound installations. Each composition begins with an original score from which visual, theatrical, and spatial elements emerge. Committed to formats that expand the audience for classical music through visual storytelling and theatrical presentation.</p>
-      </div>
-      <div class="cv-entry">
-        <div class="cv-entry-head">
-          <div class="cv-entry-title">Visual Concert Designer</div>
-        </div>
-        <p class="cv-entry-body">Develops performance formats integrating image, light, projection, spatial design, and movement into the musical experience. Designs original video art for concert productions. Created visual concert productions at venues in New York City, Tokyo, Madrid, Grado, Oviedo, and Asturias.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── DISCOGRAPHY ────────────────────────────────────────────── -->
-  <section class="section cv-section">
-    <div class="cv-label">Recordings</div>
-    <div class="cv-entries">
-      <div class="cv-sublabel">Solo Albums</div>
-      {albums.map((album) => (
-        <div class="cv-entry cv-entry-compact">
-          <div class="cv-entry-head">
-            <div class="cv-entry-title">{album.title}</div>
-            <div class="cv-entry-date">{album.year}</div>
-          </div>
-          <div class="cv-entry-role">{album.format}</div>
-          {album.description && <p class="cv-entry-body">{album.description}</p>}
-        </div>
-      ))}
-
-      <div class="cv-sublabel" style="margin-top:32px">CreArtBox Live Sessions (selected)</div>
-      {liveRecordings.map((r) => (
-        <div class="cv-entry cv-entry-compact">
-          <div class="cv-entry-head">
-            <div class="cv-entry-title">{r.title}</div>
-            <div class="cv-entry-date">{r.year}</div>
-          </div>
-          <div class="cv-entry-role">{r.composer} · Live recording</div>
-        </div>
-      ))}
     </div>
   </section>
 
@@ -289,7 +300,6 @@ const grants = [
           <div class="cv-entry-date">London, 2010</div>
         </div>
         <div class="cv-entry-role">Royal College of Music</div>
-        <p class="cv-entry-body">Studied with Jaime Martín, Paul Edmund Davies and Sue Thomas. Full scholarship.</p>
       </div>
       <div class="cv-entry">
         <div class="cv-entry-head">
@@ -311,56 +321,91 @@ const grants = [
           <div class="cv-entry-date">San Sebastián</div>
         </div>
         <div class="cv-entry-role">Musikene — Superior Conservatory of Music of the Basque Country</div>
-        <p class="cv-entry-body">Studies with Miguel Ángel Angulo.</p>
+      </div>
+      <div class="cv-entry" style="padding-bottom:20px">
+        <div class="cv-entry-role" style="margin-bottom:14px">Notable Mentors</div>
+        <div class="mentors-grid">
+          {mentors.map((m) => (
+            <div class="mentor-card">
+              <div class="mentor-name">{m.name}</div>
+              <div class="mentor-desc">{m.desc}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── GRANTS & SUPPORT ───────────────────────────────────────── -->
+  <!-- ── DISCOGRAPHY ────────────────────────────────────────────── -->
   <section class="section cv-section">
-    <div class="cv-label">Grants &amp; Support</div>
+    <div class="cv-label">Recordings</div>
     <div class="cv-entries">
-      <div class="cv-entry" style="padding-top:20px">
-        <table class="grants-table">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Funders & Awards</th>
-            </tr>
-          </thead>
-          <tbody>
-            {grants.map((g) => (
-              <tr>
-                <td class="grants-year">{g.year}</td>
-                <td>{g.items}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p class="cv-entry-body" style="margin-top:16px;font-size:13px">
-          Additional support: NYSCA (2021, 2022), New York Foundation for the Arts, Queens Council on the Arts (2016, 2018), Spanish Embassy (2014), Promete Foundation Talent Award (2012), Caja Madrid (2008), Ibercaja (2008), Montehermoso Creation Award (2006), SMA Chamber Music Competition.
-        </p>
+      <div class="cv-sublabel">Solo Albums</div>
+      {albums.map((album) => (
+        <div class="cv-entry cv-entry-compact">
+          <div class="cv-entry-head">
+            <div class="cv-entry-title">{album.title}</div>
+            <div class="cv-entry-date">{album.year}</div>
+          </div>
+          <div class="cv-entry-role">{album.format}</div>
+          {album.description && <p class="cv-entry-body">{album.description}</p>}
+        </div>
+      ))}
+      <div class="cv-sublabel" style="margin-top:32px">With CreArtBox (selected)</div>
+      {liveRecordings.map((r) => (
+        <div class="cv-entry cv-entry-compact">
+          <div class="cv-entry-head">
+            <div class="cv-entry-title">{r.title}</div>
+            <div class="cv-entry-date">{r.year}</div>
+          </div>
+          <div class="cv-entry-role">{r.composer} · Live recording</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── COMPOSITION CATALOGUE ──────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Compositions &amp; Arrangements</div>
+    <div class="cv-entries">
+      {catalogueSections.map((sec) => (
+        <div>
+          <div class="cv-sublabel" style="margin-top:24px">{sec.heading}</div>
+          {sec.items.map((item) => (
+            <div class="cv-entry cv-entry-compact">
+              <div class="cv-entry-head">
+                <div class="cv-entry-title" style="font-size:15px">{item.title}</div>
+              </div>
+              <div class="cv-entry-role">{item.forces}</div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── AWARDS ─────────────────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Grants &amp; Awards</div>
+    <div class="cv-entries">
+      <div class="cv-entry" style="padding-top:20px;padding-bottom:20px">
+        <ul class="cv-list">
+          {awards.map((a) => <li>{a}</li>)}
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- ── MUSIC INDUSTRY ─────────────────────────────────────────── -->
+  <!-- ── PRESS ──────────────────────────────────────────────────── -->
   <section class="section cv-section" style="padding-bottom:96px">
-    <div class="cv-label">Industry</div>
+    <div class="cv-label">Press</div>
     <div class="cv-entries">
-      <div class="cv-entry">
-        <div class="cv-entry-head">
-          <div class="cv-entry-title">EMI Music / SF Music</div>
+      {pressQuotes.map((p) => (
+        <div class="cv-entry cv-entry-compact">
+          <p class="cv-entry-body" style="font-style:italic">"{p.quote}"</p>
+          <div class="cv-entry-role" style="margin-top:6px;margin-bottom:0">— {p.source}</div>
         </div>
-        <div class="cv-entry-role">Producer & Presenter</div>
-        <p class="cv-entry-body">Produced and presented internationally recognized artists including Avishai Cohen, Joe Lovano, and Chano Dominguez.</p>
-      </div>
-      <div class="cv-entry">
-        <div class="cv-entry-head">
-          <div class="cv-entry-title">Festival & Series Directing</div>
-        </div>
-        <p class="cv-entry-body">CreArt Music Festival, Queens (2018) · CreArt Music Series, Manhattan (2016–) · PlayLoud Music Festival, Instituto Cervantes, NYC · Jazz in Blue Festival (with EMI Music) · 10×10 Music Festival, Zaragoza, Spain.</p>
-      </div>
+      ))}
     </div>
   </section>
 
@@ -375,7 +420,6 @@ const grants = [
     .cv-entry-compact{padding:16px 0}
     .cv-entry-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:6px}
     .cv-entry-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
-    .cv-entry-compact .cv-entry-title{font-size:17px}
     .cv-entry-date{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
     .cv-entry-role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:10px;letter-spacing:-.005em}
     .cv-entry-body{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;max-width:72ch}
@@ -384,16 +428,11 @@ const grants = [
     .cv-list{list-style:none;display:flex;flex-direction:column}
     .cv-list li{font-size:13.5px;color:var(--ink-2);padding:9px 0;border-bottom:1px solid var(--line-soft);font-weight:350}
     .cv-list li:last-child{border-bottom:none}
-    .cv-list-inline{display:flex;flex-direction:column;gap:0}
-    .cv-list-inline li{font-size:13px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
-    .cv-list-inline li:last-child{border-bottom:none}
-    /* Grants table */
-    .grants-table{width:100%;border-collapse:collapse;font-size:13.5px}
-    .grants-table th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:left;padding:8px 16px 8px 0;border-bottom:1px solid var(--line-soft)}
-    .grants-table td{padding:10px 16px 10px 0;border-bottom:1px solid var(--line-soft);color:var(--ink-2);vertical-align:top;line-height:1.5}
-    .grants-table tr:last-child td{border-bottom:none}
-    .grants-year{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--accent);font-weight:600;white-space:nowrap;width:72px}
-    @media(max-width:900px){.cv-section{grid-template-columns:1fr;gap:20px;padding-left:20px;padding-right:20px}}
-    @media(max-width:600px){.cv-entry-head{flex-direction:column;gap:4px}.cv-entry-title{font-size:18px}.grants-table{font-size:12px}}
+    .mentors-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .mentor-card{padding:14px;background:var(--bg);border:1px solid var(--line-soft);border-radius:6px}
+    .mentor-name{font-family:var(--serif);font-size:16px;font-weight:400;color:var(--ink);margin-bottom:4px}
+    .mentor-desc{font-size:12px;color:var(--muted);line-height:1.5}
+    @media(max-width:900px){.cv-section{grid-template-columns:1fr;gap:20px;padding-left:20px;padding-right:20px}.mentors-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.cv-entry-head{flex-direction:column;gap:4px}.cv-entry-title{font-size:18px}}
   </style>
 </AppLayout>
