@@ -6,7 +6,7 @@ const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 const today = new Date().toISOString().split('T')[0];
 const upcoming = calendar.filter(e => e.date >= today).slice(0, 4);
-const featuredWork = visualWork.slice(0, 3);
+const featuredWork = visualWork.slice(0, 8);
 const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0161.jpg';
 ---
 <AppLayout
@@ -118,7 +118,7 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
                 <span class="va-kind">{w.kind}</span>
               </div>
               <h3 class="va-title">{w.title}</h3>
-              <p class="va-desc">{w.desc}</p>
+              <p class="va-desc va-desc-mobile">{w.desc}</p>
             </div>
           </a>
         </article>
@@ -295,6 +295,15 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
   </section>
 
   <style>
+    /* ── Visual art preview overrides ── */
+    #portfolio-preview .va-grid{grid-template-columns:repeat(4,1fr)}
+    #portfolio-preview .va-title{font-size:16px;margin-bottom:4px}
+    #portfolio-preview .va-body{padding:14px 16px 18px}
+    #portfolio-preview .va-desc{display:none}
+    @media(max-width:1100px){#portfolio-preview .va-grid{grid-template-columns:repeat(4,1fr)}}
+    @media(max-width:860px){#portfolio-preview .va-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:860px){#portfolio-preview .va-desc{display:block}}
+
     .bio-long{max-width:72ch;margin:48px 0 0}
     .bio-para{font-size:16px;line-height:1.75;color:var(--ink-2);font-weight:350;margin-bottom:18px}
     @media(max-width:600px){.bio-para{font-size:15px}}

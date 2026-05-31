@@ -1,7 +1,9 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { albums, liveRecordings } from '../data/site.js';
+import { bio, albums, liveRecordings } from '../data/site.js';
 import { projects as creativeWorks } from '../data/projects.js';
+
+const bioMedium = bio.long.slice(0, 3);
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -103,33 +105,65 @@ const catalogueSections = [
 ];
 ---
 <AppLayout
-  title="Resume — Guillermo Laporta"
-  description="Full biography, compositions, recordings, education and grants — Guillermo Laporta."
+  title="Bio & Resume — Guillermo Laporta"
+  description="Biography, compositions, recordings, education and grants — Guillermo Laporta."
 >
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
-    <div class="subpage-num">Curriculum Vitae</div>
-    <h1 class="subpage-title">Full <em>resume</em>.</h1>
-    <p class="subpage-sub">Flutist · Composer · Multimedia Creator · Executive Director of CreArtBox and Festival ADAR</p>
-    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
-      <a class="btn primary" href={`${b}downloads/guillermo-laporta-cv.pdf`} target="_blank">Download CV — PDF ↗</a>
-      <a class="btn" href={`${b}bio/`}>Bio page</a>
-    </div>
+    <div class="subpage-num">Bio & Resume</div>
+    <h1 class="subpage-title">Bio <em>&amp;</em> resume.</h1>
+    <p class="subpage-sub">Flutist · Composer · Cultural Producer · Executive Director of CreArtBox and Festival ADAR</p>
   </div>
 
-  <!-- ── BIO ────────────────────────────────────────────────────── -->
-  <section class="section cv-section">
-    <div class="cv-label">Biography</div>
-    <div class="cv-entries">
-      <div class="cv-entry" style="padding-top:20px">
-        <p class="cv-entry-body">Guillermo Laporta is a flutist, composer, and performing arts entrepreneur whose multidisciplinary artistic practice presents innovative connections between music, theater, dance, and video. Through his work as a performer, composer, and cultural producer, Laporta creates immersive experiences that challenge traditional boundaries of classical music presentation and advance the accessibility of world-class art to diverse audiences regardless of economic circumstance.</p>
+  <!-- ── BIO SWITCHER ───────────────────────────────────────────── -->
+  <section class="section bio-sw-section">
+    <div class="bio-sw-head">
+      <div class="bio-sw-tabs" id="bioTabs">
+        <button class="bio-sw-tab active" data-bio="short">Short</button>
+        <button class="bio-sw-tab" data-bio="medium">Medium</button>
+        <button class="bio-sw-tab" data-bio="long">Long</button>
       </div>
-      <div class="cv-entry" style="padding-top:20px">
-        <div class="cv-entry-title" style="font-size:17px;margin-bottom:10px">Artistic Vision: The Visual Concert</div>
-        <p class="cv-entry-body">At the center of Laporta's artistic identity lies the concept of the "visual concert" — multimedia performances that intricately weave visual art and theatrical design into the fabric of live classical and contemporary chamber music. These immersive productions enhance the audience's auditory experience while respecting the integrity of the original musical compositions, enveloping listeners in atmospheres created through innovative lighting design, projections, and spatial composition. Through these works, Guillermo advances a distinctive artistic philosophy that positions visual and theatrical elements as integral to the concert experience rather than supplementary.</p>
+      <div class="bio-sw-actions">
+        <button class="btn bio-copy-btn" id="bioCopy">Copy text</button>
+        <a class="btn primary" href={`${b}downloads/guillermo-laporta-cv.pdf`} target="_blank">CV — PDF ↗</a>
       </div>
     </div>
+
+    <div class="bio-panel" id="bio-short">
+      <p class="bio-p">{bio.short}</p>
+    </div>
+    <div class="bio-panel bio-hidden" id="bio-medium">
+      {bioMedium.map((para) => <p class="bio-p">{para}</p>)}
+    </div>
+    <div class="bio-panel bio-hidden" id="bio-long">
+      {bio.long.map((para) => <p class="bio-p">{para}</p>)}
+    </div>
   </section>
+
+  <script>
+    const tabs = document.querySelectorAll('.bio-sw-tab');
+    const panels = document.querySelectorAll('.bio-panel');
+    const copyBtn = document.getElementById('bioCopy');
+    let current = 'short';
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('bio-' + current).classList.add('bio-hidden');
+        current = tab.dataset.bio;
+        document.getElementById('bio-' + current).classList.remove('bio-hidden');
+      });
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const text = document.getElementById('bio-' + current).innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy text', 2000);
+      });
+    });
+  </script>
 
   <!-- ── LEADERSHIP ─────────────────────────────────────────────── -->
   <section class="section cv-section">
@@ -410,5 +444,20 @@ const catalogueSections = [
     .mentor-desc{font-size:12px;color:var(--muted);line-height:1.5}
     @media(max-width:900px){.cv-section{grid-template-columns:1fr;gap:20px;padding-left:20px;padding-right:20px}.mentors-grid{grid-template-columns:1fr}}
     @media(max-width:600px){.cv-entry-head{flex-direction:column;gap:4px}.cv-entry-title{font-size:18px}}
+
+    /* ── Bio switcher ── */
+    .bio-sw-section{padding-top:0;border-bottom:1px solid var(--line-soft);padding-bottom:64px}
+    .bio-sw-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:36px}
+    .bio-sw-tabs{display:flex;gap:4px}
+    .bio-sw-tab{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:8px 18px;border:1px solid var(--line-soft);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;border-radius:999px}
+    .bio-sw-tab:hover{border-color:var(--accent);color:var(--accent)}
+    .bio-sw-tab.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .bio-sw-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .bio-copy-btn{font-size:13px}
+    .bio-panel{max-width:72ch}
+    .bio-hidden{display:none}
+    .bio-p{font-size:16px;line-height:1.75;color:var(--ink-2);font-weight:350;margin-bottom:18px}
+    .bio-p:last-child{margin-bottom:0}
+    @media(max-width:600px){.bio-sw-head{flex-direction:column;align-items:flex-start}.bio-p{font-size:15px}}
   </style>
 </AppLayout>
