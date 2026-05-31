@@ -12,30 +12,33 @@ export const bio = {
 };
 
 export const calendar = [
-  {
-    date: '2026-08-16',
-    displayDate: 'Aug 3–16, 2026',
-    title: 'Festival ADAR 2026',
-    subtitle: 'Festival',
-    location: 'Multiple venues · Asturias, Spain',
-    url: 'https://festivaladar.com'
-  },
-  {
-    date: '2026-03-30',
-    displayDate: 'Mar 30, 2026',
-    title: 'Chamber Music Lehigh Valley',
-    subtitle: 'Touring',
-    location: 'Bethlehem, Pennsylvania',
-    url: 'https://creartbox.nyc'
-  },
-  {
-    date: '2026-03-29',
-    displayDate: 'Mar 29, 2026',
-    title: 'Chamber Music Lehigh Valley',
-    subtitle: 'Touring',
-    location: 'Bethlehem, Pennsylvania',
-    url: 'https://creartbox.nyc'
-  }
+  { date: '2026-03-29', displayDate: 'Mar 29', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'On sale' },
+  { date: '2026-03-30', displayDate: 'Mar 30', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'On sale' },
+  { date: '2026-08-16', displayDate: 'Aug 3–16', year: '2026', title: 'Festival ADAR 2026', subtitle: 'Festival', location: 'Multiple venues · Asturias, Spain', url: 'https://festivaladar.com', image: '/images/2025-08-festival-adar.jpg', status: 'Announced' },
+  { date: '2026-10-30', displayDate: 'Oct 30', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
+  { date: '2026-12-11', displayDate: 'Dec 11', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
+  { date: '2027-02-28', displayDate: 'Feb 28', year: '2027', title: 'University of Louisville', subtitle: 'School of Music', location: 'Comstock Hall · Louisville, KY', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
+  { date: '2027-03-23', displayDate: 'Mar 23', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
+  { date: '2027-05-07', displayDate: 'May 7', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
+  { date: '2027-09-28', displayDate: 'Sep 28', year: '2027', title: 'Gettysburg Community Concert', subtitle: 'Touring', location: 'St. James Lutheran Church · Gettysburg, PA', url: 'https://creartbox.nyc', image: '/images/hero-musica-ricercata.jpg', status: 'Announced' },
+];
+
+export const visualWork = [
+  { num: '01', cat: 'installation', year: '2025', kind: 'Installation', title: 'Música de Cristal', desc: 'Site-specific installation for flute, electronics and amplified glass. Capilla de los Dolores, Grado, Asturias (Festival ADAR).', image: '/images/2025-10-musica-cristal.jpg', url: 'https://festivaladar.com/en/musica-de-cristal/' },
+  { num: '02', cat: 'installation', year: '2023', kind: 'Installation', title: 'Progress > Defiance', desc: 'Performance art installation score. Live flute and electronics. 25 min. Site-specific work on the intrusion of man-made materials into the natural environment. Festival ADAR, Grado, Asturias.', image: '/images/2025-06-approaching-zero.jpg', url: 'https://festivaladar.com/en/micro-concert-capilla-dolores-grado-2023/' },
+  { num: '03', cat: 'installation', year: '2023', kind: 'Installation', title: 'Circle Noir', desc: 'Multimedia chamber music installation across two evenings at The William Vale, Brooklyn.', image: '/images/circle-noir.jpg', url: 'https://creartbox.nyc/pages/circle-noir-part2' },
+  { num: '04', cat: 'installation', year: '2021', kind: 'Installation', title: 'Lighting the Dark', desc: 'Concert-installation for flute, piano and projection. Culture Lab Theater, Queens.', image: '/images/lighting-the-dark.jpg', url: 'https://creartbox.nyc/pages/lighting-the-dark' },
+  { num: '05', cat: 'installation', year: '2018', kind: 'Installation', title: 'Tusks', desc: 'Sculptural concert-installation. Plaxall Gallery, Long Island City.', image: '/images/tusks.jpg', url: '' },
+  { num: '06', cat: 'video-art', year: '2024', kind: 'Video art', title: 'Twilight at Dawn — Cholodenko', desc: 'Original concert video for the world premiere by Devin Cholodenko.', image: '/images/2025-10-beyond-surface.jpg', url: '' },
+  { num: '07', cat: 'video-art', year: '2023', kind: 'Video art', title: 'Vox Balaenae — Crumb', desc: "Original video for George Crumb's electric chamber work.", image: '/images/2025-05-perennial.jpg', url: '' },
+  { num: '08', cat: 'video-art', year: '2023', kind: 'Video art', title: 'Murder Ballades — Dessner', desc: 'Concert video for Bryce Dessner\'s suite. The William Vale, Brooklyn.', image: '/images/2023-12-circle-noir.jpg', url: '' },
+  { num: '09', cat: 'video-art', year: '2022', kind: 'Video art', title: 'Pari Intervallo — Pärt', desc: 'Concert video for Arvo Pärt. CreArt Festival, NYC.', image: '/images/2023-12-mountains.jpg', url: '' },
+  { num: '10', cat: 'video-art', year: '2022', kind: 'Video art', title: 'Piano Phase — Reich', desc: "Concert video for Steve Reich's phase-music piano duet.", image: '/images/2022-04-childhood-memories.jpg', url: '' },
+  { num: '11', cat: 'video-art', year: '2019', kind: 'Video art', title: 'Quartet for the End of Time — Messiaen', desc: "Concert video for Messiaen's chamber masterwork.", image: '/images/2018-09-just-as-they-are.jpg', url: '' },
+  { num: '12', cat: 'design', year: '2018', kind: 'Theater design', title: 'As One', desc: 'Opera by Laura Kaminsky. Lighting and set design. 14th Street Y Theater, NYC.', image: '/images/2019-09-two-roads.jpg', url: '' },
+  { num: '13', cat: 'design', year: '2014', kind: 'Theater design', title: '8 Million Protagonists', desc: 'Multimedia production. Lighting and set design. Here Arts Center, NYC.', image: '/images/2014-11-visuality-iv.jpg', url: '' },
+  { num: '14', cat: 'design', year: '2016 / 2018', kind: 'Theater design', title: 'Pedro Pan', desc: 'Musical. Lighting and set design. The Chain Theater, NYC and Toronto Playhouse.', image: '/images/2018-08-folk-culture.jpg', url: '' },
+  { num: '15', cat: 'design', year: '2019', kind: 'Theater design', title: 'Painted Alice', desc: 'Theater. Lighting design. Robert Moss Theater, NYC.', image: '/images/2019-08-end-of-time.jpg', url: '' },
 ];
 
 export const portfolio = [

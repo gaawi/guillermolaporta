@@ -1,44 +1,64 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
+import AppLayout from '../layouts/AppLayout.astro';
 import { calendar } from '../data/site.js';
+
+const b = import.meta.env.BASE_URL;
 const today = new Date().toISOString().split('T')[0];
 const upcoming = calendar.filter(e => e.date >= today);
+const byYear = upcoming.reduce((acc, e) => {
+  (acc[e.year] = acc[e.year] || []).push(e);
+  return acc;
+}, {});
+const years = Object.keys(byYear).sort();
 ---
-<SiteLayout title='Calendar - Guillermo Laporta'>
-  <main class='page'>
-    <section class='page-hero'>
-      <div>
-        <div class='eyebrow'>Calendar</div>
-        <h1>Upcoming / Recent</h1>
-        <p class='intro'>Performances, presentations, projects and selected public appearances. This page is data-driven so new dates can be added quickly without rebuilding the design.</p>
-      </div>
-    </section>
+<AppLayout title="Calendar — Guillermo Laporta" description="Upcoming concerts, festivals and tours.">
+  <div class="subpage-head">
+    <a class="subpage-back" href={b}>← Home</a>
+    <div class="subpage-num">03 — Calendar</div>
+    <h1 class="subpage-title">Coming <em>up</em>.</h1>
+    <p class="subpage-sub">Upcoming dates through 2027. Tickets and reservations through the venues.</p>
+  </div>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Events</div>
-        <div class='table-list'>
-          {upcoming.map((event) => (
-            <a class='row' href={event.url} target='_blank' rel='noopener'>
-              <strong>{event.displayDate}</strong>
-              <span>{event.title}</span>
-              <span>{event.subtitle}</span>
-              <span>{event.location}</span>
-            </a>
+  <section class="section section-tight">
+    {years.map((year) => (
+      <div class="cal-year">
+        <h2 class="cal-year-label">{year}</h2>
+        <div class="calendar">
+          {byYear[year].map((event, i) => (
+            <div class="cal-row"
+              data-lightbox
+              data-img={`${b}${event.image.replace(/^\//,'')}`}
+              data-title={event.title}
+              data-year={event.year}
+              data-kind={event.subtitle}
+              data-desc={event.location}
+              data-url={event.url}
+              tabindex="0"
+              role="button"
+              aria-label={`Details for ${event.title} on ${event.displayDate}`}
+            >
+              <div class="ix">№{String(i+1).padStart(2,'0')}</div>
+              <div class="when">
+                {event.displayDate}
+                <small>{event.year}</small>
+              </div>
+              <div class="name">
+                {event.title}
+                <small>{event.subtitle}</small>
+              </div>
+              <div class="venue">{event.location}</div>
+              <div class="status">
+                <span class="pill">{event.status} <span class="arr">→</span></span>
+              </div>
+            </div>
           ))}
         </div>
       </div>
-    </section>
+    ))}
+  </section>
 
-    <section class='section'>
-      <div class='grid-2'>
-        <div class='visual-block' data-title='Calendar'></div>
-        <div>
-          <div class='label'>Maintenance</div>
-          <h2>Simple to update.</h2>
-          <p class='lead'>Events are stored in <code>src/data/site.js</code>. Add a new item there and the Calendar page updates automatically after Cloudflare deploys.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-</SiteLayout>
+  <style>
+    .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
+    @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+  </style>
+</AppLayout>

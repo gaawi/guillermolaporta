@@ -1,112 +1,274 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
-import { calendar, portfolio, albums } from '../data/site.js';
-import { homeImages } from '../data/media.js';
-const featured = portfolio.slice(0, 4);
+import AppLayout from '../layouts/AppLayout.astro';
+import { calendar, visualWork, albums, liveRecordings } from '../data/site.js';
+
+const b = import.meta.env.BASE_URL;
 const today = new Date().toISOString().split('T')[0];
-const upcoming = calendar.filter(e => e.date >= today);
+const upcoming = calendar.filter(e => e.date >= today).slice(0, 4);
+const featuredWork = visualWork.slice(0, 3);
+const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
 ---
-<SiteLayout title='Guillermo Laporta - Flutist, Composer, Visual Artist'>
-  <main class='page'>
-    <section class='page-hero' style={`--hero-image:url(${homeImages[0].src})`}>
+<AppLayout
+  title="Guillermo Laporta — Flutist · Composer · Director"
+  description="Guillermo Laporta is a flutist, composer and cultural producer based between New York City and Asturias, Spain. Founder of CreArtBox and Festival ADAR."
+>
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <section class="hero" id="top">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="line"></span>
+          <span>Flutist · Composer · Director</span>
+          <span>— New York</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="row">Flutist, composer</span>
+          <span class="row"><em>&</em> producer in NYC.</span>
+        </h1>
+        <p class="hero-sub">
+          Guillermo Laporta works between <b>New York</b> and <b>Asturias</b> across
+          chamber music, opera, multimedia performance and concert design.
+          He develops productions that bring classical music to new and broader audiences —
+          through visual concerts, interdisciplinary collaboration and cultural entrepreneurship.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href={`${b}portfolio/`}>Portfolio <span class="arr">→</span></a>
+          <a class="btn" href={`${b}catalogue/`}>Catalogue</a>
+          <a class="btn" href={`${b}calendar/`}>Upcoming dates</a>
+        </div>
+      </div>
       <div>
-        <div class='eyebrow'>Flutist / Composer / Visual Artist</div>
-        <h1>Guillermo Laporta</h1>
-        <p class='intro'>Composer, flutist and concert designer working to bring classical music to larger and more diverse audiences — through original composition, visual performance and arts entrepreneurship.</p>
-        <div class='button-row'>
-          <a class='button primary' href='/portfolio/'>Portfolio</a>
-          <a class='button' href='/catalogue/'>Composer Catalogue</a>
-          <a class='button' href='/discography/'>Discography</a>
-          <a class='button' href='/bio/'>Bio</a>
+        <div class="hero-card">
+          <div class="img">
+            <img src={heroImg} alt="Musica Ricercata — CreArtBox, DiMenna Center" loading="eager" />
+          </div>
+          <div class="body">
+            <div>
+              <div class="meta">Latest production</div>
+              <h3>Musica Ricercata</h3>
+              <div class="where">DiMenna Center · NYC · Dec 2025</div>
+            </div>
+            <span class="badge">Visual concert</span>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class='section'>
-      <div class='grid-3'>
-        {homeImages.map((item) => (
-          <figure class='image-card'>
-            <img src={item.src} alt={item.alt} loading='lazy' />
-            <figcaption>{item.title} / {item.category}</figcaption>
-          </figure>
-        ))}
+  <!-- ── ABOUT / STATEMENT ─────────────────────────────────────── -->
+  <section class="section" id="about">
+    <div class="section-head">
+      <div class="lhs">
+        <div class="section-num">01 — Practice</div>
+        <h2 class="section-title">Music for <em>broader</em><br />audiences.</h2>
       </div>
-    </section>
+      <div class="section-rhs">
+        Composition, concert design and cultural entrepreneurship at the intersection of classical music, visual art and theatre.
+      </div>
+    </div>
+    <div class="statement">
+      <div class="quote-mark">"</div>
+      <div class="statement-body">
+        <p>The concert can be a <em>total experience</em> — music, image, space and story arriving together. I design my productions to reach people who may not have grown up with classical music, but respond immediately when it is presented in the right visual and theatrical context.</p>
+        <p>My work runs across three areas: original composition (opera, chamber music, multimedia works); concert design that integrates projection, lighting and spatial narrative; and building organisations — CreArtBox in New York and Festival ADAR in rural Asturias — that create genuine access to this kind of work.</p>
+        <div class="statement-sig">Guillermo Laporta · New York, 2026</div>
+      </div>
+    </div>
+  </section>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Practice</div>
-        <div>
-          <h2>Classical music for larger audiences.</h2>
-          <p class='lead'>Laporta's work is built around a conviction: that classical music can speak to far broader audiences when it is given the right visual, theatrical and spatial language. His practice runs across three areas — original composition and concert design that integrates image, light and space into the performance; and cultural entrepreneurship, building organizations and programs that create meaningful access to classical music for audiences who rarely encounter it.</p>
+  <!-- ── LEADERSHIP ─────────────────────────────────────────────── -->
+  <section class="section" id="leadership">
+    <div class="section-head">
+      <div class="lhs">
+        <div class="section-num">02 — Leadership</div>
+        <h2 class="section-title">Building <em>organisations</em>.</h2>
+      </div>
+    </div>
+    <div class="leadership-grid">
+      <div class="lead-card">
+        <div class="lead-head">
+          <div class="lead-org">CreArtBox</div>
+          <div class="lead-period">New York · 2013 – present</div>
+          <div class="lead-role">Co-founder & Executive Director</div>
+        </div>
+        <div class="lead-body">
+          Chamber music and multimedia performing arts organization. 20+ professional artists, 20+ performances per season at The DiMenna Center, Mark Morris Center, The William Vale, Greenwich House and more. Sustained support from NYSCA. Covered by The New Yorker, Broadway World, Time Out.
+        </div>
+        <a class="lead-link" href="https://creartbox.nyc" target="_blank" rel="noopener">creartbox.nyc ↗</a>
+      </div>
+      <div class="lead-card">
+        <div class="lead-head">
+          <div class="lead-org">Festival ADAR</div>
+          <div class="lead-period">Asturias · 2020 – present</div>
+          <div class="lead-role">Founder & Artistic Director</div>
+        </div>
+        <div class="lead-body">
+          Itinerant festival bringing world-class chamber music, composer commissions and visual installations to underserved rural communities in Asturias, Spain. Supported by the Government of Asturias with €120,000 across four awards (2021–25).
+        </div>
+        <a class="lead-link" href="https://festivaladar.com" target="_blank" rel="noopener">festivaladar.com ↗</a>
+      </div>
+      <div class="lead-card">
+        <div class="lead-head">
+          <div class="lead-org">CreArt Music Series</div>
+          <div class="lead-period">New York · 2008 – 2013</div>
+          <div class="lead-role">Founder & Artistic Director</div>
+        </div>
+        <div class="lead-body">
+          Annual chamber music series at the Kosciuszko Foundation (Manhattan) that presented 25+ concerts featuring international soloists and emerging composers. Predecessor to the CreArtBox nonprofit.
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class='section'>
-      <div class='grid-3'>
-        <a class='card light' href='/portfolio/'>
-          <div class='meta'>Visual work</div>
-          <h3>Portfolio</h3>
-          <p>Opera, video, installations, visual concerts, scenography and multimedia performance.</p>
+  <!-- ── PORTFOLIO PREVIEW ─────────────────────────────────────── -->
+  <section class="section" id="portfolio-preview">
+    <div class="section-head">
+      <div class="lhs">
+        <div class="section-num">03 — Visual work</div>
+        <h2 class="section-title"><em>Visual</em> art portfolio.</h2>
+      </div>
+      <div class="section-rhs">
+        Concert video, installations and theater design.
+      </div>
+    </div>
+    <div class="va-grid">
+      {featuredWork.map((w) => (
+        <article class="va-card"
+          data-lightbox
+          data-img={`${b}${w.image.replace(/^\//,'')}`}
+          data-title={w.title}
+          data-year={w.year}
+          data-kind={w.kind}
+          data-desc={w.desc}
+          data-url={w.url}
+          tabindex="0"
+          role="button"
+          aria-label={`Open details for ${w.title}`}
+        >
+          <div class="va-img">
+            <img src={`${b}${w.image.replace(/^\//,'')}`} alt={w.title} loading="lazy" />
+            <span class="va-num">№ {w.num}</span>
+          </div>
+          <div class="va-meta">
+            <span>{w.year}</span>
+            <span>{w.kind}</span>
+          </div>
+          <h3 class="va-title">{w.title}</h3>
+          <p class="va-desc">{w.desc}</p>
+        </article>
+      ))}
+    </div>
+    <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
+      <a class="btn" href={`${b}portfolio/`}>All 15 works <span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <!-- ── CALENDAR ───────────────────────────────────────────────── -->
+  <section class="section" id="calendar-preview">
+    <div class="section-head">
+      <div class="lhs">
+        <div class="section-num">04 — Calendar</div>
+        <h2 class="section-title">Upcoming <em>dates</em>.</h2>
+      </div>
+    </div>
+    <div class="calendar">
+      {upcoming.map((event, i) => (
+        <div class="cal-row"
+          data-lightbox
+          data-img={`${b}${event.image.replace(/^\//,'')}`}
+          data-title={event.title}
+          data-year={event.year}
+          data-kind={event.subtitle}
+          data-desc={event.location}
+          data-url={event.url}
+          tabindex="0"
+          role="button"
+          aria-label={`Details for ${event.title}`}
+        >
+          <div class="ix">№{String(i+1).padStart(2,'0')}</div>
+          <div class="when">
+            {event.displayDate}
+            <small>{event.year}</small>
+          </div>
+          <div class="name">
+            {event.title}
+            <small>{event.subtitle}</small>
+          </div>
+          <div class="venue">{event.location}</div>
+          <div class="status">
+            <span class="pill">{event.status} <span class="arr">→</span></span>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
+      <a class="btn" href={`${b}calendar/`}>Full calendar <span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <!-- ── RECORDINGS ─────────────────────────────────────────────── -->
+  <section class="section" id="recordings">
+    <div class="section-head">
+      <div class="lhs">
+        <div class="section-num">05 — Discography</div>
+        <h2 class="section-title">Studio &amp; <em>live</em> recordings.</h2>
+      </div>
+      <div class="section-rhs">
+        All releases on Bandcamp, also available on Spotify and Apple Music.
+        <div style="margin-top:12px">
+          <a class="btn" href="https://creartbox.bandcamp.com" target="_blank" rel="noopener" style="font-size:12px;padding:8px 16px">
+            Bandcamp catalogue ↗
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="disco-grid-dense">
+      {liveRecordings.slice(0, 4).map((r) => (
+        <a class="disco-card" href={r.url} target="_blank" rel="noopener">
+          <div class="disco-cover">
+            <img src={`${b}${r.cover.replace(/^\//,'')}`} alt={r.title} loading="lazy" />
+          </div>
+          <div class="disco-meta">
+            <span>{r.year}</span>
+            <span>Live</span>
+          </div>
+          <div class="disco-title">{r.title}</div>
+          <div class="disco-artist">{r.composer}</div>
         </a>
-        <a class='card' href='/catalogue/'>
-          <div class='meta'>Composition</div>
-          <h3>Catalogue</h3>
-          <p>Original works organized by title, year, category, instrumentation and duration.</p>
-        </a>
-        <a class='card' href='/discography/'>
-          <div class='meta'>Recordings</div>
-          <h3>Discography</h3>
-          <p>Albums, flute repertoire, transcriptions and multimedia recording projects.</p>
-        </a>
-      </div>
-    </section>
+      ))}
+    </div>
+    <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
+      <a class="btn" href={`${b}discography/`}>All recordings <span class="arr">→</span></a>
+    </div>
+  </section>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Selected projects</div>
-        <div class='grid-2'>
-          {featured.map((item) => (
-            <article class='card'>
-              <div class='meta'>{item.year} / {item.type}</div>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-            </article>
-          ))}
-        </div>
+  <!-- ── PRESS ──────────────────────────────────────────────────── -->
+  <section class="section" id="press">
+    <div class="section-head">
+      <div class="lhs">
+        <div class="section-num">06 — Press</div>
+        <h2 class="section-title">Selected <em>press</em>.</h2>
       </div>
-    </section>
-
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Calendar</div>
-        <div class='table-list'>
-          {upcoming.map((event) => (
-            <a class='row' href={event.url} target='_blank' rel='noopener'>
-              <strong>{event.displayDate}</strong>
-              <span>{event.title}</span>
-              <span>{event.subtitle}</span>
-              <span>{event.location}</span>
-            </a>
-          ))}
-        </div>
+    </div>
+    <div class="press-grid">
+      <div class="press-card">
+        <div class="press-mark">"</div>
+        <div class="press-quote">Critics top pick for the best music, art and theatre.</div>
+        <div class="press-source">The New Yorker</div>
       </div>
-    </section>
-
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Discography</div>
-        <div class='grid-3'>
-          {albums.map((album) => (
-            <article class='card'>
-              <div class='meta'>{album.year} / {album.format}</div>
-              <h3>{album.title}</h3>
-              <p>{album.description}</p>
-            </article>
-          ))}
-        </div>
+      <div class="press-card">
+        <div class="press-mark">"</div>
+        <div class="press-quote">A remarkable production fusing together a variety of art forms to create a wholly authentic, visually and aurally compelling experience.</div>
+        <div class="press-source">Broadway World</div>
       </div>
-    </section>
-  </main>
-</SiteLayout>
+      <div class="press-card">
+        <div class="press-mark">"</div>
+        <div class="press-quote">The CreArtBox Music Festival has solidified its presence as one of the most sought-after classical music festivals.</div>
+        <div class="press-source">Broadway World</div>
+      </div>
+    </div>
+    <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
+      <a class="btn" href={`${b}press/`}>All press <span class="arr">→</span></a>
+    </div>
+  </section>
+</AppLayout>
