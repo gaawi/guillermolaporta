@@ -1,158 +1,362 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { liveRecordings } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
-function imgSrc(src) {
-  if (!src) return '';
-  if (src.startsWith('http')) return src;
-  return `${b}${src.replace(/^\//, '')}`;
-}
+const CDN = 'https://creartbox-media-cdn.b-cdn.net';
+const WP  = 'https://play.creartbox.nyc/wp-content/uploads';
 
-function playUrl(cover) {
-  const slug = cover.replace('/covers/', '').replace('.jpg', '');
-  return `https://play.creartbox.nyc/title/${slug}/`;
-}
-
-const arrangementComposers = new Set([
-  'Shostakovich', 'Haydn', 'Mahler · CreArtBox · Le Train Bleu',
-]);
-
-const recordings = liveRecordings.map(r => ({
-  ...r,
-  role: arrangementComposers.has(r.composer) ? 'Flute · Arr.' : 'Flute',
-  format: parseInt(r.year) >= 2023 ? 'HD' : 'HD',
-  playUrl: playUrl(r.cover),
-}));
-
-// Sort: newest first
-recordings.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+const recordings = [
+  {
+    composer: 'György Ligeti',
+    title: 'Musica Ricercata',
+    year: '2025',
+    role: 'Flute · Arr.',
+    type: 'video',
+    cover: `${WP}/MG_0161.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/4214c16c-1c0a-4bdc-b4de-6b93bf95246e?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Devin Cholodenko',
+    title: 'Twilight at Dawn',
+    year: '2024',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/DSC0028-scaled.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/34b94837-4267-4e67-b6df-fb50ea4c55e1?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+    note: 'World premiere',
+  },
+  {
+    composer: 'Antonín Dvořák',
+    title: 'American Quartet — String Quartet No. 12',
+    year: '2024',
+    role: 'Flute · Arr.',
+    type: 'audio',
+    cover: `${WP}/IMG_3176-scaled.png`,
+    tracks: [
+      { label: 'I. Allegro ma non troppo', src: `${CDN}/webimg/projects_photos/20241211/audio/07DvorakI.mp3` },
+      { label: 'II. Lento', src: `${CDN}/webimg/projects_photos/20241211/audio/08DvorakII.mp3` },
+      { label: 'III. Molto vivace — Trio', src: `${CDN}/webimg/projects_photos/20241211/audio/09DvorakIII.mp3` },
+      { label: 'IV. Finale. Vivace ma non troppo', src: `${CDN}/webimg/projects_photos/20241211/audio/10DvorakIV.mp3` },
+    ],
+  },
+  {
+    composer: 'Annamaria Kowalsky',
+    title: 'Heart Meditation',
+    year: '2023',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/056-scaled.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/67fbe759-5a8f-4ea0-8a1c-95d82741c0fb?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Enrique Granados',
+    title: 'Piano Quintet in G minor, Op. 49',
+    year: '2023',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/DSC00357-2.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/925210c7-f30b-4a8a-b7e8-8f4d26c8150a?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Andrea Casarrubios',
+    title: 'Afilador',
+    year: '2023',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/002.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/d6914ec2-693c-4013-805e-356129f0375c?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Hannah Selin',
+    title: 'Chesapeake',
+    year: '2023',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/004-4.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/096b2a96-cb99-4581-92a8-50e5580b3688?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Modest Mussorgsky',
+    title: 'Pictures at an Exhibition',
+    year: '2023',
+    role: 'Flute · Arr.',
+    type: 'video',
+    cover: `${WP}/pictures2.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/b4dc09b9-0cfa-41a4-b6b8-101953bfaee5?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Joan Tower',
+    title: 'Petroushkates',
+    year: '2023',
+    role: 'Flute',
+    type: 'audio',
+    cover: `${WP}/016.jpg`,
+    tracks: [
+      { label: 'Petroushkates', src: `${WP}/Petroushkates.mp3` },
+    ],
+  },
+  {
+    composer: 'Marcos Fernández',
+    title: 'Noctum — Concerto for flute and clarinet',
+    year: '2022',
+    role: 'Flute',
+    type: 'audio',
+    cover: `${WP}/013.jpg`,
+    tracks: [
+      { label: 'Noctum Concerto for flute and clarinet', src: `${WP}/Marcos-Fernandez-Flute-clarinet-concierto-remastered-2022.wav` },
+    ],
+  },
+  {
+    composer: 'Bryan M. Wysocki',
+    title: 'We Can Learn Me Together',
+    year: '2021',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/DSC05348-scaled.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/ce34a5c8-942a-40e2-a9f8-d960eaafb8a1?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+    note: 'NY Premiere',
+  },
+  {
+    composer: 'André Jolivet',
+    title: 'Petite Suite',
+    year: '2021',
+    role: 'Flute',
+    type: 'audio',
+    cover: `${WP}/ADS_0835.jpg`,
+    tracks: [
+      { label: 'I–V. Petite Suite', src: 'https://media.creartbox.nyc/audios/20211204/Petite%20suite%20by%20Andre%20Jolivet.mp3' },
+    ],
+  },
+  {
+    composer: 'Antonio Vivaldi',
+    title: 'La Notte, RV 439',
+    year: '2021',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/circlenoirphoto2.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/73ab8300-a9b0-403a-9c15-25e00fddfd55?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Claude Debussy',
+    title: 'Deuxième Sonate en trio',
+    year: '2021',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/002-3.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/64946dd5-307a-4ab6-9027-c02023c7cfd9?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Tatiana Nikolayeva',
+    title: 'Trio Op. 18',
+    year: '2021',
+    role: 'Flute',
+    type: 'video',
+    cover: `${WP}/DSC05267-scaled.jpg`,
+    embed: 'https://iframe.mediadelivery.net/embed/449741/e6ae9bde-a67f-4dfa-af00-8fdf14ca5d84?autoplay=true&loop=false&muted=false&preload=true&responsive=true',
+  },
+  {
+    composer: 'Olivier Messiaen',
+    title: 'Quartet for the End of Time',
+    year: '2019',
+    role: 'Flute',
+    type: 'audio',
+    cover: `${WP}/ADS_0835.jpg`,
+    tracks: [
+      { label: 'I – Crystal liturgy', src: `${CDN}/webimg/audios/20190830/01%20Crystal%20liturgy.mp3` },
+      { label: 'II – Vocalise, for the Angel', src: `${CDN}/webimg/audios/20190830/02%20Vocalise%2C%20for%20the%20Angel%20who%20announces%20the%20end%20of%20time.mp3` },
+      { label: 'III – Abyss of birds', src: `${CDN}/webimg/audios/20190830/03%20Abyss%20of%20birds.mp3` },
+      { label: 'IV – Interlude', src: `${CDN}/webimg/audios/20190830/04%20Interlude.mp3` },
+      { label: 'V – Praise to the eternity of Jesus', src: `${CDN}/webimg/audios/20190830/05%20Praise%20to%20the%20eternity%20of%20Jesus.mp3` },
+      { label: 'VI – Dance of fury', src: `${CDN}/webimg/audios/20190830/06%20Dance%20of%20fury%2C%20for%20the%20seven%20trumpets.mp3` },
+      { label: 'VII – Tangle of rainbows', src: `${CDN}/webimg/audios/20190830/07%20Tangle%20of%20rainbows%2C%20for%20the%20Angel%20who%20announces%20the%20end%20of%20time.mp3` },
+      { label: 'VIII – Praise to the immortality of Jesus', src: `${CDN}/webimg/audios/20190830/08%20Praise%20to%20the%20immortality%20of%20Jesus.mp3` },
+    ],
+  },
+];
 ---
 <AppLayout
   title="Recordings — Guillermo Laporta"
-  description="Concert recordings of Guillermo Laporta as flutist — chamber music, orchestral transcriptions and original works."
+  description="Concert recordings of Guillermo Laporta as flutist — chamber music, original works and orchestral transcriptions."
 >
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">Recordings</div>
     <h1 class="subpage-title">As a <em>flutist</em>.</h1>
-    <p class="subpage-sub">Concert recordings — chamber music, orchestral transcriptions and original works. Stream at full quality on CreArtBox Play.</p>
+    <p class="subpage-sub">Concert recordings — chamber music, new works and orchestral transcriptions. Press play to listen or watch.</p>
   </div>
 
   <section class="rec-section">
-    <div class="rec-grid">
-      {recordings.map((r) => (
-        <article class="rec-card">
-          <a class="rec-link" href={r.playUrl} target="_blank" rel="noopener">
-            <div class="rec-cover">
-              <img src={imgSrc(r.cover)} alt={r.title} loading="lazy" />
-              <div class="rec-play-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              </div>
+    <ul class="rec-list">
+      {recordings.map((r, i) => (
+        <li class="rec-row">
+          <div class="rec-thumb">
+            <img src={r.cover} alt={r.title} loading="lazy" />
+          </div>
+          <div class="rec-info">
+            <div class="rec-composer">{r.composer}</div>
+            <h2 class="rec-title">{r.title}</h2>
+            <div class="rec-meta">
+              <span class="rec-year">{r.year}</span>
+              <span class={`rec-badge ${r.role.includes('Arr') ? 'arr' : ''}`}>{r.role}</span>
+              {r.note && <span class="rec-note">{r.note}</span>}
             </div>
-            <div class="rec-body">
-              <div class="rec-composer">{r.composer}</div>
-              <h2 class="rec-title">{r.title}</h2>
-              <div class="rec-foot">
-                <span class="rec-year">{r.year}</span>
-                <span class="rec-badge role">{r.role}</span>
-              </div>
-            </div>
-          </a>
-        </article>
+          </div>
+          <div class="rec-action">
+            <button
+              class={`rec-play-btn ${r.type}`}
+              data-index={i}
+              aria-label={r.type === 'video' ? `Watch ${r.title}` : `Listen to ${r.title}`}
+            >
+              {r.type === 'video'
+                ? (<><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch</>)
+                : (<><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 18V6l13-2v12M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0m13-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/></svg> Listen</>)
+              }
+            </button>
+          </div>
+        </li>
       ))}
-    </div>
-
-    <div class="rec-cta">
-      <a class="rec-cta-link" href="https://play.creartbox.nyc/media-cast/guillermo-laporta-flute/" target="_blank" rel="noopener">
-        Full library on CreArtBox Play
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-      </a>
-    </div>
+    </ul>
   </section>
 
+  <!-- ── MODAL ─────────────────────────────────────────────────────── -->
+  <div class="media-modal" id="mediaModal" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Video panel -->
+      <div class="modal-video-panel" id="modalVideoPanel">
+        <div class="modal-iframe-wrap">
+          <iframe id="modalIframe" src="" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="modal-video-info" id="modalVideoInfo"></div>
+      </div>
+
+      <!-- Audio panel -->
+      <div class="modal-audio-panel" id="modalAudioPanel">
+        <div class="modal-audio-cover">
+          <img id="modalAudioCover" src="" alt="" />
+        </div>
+        <div class="modal-audio-content">
+          <div class="modal-audio-meta" id="modalAudioMeta"></div>
+          <audio id="modalAudio" controls></audio>
+          <ul class="modal-track-list" id="modalTrackList"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ recordings }}>
+    const modal       = document.getElementById('mediaModal');
+    const backdrop    = document.getElementById('modalBackdrop');
+    const closeBtn    = document.getElementById('modalClose');
+    const videoPanel  = document.getElementById('modalVideoPanel');
+    const audioPanel  = document.getElementById('modalAudioPanel');
+    const iframe      = document.getElementById('modalIframe');
+    const videoInfo   = document.getElementById('modalVideoInfo');
+    const audioEl     = document.getElementById('modalAudio');
+    const audioCover  = document.getElementById('modalAudioCover');
+    const audioMeta   = document.getElementById('modalAudioMeta');
+    const trackList   = document.getElementById('modalTrackList');
+
+    function openModal(idx) {
+      const r = recordings[idx];
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      if (r.type === 'video') {
+        videoPanel.style.display = '';
+        audioPanel.style.display = 'none';
+        iframe.src = r.embed;
+        videoInfo.innerHTML = `<span class="modal-composer">${r.composer}</span> <span class="modal-title-text">${r.title}</span>`;
+      } else {
+        videoPanel.style.display = 'none';
+        audioPanel.style.display = '';
+        iframe.src = '';
+        audioCover.src  = r.cover;
+        audioCover.alt  = r.title;
+        audioMeta.innerHTML = `<span class="modal-composer">${r.composer}</span><span class="modal-title-text">${r.title}</span>`;
+
+        trackList.innerHTML = '';
+        r.tracks.forEach((t, ti) => {
+          const li = document.createElement('li');
+          li.className = 'modal-track' + (ti === 0 ? ' active' : '');
+          li.dataset.src = t.src;
+          li.innerHTML = `<span class="track-num">${String(ti + 1).padStart(2, '0')}</span><span class="track-label">${t.label}</span>`;
+          li.addEventListener('click', () => playTrack(li, t.src));
+          trackList.appendChild(li);
+        });
+        playTrack(trackList.querySelector('.modal-track'), r.tracks[0].src);
+      }
+    }
+
+    function playTrack(li, src) {
+      trackList.querySelectorAll('.modal-track').forEach(t => t.classList.remove('active'));
+      li.classList.add('active');
+      audioEl.src = src;
+      audioEl.play().catch(() => {});
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      iframe.src = '';
+      audioEl.pause();
+      audioEl.src = '';
+    }
+
+    document.querySelectorAll('.rec-play-btn').forEach(btn => {
+      btn.addEventListener('click', () => openModal(Number(btn.dataset.index)));
+    });
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+
   <style>
+    /* ── list layout ── */
     .rec-section {
-      max-width: 1480px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 40px 96px;
     }
-    @media (max-width: 720px) {
-      .rec-section { padding: 0 20px 64px; }
+    @media (max-width: 720px) { .rec-section { padding: 0 20px 64px; } }
+
+    .rec-list {
+      list-style: none;
+      border-top: 1px solid var(--line-soft);
     }
 
-    .rec-grid {
+    .rec-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      grid-template-columns: 80px 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line-soft);
+      transition: background .15s;
     }
-    @media (max-width: 1100px) { .rec-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px)  { .rec-grid { grid-template-columns: 1fr; } }
+    .rec-row:hover { background: var(--surface); margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
 
-    .rec-card {
-      background: var(--surface);
-      border: 1px solid var(--line-soft);
-      overflow: hidden;
-    }
-
-    .rec-link {
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      color: inherit;
-      height: 100%;
-    }
-
-    .rec-cover {
-      position: relative;
-      aspect-ratio: 1 / 1;
+    .rec-thumb {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
       overflow: hidden;
       background: var(--line-soft);
     }
-
-    .rec-cover img {
+    .rec-thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform .5s ease, filter .3s ease;
     }
 
-    .rec-play-icon {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity .2s ease;
-      background: rgba(0, 0, 0, .35);
-    }
-
-    .rec-play-icon svg {
-      width: 44px;
-      height: 44px;
-      color: #fff;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,.4));
-    }
-
-    .rec-card:hover .rec-cover img {
-      transform: scale(1.03);
-      filter: brightness(.85);
-    }
-
-    .rec-card:hover .rec-play-icon {
-      opacity: 1;
-    }
-
-    .rec-body {
-      padding: 20px 22px 22px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
+    .rec-info { min-width: 0; }
 
     .rec-composer {
       font-family: var(--mono);
@@ -160,27 +364,27 @@ recordings.sort((a, b) => parseInt(b.year) - parseInt(a.year));
       letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .rec-title {
       font-family: var(--serif);
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 400;
       line-height: 1.2;
       letter-spacing: -.01em;
       color: var(--ink);
-      margin-bottom: 14px;
-      flex: 1;
-      transition: color .15s;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .rec-card:hover .rec-title { color: var(--accent); }
-
-    .rec-foot {
+    .rec-meta {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .rec-year {
@@ -200,42 +404,203 @@ recordings.sort((a, b) => parseInt(b.year) - parseInt(a.year));
       color: var(--muted);
     }
 
-    .rec-badge.role {
-      border-color: var(--accent);
-      color: var(--accent);
+    .rec-badge.arr { border-color: var(--accent); color: var(--accent); }
+
+    .rec-note {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-style: italic;
     }
 
-    .rec-cta {
-      margin-top: 56px;
-      text-align: center;
-    }
-
-    .rec-cta-link {
-      display: inline-flex;
+    .rec-play-btn {
+      display: flex;
       align-items: center;
       gap: 8px;
       font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .12em;
+      font-size: 10px;
+      letter-spacing: .14em;
       text-transform: uppercase;
+      padding: 9px 18px;
+      border: 1px solid var(--line-soft);
+      background: transparent;
       color: var(--ink);
-      text-decoration: none;
-      border-bottom: 1px solid var(--line-soft);
-      padding-bottom: 3px;
-      transition: color .15s, border-color .15s;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .15s;
+    }
+    .rec-play-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .rec-play-btn:hover, .rec-play-btn.video:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .rec-play-btn.audio:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    @media (max-width: 720px) {
+      .rec-row { grid-template-columns: 64px 1fr; gap: 16px; }
+      .rec-thumb { width: 64px; height: 64px; }
+      .rec-title { font-size: 15px; }
+      .rec-action { grid-column: 1 / -1; padding-left: 80px; }
+      .rec-play-btn { padding: 7px 14px; font-size: 9px; }
+    }
+    @media (max-width: 480px) {
+      .rec-action { padding-left: 0; }
     }
 
-    .rec-cta-link:hover { color: var(--accent); border-color: var(--accent); }
+    /* ── modal ── */
+    .media-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .media-modal.open { opacity: 1; pointer-events: auto; }
 
-    .rec-cta-link svg {
-      width: 14px;
-      height: 14px;
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .88);
+      cursor: pointer;
+    }
+
+    .modal-box {
+      position: relative;
+      z-index: 1;
+      width: min(900px, 95vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--paper);
+      box-shadow: 0 32px 80px rgba(0,0,0,.6);
+      transform: translateY(12px);
+      transition: transform .25s ease;
+    }
+    .media-modal.open .modal-box { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 2;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,.5);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .modal-close:hover { background: rgba(0,0,0,.8); }
+    .modal-close svg { width: 18px; height: 18px; }
+
+    /* video panel */
+    .modal-video-panel { display: flex; flex-direction: column; }
+    .modal-iframe-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+    .modal-iframe-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .modal-video-info {
+      padding: 16px 24px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    /* audio panel */
+    .modal-audio-panel {
+      display: flex;
+      gap: 0;
+    }
+    .modal-audio-cover {
+      width: 220px;
       flex-shrink: 0;
     }
+    .modal-audio-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .modal-audio-content {
+      flex: 1;
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .modal-audio-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    /* shared info styles */
+    .modal-composer {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .modal-title-text {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .modal-video-info .modal-title-text { font-size: 16px; }
+
+    #modalAudio {
+      width: 100%;
+      margin-bottom: 20px;
+      accent-color: var(--accent);
+    }
+
+    .modal-track-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: auto;
+      max-height: 220px;
+    }
+    .modal-track {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line-soft);
+      cursor: pointer;
+      transition: color .15s;
+    }
+    .modal-track:last-child { border-bottom: none; }
+    .modal-track:hover, .modal-track.active { color: var(--accent); }
+    .track-num { font-family: var(--mono); font-size: 10px; color: var(--muted); min-width: 20px; flex-shrink: 0; }
+    .track-label { font-size: 13px; line-height: 1.3; }
 
     @media (max-width: 600px) {
-      .rec-body { padding: 16px 18px 18px; }
-      .rec-title { font-size: 16px; }
+      .modal-audio-panel { flex-direction: column; }
+      .modal-audio-cover { width: 100%; height: 200px; }
+      .modal-audio-cover img { height: 100%; }
+      .modal-audio-content { padding: 20px; }
     }
   </style>
 </AppLayout>
