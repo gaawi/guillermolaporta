@@ -1,156 +1,222 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
-import { bio, catalogue, albums } from '../data/site.js';
+import AppLayout from '../layouts/AppLayout.astro';
+import { bio, catalogue, albums, liveRecordings, funders } from '../data/site.js';
 import { projects } from '../data/projects.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
 ---
-<SiteLayout title='Resume - Guillermo Laporta'>
-  <main class='page'>
-    <section class='page-hero'>
-      <div>
-        <div class='eyebrow'>Curriculum Vitae</div>
-        <h1>Resume</h1>
-        <p class='intro'>Full professional record — leadership, artistic work, compositions, recordings and training.</p>
-        <div class='button-row'>
-          <a class='button primary' href='/bio/'>Bio page</a>
-          <a class='button' href='/contact/'>Contact</a>
-        </div>
-      </div>
-    </section>
+<AppLayout
+  title="Resume — Guillermo Laporta"
+  description="Full CV: leadership, artistic practice, compositions, recordings, education and grants."
+>
+  <div class="subpage-head">
+    <a class="subpage-back" href={b}>← Home</a>
+    <div class="subpage-num">Curriculum Vitae</div>
+    <h1 class="subpage-title">Full <em>resume</em>.</h1>
+    <p class="subpage-sub">Leadership, artistic practice, compositions, recordings and training.</p>
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn primary" href={`${b}downloads/guillermo-laporta-cv.pdf`} target="_blank">Download CV — PDF ↗</a>
+      <a class="btn" href={`${b}bio/`}>Bio page</a>
+    </div>
+  </div>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Leadership</div>
+  <!-- ── LEADERSHIP ─────────────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Leadership</div>
+    <div class="cv-entries">
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">CreArtBox</div>
+          <div class="cv-entry-date">New York, NY · 2013 – present</div>
+        </div>
+        <div class="cv-entry-role">Co-founder & Executive Director</div>
+        <p class="cv-entry-body">Chamber music and multimedia performing arts organization. Produces original visual concerts, residencies, educational programs and community engagement initiatives. 20+ professional artists, 20+ annual performances at The DiMenna Center, Mark Morris Center, The William Vale, Greenwich House Music School and more. Sustained support from the New York State Council on the Arts (NYSCA). Covered by The New Yorker, Broadway World, Time Out New York, New York Resident, Queens Ledger.</p>
+        <a class="cv-entry-link" href="https://creartbox.nyc" target="_blank" rel="noopener">creartbox.nyc ↗</a>
+      </div>
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">Festival ADAR</div>
+          <div class="cv-entry-date">Asturias, Spain · 2020 – present</div>
+        </div>
+        <div class="cv-entry-role">Founder & Artistic Director</div>
+        <p class="cv-entry-body">Rural arts platform activating villages, monasteries, landscapes and heritage spaces in Asturias through contemporary music, visual art, site-specific creation, residencies and community programs. Supported by the Government of the Principality of Asturias with €120,000 across four competitive awards (2021–25). Presents world premieres, artistic residencies and installations in collaboration with international artists and composers.</p>
+        <a class="cv-entry-link" href="https://festivaladar.com" target="_blank" rel="noopener">festivaladar.com ↗</a>
+      </div>
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">CreArt Music Series</div>
+          <div class="cv-entry-date">New York, NY · 2008 – 2013</div>
+        </div>
+        <div class="cv-entry-role">Founder & Artistic Director</div>
+        <p class="cv-entry-body">Annual concert series at the Kosciuszko Foundation (Manhattan) presenting chamber music with international soloists and emerging composers. 25+ concerts over six seasons. Predecessor organization to the CreArtBox nonprofit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ARTISTIC PRACTICE ──────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Artistic Practice</div>
+    <div class="cv-entries">
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">Flutist</div>
+        </div>
+        <p class="cv-entry-body">Concert performer specializing in chamber music, visual concerts and contemporary repertoire. Co-Principal Flute of the Oviedo Filarmonía (2009–12), Principal Flute of the Herald Chamber Orchestra (2012–15) and the New York International Chamber Orchestra (2013–18). Performed with the BBC Orchestra, Orquesta del Principado de Asturias, Le Train Bleu Ensemble and Orquesta Sinfónica de Euskadi. Recorded for Warner, EMI and Naxos. Toured to New York, London, Madrid, Tokyo, Bilbao and Asturias.</p>
+      </div>
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">Composer</div>
+        </div>
+        <p class="cv-entry-body">Works across opera, ballet, chamber music, multimedia and video. Original compositions developed in collaboration with dancers, filmmakers, visual artists and theatrical directors. Committed to formats that expand the audience for classical music through visual storytelling and theatrical presentation.</p>
+      </div>
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">Visual Concert Designer</div>
+        </div>
+        <p class="cv-entry-body">Develops performance formats integrating image, light, projection, spatial design and movement into the musical experience. Designs original video art for concert productions. Created visual concert productions at venues in New York City, Tokyo, Madrid, Grado, Oviedo and Asturias.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SELECTED PROJECTS ──────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Selected Projects</div>
+    <div class="cv-entries">
+      {projects.map((p) => (
+        <div class="cv-entry">
+          <div class="cv-entry-head">
+            <div class="cv-entry-title">{p.title}</div>
+            <div class="cv-entry-date">{p.year}</div>
+          </div>
+          <div class="cv-entry-role">{p.type} · {p.roles.join(', ')}</div>
+          <p class="cv-entry-body">{p.long}</p>
+          {p.url && (
+            <a class="cv-entry-link" href={p.url} target="_blank" rel="noopener">Project page ↗</a>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── COMPOSITION CATALOGUE ──────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Composition Catalogue</div>
+    <div class="cv-entries">
+      {catalogue.map((work) => (
+        <div class="cv-entry cv-entry-compact">
+          <div class="cv-entry-head">
+            <div class="cv-entry-title">{work.title}</div>
+            <div class="cv-entry-date">{work.year}</div>
+          </div>
+          <div class="cv-entry-role">{work.category} · {work.instrumentation}{work.duration ? ` · ${work.duration}` : ''}</div>
+          {work.notes && <p class="cv-entry-body">{work.notes}</p>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── DISCOGRAPHY ────────────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Discography</div>
+    <div class="cv-entries">
+      <div class="cv-sublabel">Studio Albums</div>
+      {albums.map((album) => (
+        <div class="cv-entry cv-entry-compact">
+          <div class="cv-entry-head">
+            <div class="cv-entry-title">{album.title}</div>
+            <div class="cv-entry-date">{album.year}</div>
+          </div>
+          <div class="cv-entry-role">{album.format}</div>
+          {album.description && <p class="cv-entry-body">{album.description}</p>}
+        </div>
+      ))}
+
+      <div class="cv-sublabel" style="margin-top:32px">CreArtBox Live Sessions</div>
+      {liveRecordings.map((r) => (
+        <div class="cv-entry cv-entry-compact">
+          <div class="cv-entry-head">
+            <div class="cv-entry-title">{r.title}</div>
+            <div class="cv-entry-date">{r.year}</div>
+          </div>
+          <div class="cv-entry-role">{r.composer} · Live recording</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── EDUCATION ──────────────────────────────────────────────── -->
+  <section class="section cv-section">
+    <div class="cv-label">Education</div>
+    <div class="cv-entries">
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">M.Mus. Advanced Performance — Flute</div>
+          <div class="cv-entry-date">London, 2010–12</div>
+        </div>
+        <div class="cv-entry-role">Royal College of Music</div>
+        <p class="cv-entry-body">Studied with Jaime Martín, Paul Edmund Davies and Sue Thomas. Full scholarship.</p>
+      </div>
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">M.A. Arts Management</div>
+          <div class="cv-entry-date">Madrid, 2012–14</div>
+        </div>
+        <div class="cv-entry-role">University of Alcalá de Henares</div>
+      </div>
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <div class="cv-entry-title">Superior Degree in Music — Flute</div>
+          <div class="cv-entry-date">San Sebastián, 2004–09</div>
+        </div>
+        <div class="cv-entry-role">Musikene — Superior Conservatory of Music of the Basque Country</div>
+        <p class="cv-entry-body">With distinction. Studies with Jaime Martín.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GRANTS & FUNDERS ───────────────────────────────────────── -->
+  <section class="section cv-section" style="padding-bottom:96px">
+    <div class="cv-label">Grants & Support</div>
+    <div class="cv-entries">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
         <div>
-          <div class='resume-entry'>
-            <div class='resume-header'>
-              <strong>CreArtBox</strong>
-              <span class='resume-date'>2013 – present</span>
-            </div>
-            <div class='resume-role'>Co-founder &amp; Executive Director · New York, NY</div>
-            <p>Chamber music and multimedia performing arts organization. Produces original visual concerts, residencies, educational programs and community engagement initiatives. Commissions new works and develops collaborative projects between classical music, dance, visual art and technology.</p>
-          </div>
-          <div class='resume-entry'>
-            <div class='resume-header'>
-              <strong>Festival ADAR</strong>
-              <span class='resume-date'>2020 – present</span>
-            </div>
-            <div class='resume-role'>Founder &amp; Artistic Director · Asturias, Spain</div>
-            <p>Rural arts platform activating villages, monasteries, landscapes and heritage spaces in Asturias through contemporary music, visual art, site-specific creation, residencies and community programs.</p>
-          </div>
+          <div class="cv-sublabel">United States</div>
+          <ul class="cv-list">
+            {funders.us.map((f) => <li>{f}</li>)}
+          </ul>
         </div>
-      </div>
-    </section>
-
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Artistic Practice</div>
         <div>
-          <div class='resume-entry'>
-            <div class='resume-header'>
-              <strong>Flutist</strong>
-            </div>
-            <p>Concert performer specializing in chamber music, visual concerts and contemporary repertoire. Performed symphonic, operatic and chamber programs in Europe, Japan and the United States with ensembles including Oviedo Filarmonía, BBC Orchestra, Orquesta del Principado de Asturias, Orquesta Sinfónica de Euskadi, Le Train Bleu Ensemble and New York International Orchestra.</p>
-          </div>
-          <div class='resume-entry'>
-            <div class='resume-header'>
-              <strong>Composer</strong>
-            </div>
-            <p>Works across opera, ballet, chamber music, multimedia and video. Compositions developed in collaboration with dancers, filmmakers, visual artists and theatrical directors. Committed to formats that expand the audience for classical music.</p>
-          </div>
-          <div class='resume-entry'>
-            <div class='resume-header'>
-              <strong>Visual Concert Designer</strong>
-            </div>
-            <p>Develops performance formats integrating image, light, projection, spatial design and movement into the musical experience. Created visual concert productions at venues in New York, Tokyo, Madrid and Asturias.</p>
-          </div>
+          <div class="cv-sublabel">Europe</div>
+          <ul class="cv-list">
+            {funders.europe.map((f) => <li>{f}</li>)}
+          </ul>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Selected projects</div>
-        <div>
-          {projects.map((p) => (
-            <div class='resume-entry'>
-              <div class='resume-header'>
-                <strong>{p.title}</strong>
-                <span class='resume-date'>{p.year}</span>
-              </div>
-              <div class='resume-role'>{p.type} · {p.roles.join(', ')}</div>
-              <p>{p.long}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Composition catalogue</div>
-        <div>
-          {catalogue.map((work) => (
-            <div class='resume-entry'>
-              <div class='resume-header'>
-                <strong>{work.title}</strong>
-                <span class='resume-date'>{work.year}</span>
-              </div>
-              <div class='resume-role'>{work.category} · {work.instrumentation}{work.duration ? ` · ${work.duration}` : ''}</div>
-              {work.notes && <p>{work.notes}</p>}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Discography</div>
-        <div>
-          {albums.map((album) => (
-            <div class='resume-entry'>
-              <div class='resume-header'>
-                <strong>{album.title}</strong>
-                <span class='resume-date'>{album.year}</span>
-              </div>
-              <div class='resume-role'>{album.format}</div>
-              <p>{album.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Education</div>
-        <div>
-          <div class='resume-entry'>
-            <div class='resume-header'>
-              <strong>Royal College of Music</strong>
-              <span class='resume-date'>London, UK</span>
-            </div>
-            <div class='resume-role'>Flute Performance</div>
-          </div>
-          <div class='resume-entry'>
-            <div class='resume-header'>
-              <strong>Musikene</strong>
-              <span class='resume-date'>San Sebastián, Spain</span>
-            </div>
-            <div class='resume-role'>Flute Performance</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-</SiteLayout>
-
-<style>
-  .resume-entry{padding:22px 0;border-bottom:1px solid var(--line)}
-  .resume-entry:last-child{border-bottom:none}
-  .resume-header{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:4px}
-  .resume-header strong{font-size:1.05rem;letter-spacing:-.02em}
-  .resume-date{color:var(--clay);font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
-  .resume-role{color:var(--clay);font-size:.82rem;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
-  .resume-entry p{color:var(--muted);margin:0;font-size:.95rem;line-height:1.6}
-</style>
+  <style>
+    .cv-section{max-width:1480px;padding-left:40px;padding-right:40px;display:grid;grid-template-columns:220px 1fr;gap:40px;border-bottom:1px solid var(--line-soft)}
+    .cv-section:last-of-type{border-bottom:none}
+    .cv-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);padding-top:4px;font-weight:500}
+    .cv-sublabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line-soft);font-weight:500}
+    .cv-entries{display:flex;flex-direction:column;gap:0}
+    .cv-entry{padding:28px 0;border-bottom:1px solid var(--line-soft)}
+    .cv-entry:last-child{border-bottom:none}
+    .cv-entry-compact{padding:16px 0}
+    .cv-entry-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:6px}
+    .cv-entry-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
+    .cv-entry-compact .cv-entry-title{font-size:17px}
+    .cv-entry-date{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
+    .cv-entry-role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:10px;letter-spacing:-.005em}
+    .cv-entry-body{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;max-width:72ch}
+    .cv-entry-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500}
+    .cv-entry-link:hover{text-decoration:underline}
+    .cv-list{list-style:none;display:flex;flex-direction:column}
+    .cv-list li{font-size:13.5px;color:var(--ink-2);padding:9px 0;border-bottom:1px solid var(--line-soft);font-weight:350}
+    .cv-list li:last-child{border-bottom:none}
+    @media(max-width:900px){.cv-section{grid-template-columns:1fr;gap:20px;padding-left:20px;padding-right:20px}}
+    @media(max-width:600px){.cv-entry-head{flex-direction:column;gap:4px}.cv-entry-title{font-size:18px}}
+  </style>
+</AppLayout>

@@ -2,7 +2,8 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import { bio } from '../data/site.js';
 
-const b = import.meta.env.BASE_URL;
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
 ---
 <AppLayout title="Bio — Guillermo Laporta" description="Biography, leadership and practice of flutist, composer and cultural producer Guillermo Laporta.">
   <div class="subpage-head">
