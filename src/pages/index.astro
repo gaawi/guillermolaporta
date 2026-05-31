@@ -7,52 +7,35 @@ const b = _base.endsWith('/') ? _base : _base + '/';
 const today = new Date().toISOString().split('T')[0];
 const upcoming = calendar.filter(e => e.date >= today).slice(0, 4);
 const featuredWork = visualWork.slice(0, 3);
-const portraitImg = `${b}downloads/laporta-press-photo-1.jpg`;
+const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0161.jpg';
 ---
 <AppLayout
   title="Guillermo Laporta — Flutist · Composer · Director"
   description="Guillermo Laporta is a flutist, composer and cultural producer based between New York City and Asturias, Spain. Founder of CreArtBox and Festival ADAR."
 >
   <!-- ── HERO ─────────────────────────────────────────────────── -->
-  <section class="hero" id="top">
-    <div class="hero-grid">
-      <div class="hero-left">
-        <div class="hero-eyebrow">
-          <span class="line"></span>
-          <span>Flutist · Composer · Director</span>
-          <span>— New York</span>
-        </div>
-        <h1 class="hero-title">
-          <span class="row">Flutist, composer</span>
-          <span class="row"><em>&</em> producer in NYC.</span>
-        </h1>
-        <p class="hero-sub">
-          Guillermo Laporta works between <b>New York</b> and <b>Asturias</b> across
-          chamber music, opera, multimedia performance and concert design.
-          He develops productions that bring classical music to new and broader audiences —
-          through visual concerts, interdisciplinary collaboration and cultural entrepreneurship.
-        </p>
-        <div class="hero-actions">
-          <a class="btn primary" href={`${b}portfolio/`}>Catalogue <span class="arr">→</span></a>
-          <a class="btn" href={`${b}visual-art/`}>Visual Art</a>
-          <a class="btn" href={`${b}calendar/`}>Upcoming dates</a>
+  <section class="hh" id="top">
+    <div class="hh-bg">
+      <img src={heroImg} alt="Guillermo Laporta — performance" loading="eager" />
+      <div class="hh-overlay"></div>
+    </div>
+    <div class="hh-content">
+      <div class="hh-left">
+        <div class="hh-eyebrow">Flutist · Composer · Director</div>
+        <h1 class="hh-name">Guillermo <em>Laporta</em></h1>
+        <div class="hh-where">New York · Asturias, Spain</div>
+        <div class="hh-actions">
+          <a class="hh-btn primary" href={`${b}portfolio/`}>Catalogue <span>→</span></a>
+          <a class="hh-btn" href={`${b}visual-art/`}>Visual Art</a>
+          <a class="hh-btn" href={`${b}calendar/`}>Upcoming dates</a>
         </div>
       </div>
-      <div>
-        <div class="hero-card">
-          <div class="img">
-            <img src={portraitImg} alt="Guillermo Laporta" loading="eager" />
-          </div>
-          <div class="body">
-            <div>
-              <div class="meta">Upcoming · Aug 2026</div>
-              <h3>Festival ADAR 2026</h3>
-              <div class="where">Multiple venues · Asturias, Spain</div>
-            </div>
-            <span class="badge">Festival</span>
-          </div>
-        </div>
-      </div>
+      <a class="hh-card" href="https://festivaladar.com" target="_blank" rel="noopener">
+        <div class="hh-card-meta">Upcoming · Aug 2026</div>
+        <div class="hh-card-title">Festival ADAR 2026</div>
+        <div class="hh-card-where">Multiple venues · Asturias, Spain</div>
+        <span class="hh-card-badge">Festival</span>
+      </a>
     </div>
   </section>
 
@@ -336,5 +319,34 @@ const portraitImg = `${b}downloads/laporta-press-photo-1.jpg`;
     .bio-kit{margin-top:48px;padding-top:32px;border-top:1px solid var(--line-soft)}
     .bio-kit-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
     .bio-kit-links{display:flex;flex-wrap:wrap;gap:12px}
+  </style>
+
+  <style>
+    /* ── Full-bleed hero ── */
+    .hh{position:relative;width:100%;height:88vh;min-height:520px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+    .hh-bg{position:absolute;inset:0}
+    .hh-bg img{width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block}
+    .hh-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,7,5,.84) 0%,rgba(10,7,5,.28) 52%,rgba(10,7,5,.06) 100%)}
+
+    .hh-content{position:relative;z-index:2;max-width:1480px;margin:0 auto;width:100%;padding:0 56px 52px;display:grid;grid-template-columns:1fr auto;gap:48px;align-items:flex-end}
+    @media(max-width:860px){.hh-content{grid-template-columns:1fr;gap:28px;padding:0 28px 36px}}
+    @media(max-width:480px){.hh-content{padding:0 20px 28px}}
+
+    .hh-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.52);margin-bottom:14px}
+    .hh-name{font-family:var(--serif);font-size:clamp(30px,4.2vw,56px);font-weight:300;line-height:1;letter-spacing:-.025em;color:#fff;margin-bottom:10px}
+    .hh-name em{font-style:italic;font-weight:300}
+    .hh-where{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+    .hh-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+    .hh-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid rgba(255,255,255,.28);color:rgba(255,255,255,.75);font-size:13px;font-weight:500;border-radius:999px;text-decoration:none;transition:all .2s;white-space:nowrap;background:rgba(255,255,255,.06);backdrop-filter:blur(6px)}
+    .hh-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.55);color:#fff}
+    .hh-btn.primary{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.42);color:#fff}
+
+    .hh-card{display:block;background:rgba(12,8,6,.6);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:20px 24px;border-radius:2px;text-decoration:none;color:inherit;min-width:210px;transition:border-color .2s}
+    .hh-card:hover{border-color:rgba(255,255,255,.25)}
+    .hh-card-meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px}
+    .hh-card-title{font-family:var(--serif);font-size:20px;font-weight:400;line-height:1.1;letter-spacing:-.015em;color:#fff;margin-bottom:6px}
+    .hh-card-where{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px}
+    .hh-card-badge{font-family:var(--mono);font-size:9px;padding:5px 10px;border:1px solid rgba(255,255,255,.18);border-radius:999px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55)}
+    @media(max-width:860px){.hh-card{display:none}}
   </style>
 </AppLayout>
