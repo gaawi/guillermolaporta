@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import { projects } from '../data/projects.js';
+import { visualWork } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -10,34 +11,83 @@ function imgSrc(src) {
   if (src.startsWith('http')) return src;
   return `${b}${src.replace(/^\//, '')}`;
 }
+
+// Merge stage works + visual works into one list
+const allWorks = [
+  ...projects.map(p => ({
+    title: p.title,
+    year: p.year,
+    cat: p.cat,
+    subtitle: p.roles,
+    image: p.image,
+    url: p.url,
+    desc: p.desc,
+  })),
+  ...visualWork.map(v => ({
+    title: v.title,
+    year: v.year,
+    cat: v.cat,
+    subtitle: v.kind,
+    image: v.image,
+    url: v.url,
+    desc: v.desc,
+  })),
+].sort((a, b) => parseInt(b.year) - parseInt(a.year));
+
+const filters = [
+  { key: 'all',           label: 'All' },
+  { key: 'opera',         label: 'Opera & Ballet' },
+  { key: 'multimedia',    label: 'Multimedia Concert' },
+  { key: 'visual-concert',label: 'Visual Concert' },
+  { key: 'installation',  label: 'Installation' },
+  { key: 'video-art',     label: 'Video Art' },
+  { key: 'design',        label: 'Theater Design' },
+  { key: 'theater',       label: 'Theater' },
+];
 ---
-<AppLayout title="Portfolio — Guillermo Laporta" description="Selected creative works: opera, ballet, multimedia concert, visual concert and theater.">
+<AppLayout title="Portfolio — Guillermo Laporta" description="Selected creative works: opera, ballet, multimedia concert, visual concert, installation, video art and theater design.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">02 — Portfolio</div>
     <h1 class="subpage-title">Selected <em>works</em>.</h1>
-    <p class="subpage-sub">Opera, ballet, multimedia concert, visual concert and theater — as composer, director and designer.</p>
+    <p class="subpage-sub">Opera, ballet, multimedia concert, visual concert, installation, video art and theater design — as composer, director and designer.</p>
   </div>
 
   <section class="section section-tight">
-    <div class="proj-grid">
-      {projects.map((p) => (
-        <article class="proj-card">
+    <!-- Filter bar -->
+    <div class="filter-bar" id="filterBar">
+      {filters.map((f) => (
+        <button
+          class={`filter-btn${f.key === 'all' ? ' active' : ''}`}
+          data-cat={f.key}
+        >
+          {f.label}
+        </button>
+      ))}
+    </div>
+
+    <div class="proj-grid" id="projGrid">
+      {allWorks.map((p) => (
+        <article class="proj-card" data-cat={p.cat}>
           <div class="proj-img-wrap">
-            <img
-              class="proj-img"
-              src={imgSrc(p.image)}
-              alt={p.title}
-              loading="lazy"
-            />
+            {p.image ? (
+              <img
+                class="proj-img"
+                src={imgSrc(p.image)}
+                alt={p.title}
+                loading="lazy"
+              />
+            ) : (
+              <div class="proj-img-placeholder" />
+            )}
           </div>
           <div class="proj-body">
             <div class="proj-meta">
               <span class="proj-year">{p.year}</span>
             </div>
             <h2 class="proj-title">{p.title}</h2>
-            <div class="proj-roles">{p.roles}</div>
-            <p class="proj-desc">{p.desc}</p>
+            <div class="proj-roles">{p.subtitle}</div>
+            {p.desc && <p class="proj-desc">{p.desc}</p>}
             {p.url && (
               <a class="proj-link" href={p.url} target="_blank" rel="noopener">
                 Project page <span class="arr">↗</span>
@@ -49,33 +99,58 @@ function imgSrc(src) {
     </div>
   </section>
 
+  <script>
+    const bar = document.getElementById('filterBar');
+    const grid = document.getElementById('projGrid');
+
+    bar.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      grid.querySelectorAll('.proj-card').forEach(card => {
+        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+  </script>
+
   <style>
     .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
     @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
 
-    .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
-    @media(max-width:900px){.proj-grid{grid-template-columns:1fr}}
+    /* Filter bar */
+    .filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+    .filter-btn{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:7px 16px;border:1px solid var(--line-soft);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s ease}
+    .filter-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+    /* Grid */
+    .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+    @media(max-width:1100px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.proj-grid{grid-template-columns:1fr}}
 
     .proj-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-soft);overflow:hidden}
 
     .proj-img-wrap{aspect-ratio:16/9;overflow:hidden;background:var(--line-soft)}
     .proj-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+    .proj-img-placeholder{width:100%;height:100%;background:var(--line-soft)}
     .proj-card:hover .proj-img{transform:scale(1.03)}
 
-    .proj-body{padding:28px 32px 32px;display:flex;flex-direction:column;flex:1}
-    @media(max-width:600px){.proj-body{padding:20px}}
+    .proj-body{padding:24px 28px 28px;display:flex;flex-direction:column;flex:1}
+    @media(max-width:600px){.proj-body{padding:18px}}
 
-    .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+    .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
     .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
-    .proj-title{font-family:var(--serif);font-size:26px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px}
-    @media(max-width:600px){.proj-title{font-size:22px}}
+    .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:6px}
+    @media(max-width:600px){.proj-title{font-size:19px}}
 
-    .proj-roles{font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.01em;margin-bottom:14px}
+    .proj-roles{font-size:11px;color:var(--accent);font-weight:500;letter-spacing:.01em;margin-bottom:12px}
 
-    .proj-desc{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;flex:1;max-width:56ch}
+    .proj-desc{font-size:13px;line-height:1.65;color:var(--ink-2);font-weight:350;flex:1;max-width:54ch}
 
-    .proj-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;text-decoration:none}
+    .proj-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;text-decoration:none}
     .proj-link:hover{text-decoration:underline}
     .arr{font-size:12px}
   </style>

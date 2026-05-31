@@ -2,6 +2,7 @@ export const projects = [
   {
     title: 'Architecture of a Common Man',
     year: '2023',
+    cat: 'opera',
     roles: 'Composer · Dramaturg · Librettist · Designer',
     image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/acm/acm06.jpg',
     url: 'https://creartbox.nyc/pages/architecture-of-a-common-man',
@@ -10,6 +11,7 @@ export const projects = [
   {
     title: 'Queens Preludes',
     year: '2021',
+    cat: 'multimedia',
     roles: 'Composer · Flutist · Video Artist',
     image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20211006/001.jpg',
     url: 'https://creartbox.nyc/pages/12-queens-preludes',
@@ -18,6 +20,7 @@ export const projects = [
   {
     title: 'Fragile Form',
     year: '2022',
+    cat: 'visual-concert',
     roles: 'Composer · Visual Designer',
     image: '/images/2022-09-fragile-form.jpg',
     url: 'https://creartbox.nyc/pages/fragile-form',
@@ -26,6 +29,7 @@ export const projects = [
   {
     title: 'Two Roads',
     year: '2019',
+    cat: 'opera',
     roles: 'Composer · Dramaturg · Librettist · Designer',
     image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20190901/001.jpg',
     url: 'https://creartbox.nyc/pages/two-roads',
@@ -34,6 +38,7 @@ export const projects = [
   {
     title: 'Awave',
     year: '2018–19',
+    cat: 'multimedia',
     roles: 'Composer · Flutist · Video Artist',
     image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20191201/001.jpg',
     url: 'https://creartbox.nyc/pages/awave',
@@ -42,6 +47,7 @@ export const projects = [
   {
     title: 'Visuality',
     year: '2014–16',
+    cat: 'visual-concert',
     roles: 'Co-Director · Visual Designer',
     image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20161203/001.jpg',
     url: 'https://creartbox.nyc/pages/visuality',
@@ -50,6 +56,7 @@ export const projects = [
   {
     title: 'Noctum',
     year: '2011',
+    cat: 'opera',
     roles: 'Dramaturg · Designer',
     image: '/images/2011-noctum.jpg',
     url: '',
@@ -58,6 +65,7 @@ export const projects = [
   {
     title: 'London: "The Show"',
     year: '2009',
+    cat: 'theater',
     roles: 'Creator · Designer · Producer',
     image: '/images/2009-london-show.jpg',
     url: '',
