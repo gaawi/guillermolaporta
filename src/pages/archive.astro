@@ -2,7 +2,8 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import { archive } from '../data/site.js';
 
-const b = import.meta.env.BASE_URL;
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
 const years = [...new Set(archive.map(e => e.year))].sort((a, b) => b - a);
 ---
 <AppLayout title="Archive — Guillermo Laporta" description={`${archive.length} productions · 2009 → 2025`}>
