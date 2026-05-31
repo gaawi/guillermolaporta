@@ -2,7 +2,8 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import { albums, liveRecordings } from '../data/site.js';
 
-const b = import.meta.env.BASE_URL;
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
 ---
 <AppLayout title="Discography — Guillermo Laporta" description="Studio recordings of original work, plus the full CreArtBox live catalogue.">
   <div class="subpage-head">

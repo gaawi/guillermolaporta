@@ -2,7 +2,8 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import { press } from '../data/site.js';
 
-const b = import.meta.env.BASE_URL;
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
 ---
 <AppLayout title="Press — Guillermo Laporta" description="Selected press coverage of CreArtBox, Festival ADAR and Guillermo Laporta's productions.">
   <div class="subpage-head">
