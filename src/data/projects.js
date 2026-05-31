@@ -1,5 +1,6 @@
 export const projects = [
   {
+    slug: 'architecture-of-a-common-man',
     title: 'Architecture of a Common Man',
     year: '2023',
     cat: 'opera',
@@ -9,6 +10,7 @@ export const projects = [
     desc: 'An opera-ballet-film production that follows the journey of a world-recognized photographer documenting his own life, exploring themes of legacy, success, and retrospection. Presented at Culture Lab, Queens, and Tenri Cultural Institute, NYC.',
   },
   {
+    slug: 'queens-preludes',
     title: 'Queens Preludes',
     year: '2021',
     cat: 'multimedia',
@@ -18,6 +20,7 @@ export const projects = [
     desc: '12 original preludes for flute and piano exploring memories before life-changing events, composed during the COVID period. Combined with original video art and projection design. Premiered at Culture Lab (NYC); toured to Cervantes Institute (Tokyo) and Madrid. Supported by Queens Council for the Arts, NYC Cultural Affairs, and NYSCA.',
   },
   {
+    slug: 'fragile-form',
     title: 'Fragile Form',
     year: '2022',
     cat: 'visual-concert',
@@ -27,6 +30,7 @@ export const projects = [
     desc: 'A trilogy — "Equilibrium," "Rupture," and "Metamorphosis" — presented as a visual concert at Blue Gallery, NYC. An immersive experience exploring the fragility of our surroundings, influenced by actions and the passage of time.',
   },
   {
+    slug: 'two-roads',
     title: 'Two Roads',
     year: '2019',
     cat: 'opera',
@@ -36,6 +40,7 @@ export const projects = [
     desc: 'An opera-ballet exploring the genesis of personal choices and the conscious and unconscious decisions that shape human lives — themes of addiction, routine, balance, guilt, and love. Featured as a "Critics\' Pick" in The New Yorker. Plaxall Theater & Tank Theater, NYC.',
   },
   {
+    slug: 'awave',
     title: 'Awave',
     year: '2018–19',
     cat: 'multimedia',
@@ -45,6 +50,7 @@ export const projects = [
     desc: 'A solo album with immersive video installation. Nine original pieces composed for flute, piano, electronics, and video, inspired by travels throughout Europe. Presented at Ryogoku Monten Hall (Tokyo) and Renee Weiler Concert Hall (NYC). Funded by the Spanish Embassy and the Amphion Foundation.',
   },
   {
+    slug: 'visuality',
     title: 'Visuality',
     year: '2014–16',
     cat: 'visual-concert',
@@ -54,6 +60,7 @@ export const projects = [
     desc: 'A concert-theater production placing live classical performance inside a theatrical visual system, using image, staging, and technology as part of the musical argument. Co-directed with Josefina Urraca. Queens Theater in the Park and Artosphere, Arlington, Virginia.',
   },
   {
+    slug: 'noctum',
     title: 'Noctum',
     year: '2011',
     cat: 'opera',
@@ -63,6 +70,7 @@ export const projects = [
     desc: 'An opera with music by Marcos Fernández. Concerto for flute and clarinet with chamber ensemble and video. Audiencia Theater (Soria), Barakaldo Theater (Bilbao), San Francisco Concert Hall (Huesca), Spain.',
   },
   {
+    slug: 'london-the-show',
     title: 'London: "The Show"',
     year: '2009',
     cat: 'theater',

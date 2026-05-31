@@ -1,0 +1,280 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { projectDetails } from '../../data/portfolio-detail.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+export function getStaticPaths() {
+  return projectDetails.map(p => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const project = projectDetails.find(p => p.slug === slug);
+
+function imgSrc(src) {
+  if (!src) return '';
+  if (src.startsWith('http')) return src;
+  return `${b}${src.replace(/^\//, '')}`;
+}
+
+const catLabels = {
+  opera: 'Opera & Ballet',
+  multimedia: 'Multimedia Concert',
+  'visual-concert': 'Visual Concert',
+  installation: 'Installation',
+  'video-art': 'Video Art',
+  design: 'Theater Design',
+  theater: 'Theater',
+};
+---
+<AppLayout
+  title={`${project.title} — Guillermo Laporta`}
+  description={project.desc[0]}
+>
+  <!-- Hero -->
+  <div class="proj-hero">
+    <img class="proj-hero-img" src={imgSrc(project.hero)} alt={project.title} />
+    <div class="proj-hero-overlay">
+      <div class="proj-hero-inner">
+        <div class="proj-hero-cat">{catLabels[project.cat] || project.cat}</div>
+        <h1 class="proj-hero-title">{project.title}</h1>
+        <div class="proj-hero-roles">{project.roles}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="proj-layout">
+    <!-- Sidebar -->
+    <aside class="proj-sidebar">
+      <nav class="proj-back">
+        <a href={`${b}portfolio/`}>← Portfolio</a>
+      </nav>
+
+      <div class="proj-meta-block">
+        <div class="proj-meta-label">Year</div>
+        <div class="proj-meta-value">{project.year}</div>
+      </div>
+
+      <div class="proj-meta-block">
+        <div class="proj-meta-label">Category</div>
+        <div class="proj-meta-value">{catLabels[project.cat] || project.cat}</div>
+      </div>
+
+      {project.venues.length > 0 && (
+        <div class="proj-meta-block">
+          <div class="proj-meta-label">Venues</div>
+          <ul class="proj-meta-list">
+            {project.venues.map(v => <li>{v}</li>)}
+          </ul>
+        </div>
+      )}
+
+      {project.credits.length > 0 && (
+        <div class="proj-meta-block">
+          <div class="proj-meta-label">Credits</div>
+          <ul class="proj-credits-list">
+            {project.credits.map(c => (
+              <li>
+                <span class="credit-role">{c.role}</span>
+                <span class="credit-name">{c.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {project.funders.length > 0 && (
+        <div class="proj-meta-block">
+          <div class="proj-meta-label">Support</div>
+          <ul class="proj-meta-list">
+            {project.funders.map(f => <li>{f}</li>)}
+          </ul>
+        </div>
+      )}
+
+      {project.url && (
+        <div class="proj-meta-block">
+          <a class="proj-ext-link" href={project.url} target="_blank" rel="noopener">
+            Full project page ↗
+          </a>
+        </div>
+      )}
+    </aside>
+
+    <!-- Main content -->
+    <main class="proj-main">
+      <!-- Description -->
+      <section class="proj-desc-section">
+        {project.desc.map(para => <p class="proj-para">{para}</p>)}
+      </section>
+
+      <!-- Press -->
+      {project.press.length > 0 && (
+        <section class="proj-press">
+          {project.press.map(q => (
+            <blockquote class="proj-quote">
+              <p>"{q.quote}"</p>
+              <cite>— {q.source}</cite>
+            </blockquote>
+          ))}
+        </section>
+      )}
+
+      <!-- Video -->
+      {project.video && (
+        <section class="proj-video-section">
+          <div class="proj-video-wrap">
+            <iframe
+              src={`https://www.youtube.com/embed/${project.video}`}
+              title={project.title}
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+        </section>
+      )}
+
+      <!-- Gallery -->
+      {project.gallery.length > 1 && (
+        <section class="proj-gallery">
+          {project.gallery.map((img, i) => (
+            <div class="proj-gallery-item" data-index={i}>
+              <img
+                src={imgSrc(img)}
+                alt={`${project.title} — image ${i + 1}`}
+                loading="lazy"
+                class="proj-gallery-img"
+              />
+            </div>
+          ))}
+        </section>
+      )}
+    </main>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+    <button class="lb-next" id="lbNext" aria-label="Next">›</button>
+    <img class="lb-img" id="lbImg" src="" alt="" />
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.proj-gallery-item');
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
+    let current = 0;
+
+    function open(i) {
+      current = i;
+      const src = items[i].querySelector('img').src;
+      lbImg.src = src;
+      lb.setAttribute('aria-hidden', 'false');
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      lb.setAttribute('aria-hidden', 'true');
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function prev() { open((current - 1 + items.length) % items.length); }
+    function next() { open((current + 1) % items.length); }
+
+    items.forEach((item, i) => item.addEventListener('click', () => open(i)));
+    lbClose.addEventListener('click', close);
+    lbPrev.addEventListener('click', prev);
+    lbNext.addEventListener('click', next);
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
+  </script>
+
+  <style>
+    /* Hero */
+    .proj-hero{position:relative;width:100%;aspect-ratio:21/9;overflow:hidden;background:var(--ink)}
+    @media(max-width:720px){.proj-hero{aspect-ratio:4/3}}
+    .proj-hero-img{width:100%;height:100%;object-fit:cover;display:block;opacity:.7}
+    .proj-hero-overlay{position:absolute;inset:0;display:flex;align-items:flex-end;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 60%)}
+    .proj-hero-inner{padding:40px 48px;color:#fff}
+    @media(max-width:720px){.proj-hero-inner{padding:24px}}
+    .proj-hero-cat{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.75;margin-bottom:8px}
+    .proj-hero-title{font-family:var(--serif);font-size:clamp(28px,5vw,56px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+    .proj-hero-roles{font-size:13px;opacity:.8;letter-spacing:.02em}
+
+    /* Layout */
+    .proj-layout{display:grid;grid-template-columns:280px 1fr;gap:0;max-width:1480px;margin:0 auto;padding:0 40px 96px}
+    @media(max-width:1100px){.proj-layout{grid-template-columns:240px 1fr;padding:0 24px 72px}}
+    @media(max-width:720px){.proj-layout{grid-template-columns:1fr;padding:0 20px 56px}}
+
+    /* Sidebar */
+    .proj-sidebar{padding:40px 40px 40px 0;border-right:1px solid var(--line-soft);position:sticky;top:80px;align-self:start}
+    @media(max-width:720px){.proj-sidebar{padding:32px 0 0;border-right:none;border-bottom:1px solid var(--line-soft);padding-bottom:32px;position:static}}
+    .proj-back{margin-bottom:32px}
+    .proj-back a{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+    .proj-back a:hover{color:var(--accent)}
+
+    .proj-meta-block{margin-bottom:28px}
+    .proj-meta-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .proj-meta-value{font-size:14px;color:var(--ink);font-weight:400}
+    .proj-meta-list{list-style:none;padding:0;margin:0}
+    .proj-meta-list li{font-size:13px;color:var(--ink-2);line-height:1.6;padding:2px 0}
+
+    .proj-credits-list{list-style:none;padding:0;margin:0}
+    .proj-credits-list li{display:flex;flex-direction:column;padding:5px 0;border-bottom:1px solid var(--line-soft)}
+    .proj-credits-list li:last-child{border-bottom:none}
+    .credit-role{font-size:10px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:2px}
+    .credit-name{font-size:13px;color:var(--ink)}
+
+    .proj-ext-link{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);text-decoration:none;font-weight:500}
+    .proj-ext-link:hover{text-decoration:underline}
+
+    /* Main */
+    .proj-main{padding:40px 0 0 48px}
+    @media(max-width:720px){.proj-main{padding:32px 0 0}}
+
+    .proj-desc-section{margin-bottom:40px}
+    .proj-para{font-size:16px;line-height:1.75;color:var(--ink-2);font-weight:350;max-width:64ch;margin-bottom:18px}
+    @media(max-width:600px){.proj-para{font-size:15px}}
+
+    /* Press */
+    .proj-press{margin-bottom:40px}
+    .proj-quote{border-left:2px solid var(--accent);padding:4px 0 4px 20px;margin:0 0 20px}
+    .proj-quote p{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--ink);margin-bottom:8px;line-height:1.5}
+    .proj-quote cite{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+    /* Video */
+    .proj-video-section{margin-bottom:48px}
+    .proj-video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background:var(--ink)}
+    .proj-video-wrap iframe{position:absolute;inset:0;width:100%;height:100%}
+
+    /* Gallery */
+    .proj-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:8px}
+    @media(max-width:900px){.proj-gallery{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:500px){.proj-gallery{grid-template-columns:1fr}}
+    .proj-gallery-item{aspect-ratio:4/3;overflow:hidden;cursor:pointer;background:var(--line-soft)}
+    .proj-gallery-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease,opacity .2s}
+    .proj-gallery-item:hover .proj-gallery-img{transform:scale(1.04);opacity:.9}
+
+    /* Lightbox */
+    .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center}
+    .lightbox.open{display:flex}
+    .lb-img{max-width:90vw;max-height:88vh;object-fit:contain;border:1px solid rgba(255,255,255,.1)}
+    .lb-close,.lb-prev,.lb-next{position:fixed;background:none;border:none;color:#fff;cursor:pointer;font-size:28px;padding:12px;opacity:.7;transition:opacity .15s}
+    .lb-close:hover,.lb-prev:hover,.lb-next:hover{opacity:1}
+    .lb-close{top:20px;right:24px;font-size:20px}
+    .lb-prev{left:16px;top:50%;transform:translateY(-50%);font-size:40px}
+    .lb-next{right:16px;top:50%;transform:translateY(-50%);font-size:40px}
+  </style>
+</AppLayout>
