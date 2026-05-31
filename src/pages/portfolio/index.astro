@@ -5,14 +5,6 @@ import { projects } from '../../data/projects.js';
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
-function imgSrc(src) {
-  if (!src) return '';
-  if (src.startsWith('http')) return src;
-  return `${b}${src.replace(/^\//, '')}`;
-}
-
-const works = [...projects].sort((a, bk) => parseInt(bk.year) - parseInt(a.year));
-
 const catLabels = {
   opera:            'Opera & Ballet',
   multimedia:       'Multimedia Concert',
@@ -20,114 +12,147 @@ const catLabels = {
   theater:          'Theater',
 };
 
-const filters = [
-  { key: 'all',            label: 'All' },
-  { key: 'opera',          label: 'Opera & Ballet' },
-  { key: 'multimedia',     label: 'Multimedia Concert' },
-  { key: 'visual-concert', label: 'Visual Concert' },
-  { key: 'theater',        label: 'Theater' },
+const stageWorks = [...projects].sort((a, bk) => parseInt(bk.year) - parseInt(a.year));
+
+const compositionSections = [
+  {
+    heading: 'Chamber Music',
+    items: [
+      { title: 'Twelve Preludes',            year: '2020', forces: 'Flute, with piano and media versions' },
+      { title: 'Piano Trio "Craziest Thing"', year: '2019', forces: 'Violin, cello and piano' },
+      { title: 'Traveling · Balance · Ballet',year: '2018', forces: 'Solo piano — three pieces' },
+    ],
+  },
+  {
+    heading: 'Electroacoustic Works',
+    items: [
+      { title: 'Música de Cristal',   year: '2025', forces: 'Flute, electronics and amplified glass' },
+      { title: 'Progress > Defiance', year: '2023', forces: 'Live flute and electronics' },
+      { title: 'Queens Log',          year: '2021', forces: 'Solo flute + field recordings' },
+      { title: 'Harte Rate',          year: '2020', forces: 'Flute and electronics' },
+    ],
+  },
+];
+
+const arrangementSections = [
+  {
+    heading: 'Chamber Ensemble / Piano Quintet with Flute',
+    items: [
+      { title: 'Modest Mussorgsky — Pictures at an Exhibition',  forces: 'Piano quintet with flute' },
+      { title: 'Igor Stravinsky — Petrushka',                   forces: 'Chamber ensemble with flute' },
+      { title: 'Manuel de Falla — Siete canciones populares españolas', forces: 'Flute + ensemble' },
+      { title: 'Frank Martin — Ballade',                        forces: 'Flute + chamber ensemble' },
+      { title: 'György Ligeti — Musica Ricercata',              forces: 'Chamber arrangement' },
+      { title: 'Antonín Dvořák — American String Quartet, Op. 96', forces: 'Chamber ensemble with flute' },
+      { title: 'Antonín Dvořák — Piano Quintet No. 2, Op. 81', forces: 'Flute + piano quartet' },
+    ],
+  },
+  {
+    heading: 'Flute & Piano',
+    items: [
+      { title: 'Claude Debussy — Violin Sonata',              forces: 'Flute and piano' },
+      { title: 'Ottorino Respighi — Violin Sonata in B minor',forces: 'Flute and piano' },
+      { title: 'Leoš Janáček — Violin Sonata',                forces: 'Flute and piano' },
+    ],
+  },
 ];
 ---
-<AppLayout title="Compositions Catalogue — Guillermo Laporta" description="Complete catalogue of original compositions — opera, ballet, multimedia and visual concert works by Guillermo Laporta.">
+<AppLayout title="Compositions Catalogue — Guillermo Laporta" description="Complete catalogue of original compositions and arrangements — Guillermo Laporta.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">Catalogue</div>
     <h1 class="subpage-title">Compositions <em>catalogue</em>.</h1>
-    <p class="subpage-sub">Opera, ballet, multimedia concert and visual concert — as composer, dramaturg and designer.</p>
+    <p class="subpage-sub">Stage works, original compositions and arrangements — as composer, dramaturg and designer.</p>
   </div>
 
-  <section class="cat-section">
-    <div class="filter-bar" id="filterBar">
-      {filters.map((f) => (
-        <button class={`filter-btn${f.key === 'all' ? ' active' : ''}`} data-cat={f.key}>
-          {f.label}
-        </button>
-      ))}
-    </div>
-
-    <div class="cat-list" id="catList">
-      {works.map((p) => (
-        <article class="cat-entry" data-cat={p.cat}>
-          <a class="cat-entry-link" href={`${b}portfolio/${p.slug}/`}>
-            {p.image && (
-              <div class="cat-thumb">
-                <img src={imgSrc(p.image)} alt={p.title} loading="lazy" />
-              </div>
-            )}
-            <div class="cat-body">
-              <div class="cat-title-row">
-                <h2 class="cat-title">{p.title}</h2>
-                <span class="cat-year">{p.year}</span>
-              </div>
-              <div class="cat-meta">
-                <span class="cat-cat">{catLabels[p.cat] || p.cat}</span>
-                <span class="cat-roles">{p.roles}</span>
-              </div>
-              {p.desc && <p class="cat-desc">{p.desc}</p>}
-              <span class="cat-cta">View project <span class="arr">→</span></span>
-            </div>
-          </a>
-        </article>
+  <!-- ── STAGE WORKS ──────────────────────────────────────────── -->
+  <section class="section cat-cv-section" style="padding-top:0">
+    <div class="cv-label">Stage Works</div>
+    <div class="cv-entries">
+      {stageWorks.map((w) => (
+        <div class="cv-entry cv-entry-compact">
+          <div class="cv-entry-head">
+            <div class="cv-entry-title">{w.title}</div>
+            <div class="cv-entry-date">{w.year}</div>
+          </div>
+          <div class="cv-entry-role">{catLabels[w.cat] || w.cat} · {w.roles}</div>
+          <p class="cv-entry-body">{w.desc}</p>
+          <div class="cv-entry-links">
+            <a class="cv-entry-link" href={`${b}portfolio/${w.slug}/`}>Gallery & details ↗</a>
+            {w.url && <a class="cv-entry-link" href={w.url} target="_blank" rel="noopener">Project page ↗</a>}
+          </div>
+        </div>
       ))}
     </div>
   </section>
 
-  <script>
-    const bar = document.getElementById('filterBar');
-    const list = document.getElementById('catList');
-    bar.addEventListener('click', (e) => {
-      const btn = e.target.closest('.filter-btn');
-      if (!btn) return;
-      bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.dataset.cat;
-      list.querySelectorAll('.cat-entry').forEach(entry => {
-        entry.style.display = (cat === 'all' || entry.dataset.cat === cat) ? '' : 'none';
-      });
-    });
-  </script>
+  <!-- ── ORIGINAL COMPOSITIONS ───────────────────────────────── -->
+  <section class="section cat-cv-section">
+    <div class="cv-label">Compositions</div>
+    <div class="cv-entries">
+      {compositionSections.map((sec) => (
+        <div>
+          <div class="cv-sublabel">{sec.heading}</div>
+          {sec.items.map((item) => (
+            <div class="cv-entry cv-entry-compact">
+              <div class="cv-entry-head">
+                <div class="cv-entry-title" style="font-size:16px">{item.title}</div>
+                {item.year && <div class="cv-entry-date">{item.year}</div>}
+              </div>
+              <div class="cv-entry-role">{item.forces}</div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── ARRANGEMENTS ─────────────────────────────────────────── -->
+  <section class="section cat-cv-section" style="padding-bottom:96px">
+    <div class="cv-label">Arrangements</div>
+    <div class="cv-entries">
+      {arrangementSections.map((sec) => (
+        <div>
+          <div class="cv-sublabel">{sec.heading}</div>
+          {sec.items.map((item) => (
+            <div class="cv-entry cv-entry-compact">
+              <div class="cv-entry-head">
+                <div class="cv-entry-title" style="font-size:16px">{item.title}</div>
+              </div>
+              <div class="cv-entry-role">{item.forces}</div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
 
   <style>
-    .cat-section{padding-top:0;max-width:1200px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
-    @media(max-width:720px){.cat-section{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+    .cat-cv-section{display:grid;grid-template-columns:220px 1fr;gap:40px;border-bottom:1px solid var(--line-soft);padding-top:56px;padding-bottom:56px}
+    .cat-cv-section:last-of-type{border-bottom:none}
+    @media(max-width:900px){.cat-cv-section{grid-template-columns:1fr;gap:20px}}
 
-    .filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
-    .filter-btn{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:7px 16px;border:1px solid var(--line-soft);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s ease;white-space:nowrap}
-    .filter-btn:hover{border-color:var(--accent);color:var(--accent)}
-    .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-    @media(max-width:720px){
-      .filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
-      .filter-bar::-webkit-scrollbar{display:none}
+    .cv-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);padding-top:4px;font-weight:500}
+    .cv-sublabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:24px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line-soft);font-weight:500}
+
+    .cv-entries{display:flex;flex-direction:column;gap:0}
+    .cv-entry{padding:28px 0;border-bottom:1px solid var(--line-soft)}
+    .cv-entry:last-child{border-bottom:none}
+    .cv-entry-compact{padding:16px 0}
+
+    .cv-entry-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:6px}
+    .cv-entry-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
+    .cv-entry-date{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
+    .cv-entry-role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:10px;letter-spacing:-.005em}
+    .cv-entry-body{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;max-width:72ch;margin-bottom:10px}
+
+    .cv-entry-links{display:flex;flex-wrap:wrap;gap:20px}
+    .cv-entry-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;text-decoration:none}
+    .cv-entry-link:hover{text-decoration:underline}
+
+    @media(max-width:600px){
+      .cv-entry-head{flex-direction:column;gap:4px}
+      .cv-entry-title{font-size:18px}
     }
-
-    .cat-list{display:flex;flex-direction:column}
-    .cat-entry{border-bottom:1px solid var(--line-soft)}
-    .cat-entry:first-child{border-top:1px solid var(--line-soft)}
-
-    .cat-entry-link{display:grid;grid-template-columns:180px 1fr;gap:36px;align-items:start;padding:32px 0;text-decoration:none;color:inherit}
-    @media(max-width:720px){.cat-entry-link{grid-template-columns:110px 1fr;gap:20px;padding:22px 0}}
-    @media(max-width:480px){.cat-entry-link{grid-template-columns:1fr;gap:14px;padding:20px 0}}
-
-    .cat-thumb{aspect-ratio:4/3;overflow:hidden;background:var(--line-soft);flex-shrink:0}
-    .cat-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease,opacity .2s}
-    .cat-entry-link:hover .cat-thumb img{transform:scale(1.04);opacity:.88}
-
-    .cat-body{display:flex;flex-direction:column;gap:8px;padding-top:4px}
-
-    .cat-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:2px}
-    .cat-title{font-family:var(--serif);font-size:clamp(20px,2vw,26px);font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);transition:color .15s}
-    .cat-entry-link:hover .cat-title{color:var(--accent)}
-    .cat-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
-
-    .cat-meta{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin-bottom:6px}
-    .cat-cat{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-right:12px;border-right:1px solid var(--line-soft);margin-right:12px;white-space:nowrap}
-    .cat-roles{font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.01em}
-
-    .cat-desc{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;max-width:62ch}
-    @media(max-width:600px){.cat-desc{font-size:13px}}
-
-    .cat-cta{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);opacity:0;transition:opacity .15s;margin-top:4px}
-    .cat-entry-link:hover .cat-cta{opacity:1}
-    @media(max-width:720px){.cat-cta{display:none}}
   </style>
 </AppLayout>
