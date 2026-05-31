@@ -10,9 +10,9 @@ const b = _base.endsWith('/') ? _base : _base + '/';
 const navLinks = [
   { href: `${b}portfolio/`,   label: 'Catalogue' },
   { href: `${b}visual-art/`,  label: 'Visual Art' },
-  { href: `${b}catalogue/`,   label: 'Catalogue' },
   { href: `${b}calendar/`,    label: 'Calendar' },
-  { href: `${b}discography/`, label: 'Recordings' },
+  { href: `${b}recordings/`,  label: 'Recordings' },
+  { href: `${b}discography/`, label: 'Discography' },
   { href: `${b}archive/`,     label: 'Archive' },
   { href: `${b}press/`,       label: 'Press' },
   { href: `${b}resume/`,      label: 'Bio & Resume' },
@@ -23,7 +23,7 @@ const mobileNav = [
   { href: `${b}portfolio/`,    label: 'Catalogue',    icon: '<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>' },
   { href: `${b}visual-art/`,   label: 'Visual Art',   icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/></svg>' },
   { href: `${b}resume/`,       label: 'Resume',       icon: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>' },
-  { href: `${b}calendar/`,     label: 'Calendar',     icon: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' },
+  { href: `${b}recordings/`,   label: 'Recordings',   icon: '<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>' },
 ];
 
 const path = Astro.url.pathname;
