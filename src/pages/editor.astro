@@ -306,17 +306,7 @@ const initial = {
 const PIN = 'laporta';
 const STORAGE_KEY = 'gl_resume_editor_v1';
 
-// ── Gate ──────────────────────────────────────────────
-function checkPin() {
-  const val = document.getElementById('pin-input').value.trim().toLowerCase();
-  if (val === PIN) {
-    document.getElementById('gate').classList.add('hidden');
-    init();
-  } else {
-    document.getElementById('gate-error').textContent = 'PIN incorrecto.';
-  }
-}
-document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin(); });
+// ── Gate (exposed to window at bottom of script) ──────
 
 // ── State ─────────────────────────────────────────────
 let state;
@@ -683,6 +673,21 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ── Expose to global scope (Astro wraps define:vars in IIFE) ──
+window.toggleSection = toggleSection;
+window.resetToDefault = resetToDefault;
+window.copyForClaude = copyForClaude;
+window.checkPin = function() {
+  const val = document.getElementById('pin-input').value.trim().toLowerCase();
+  if (val === PIN) {
+    sessionStorage.setItem('gl_editor_auth', PIN);
+    document.getElementById('gate').classList.add('hidden');
+    init();
+  } else {
+    document.getElementById('gate-error').textContent = 'PIN incorrecto.';
+  }
+};
+
 // ── Init ──────────────────────────────────────────────
 function init() {
   loadState();
@@ -696,16 +701,8 @@ if (sessionStorage.getItem('gl_editor_auth') === PIN) {
 }
 
 document.getElementById('pin-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkPin();
+  if (e.key === 'Enter') window.checkPin();
 });
-
-// Patch checkPin to set session flag
-const _checkPin = checkPin;
-window.checkPin = function() {
-  const val = document.getElementById('pin-input').value.trim().toLowerCase();
-  if (val === PIN) sessionStorage.setItem('gl_editor_auth', PIN);
-  _checkPin();
-};
 </script>
 </body>
 </html>
