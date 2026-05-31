@@ -1,6 +1,6 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
-import { projects } from '../../data/projects.js';
+import { visualWork } from '../../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -11,22 +11,21 @@ function imgSrc(src) {
   return `${b}${src.replace(/^\//, '')}`;
 }
 
-const works = [...projects].sort((a, bk) => parseInt(bk.year) - parseInt(a.year));
+const works = [...visualWork].sort((a, bk) => parseInt(bk.year) - parseInt(a.year));
 
 const filters = [
-  { key: 'all',            label: 'All' },
-  { key: 'opera',          label: 'Opera & Ballet' },
-  { key: 'multimedia',     label: 'Multimedia Concert' },
-  { key: 'visual-concert', label: 'Visual Concert' },
-  { key: 'theater',        label: 'Theater' },
+  { key: 'all',          label: 'All' },
+  { key: 'installation', label: 'Installation' },
+  { key: 'video-art',   label: 'Video Art' },
+  { key: 'design',      label: 'Theater Design' },
 ];
 ---
-<AppLayout title="Compositions — Guillermo Laporta" description="Opera, ballet, multimedia concert and visual concert — original compositions by Guillermo Laporta.">
+<AppLayout title="Visual Art — Guillermo Laporta" description="Installation, video art and theater design — visual works by Guillermo Laporta.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
-    <div class="subpage-num">Compositions</div>
-    <h1 class="subpage-title">Selected <em>compositions</em>.</h1>
-    <p class="subpage-sub">Opera, ballet, multimedia concert and visual concert — as composer, dramaturg and designer.</p>
+    <div class="subpage-num">Visual Art</div>
+    <h1 class="subpage-title">Visual <em>art</em>.</h1>
+    <p class="subpage-sub">Installation, video art and theater design — as composer, director and designer.</p>
   </div>
 
   <section class="section section-tight">
@@ -48,9 +47,11 @@ const filters = [
                 : <div class="proj-img-placeholder" />}
             </div>
             <div class="proj-body">
-              <div class="proj-meta"><span class="proj-year">{p.year}</span></div>
+              <div class="proj-meta">
+                <span class="proj-year">{p.year}</span>
+                <span class="proj-kind">{p.kind}</span>
+              </div>
               <h2 class="proj-title">{p.title}</h2>
-              <div class="proj-roles">{p.roles}</div>
               {p.desc && <p class="proj-desc">{p.desc}</p>}
             </div>
           </a>
@@ -102,9 +103,9 @@ const filters = [
     @media(max-width:600px){.proj-body{padding:18px}}
     .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
     .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-    .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:6px}
+    .proj-kind{font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--line);padding-left:12px;border-left:1px solid var(--line-soft)}
+    .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:10px}
     @media(max-width:600px){.proj-title{font-size:19px}}
-    .proj-roles{font-size:11px;color:var(--accent);font-weight:500;letter-spacing:.01em;margin-bottom:12px}
     .proj-desc{font-size:13px;line-height:1.65;color:var(--ink-2);font-weight:350;flex:1;max-width:54ch}
   </style>
 </AppLayout>
