@@ -13,6 +13,13 @@ function imgSrc(src) {
 
 const works = [...projects].sort((a, bk) => parseInt(bk.year) - parseInt(a.year));
 
+const catLabels = {
+  opera:            'Opera & Ballet',
+  multimedia:       'Multimedia Concert',
+  'visual-concert': 'Visual Concert',
+  theater:          'Theater',
+};
+
 const filters = [
   { key: 'all',            label: 'All' },
   { key: 'opera',          label: 'Opera & Ballet' },
@@ -21,15 +28,15 @@ const filters = [
   { key: 'theater',        label: 'Theater' },
 ];
 ---
-<AppLayout title="Compositions — Guillermo Laporta" description="Opera, ballet, multimedia concert and visual concert — original compositions by Guillermo Laporta.">
+<AppLayout title="Compositions Catalogue — Guillermo Laporta" description="Complete catalogue of original compositions — opera, ballet, multimedia and visual concert works by Guillermo Laporta.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
-    <div class="subpage-num">Compositions</div>
-    <h1 class="subpage-title">Selected <em>compositions</em>.</h1>
+    <div class="subpage-num">Catalogue</div>
+    <h1 class="subpage-title">Compositions <em>catalogue</em>.</h1>
     <p class="subpage-sub">Opera, ballet, multimedia concert and visual concert — as composer, dramaturg and designer.</p>
   </div>
 
-  <section class="section section-tight">
+  <section class="cat-section">
     <div class="filter-bar" id="filterBar">
       {filters.map((f) => (
         <button class={`filter-btn${f.key === 'all' ? ' active' : ''}`} data-cat={f.key}>
@@ -38,20 +45,26 @@ const filters = [
       ))}
     </div>
 
-    <div class="proj-grid" id="projGrid">
+    <div class="cat-list" id="catList">
       {works.map((p) => (
-        <article class="proj-card" data-cat={p.cat}>
-          <a class="proj-card-link" href={`${b}portfolio/${p.slug}/`}>
-            <div class="proj-img-wrap">
-              {p.image
-                ? <img class="proj-img" src={imgSrc(p.image)} alt={p.title} loading="lazy" />
-                : <div class="proj-img-placeholder" />}
-            </div>
-            <div class="proj-body">
-              <div class="proj-meta"><span class="proj-year">{p.year}</span></div>
-              <h2 class="proj-title">{p.title}</h2>
-              <div class="proj-roles">{p.roles}</div>
-              {p.desc && <p class="proj-desc">{p.desc}</p>}
+        <article class="cat-entry" data-cat={p.cat}>
+          <a class="cat-entry-link" href={`${b}portfolio/${p.slug}/`}>
+            {p.image && (
+              <div class="cat-thumb">
+                <img src={imgSrc(p.image)} alt={p.title} loading="lazy" />
+              </div>
+            )}
+            <div class="cat-body">
+              <div class="cat-title-row">
+                <h2 class="cat-title">{p.title}</h2>
+                <span class="cat-year">{p.year}</span>
+              </div>
+              <div class="cat-meta">
+                <span class="cat-cat">{catLabels[p.cat] || p.cat}</span>
+                <span class="cat-roles">{p.roles}</span>
+              </div>
+              {p.desc && <p class="cat-desc">{p.desc}</p>}
+              <span class="cat-cta">View project <span class="arr">→</span></span>
             </div>
           </a>
         </article>
@@ -61,24 +74,24 @@ const filters = [
 
   <script>
     const bar = document.getElementById('filterBar');
-    const grid = document.getElementById('projGrid');
+    const list = document.getElementById('catList');
     bar.addEventListener('click', (e) => {
       const btn = e.target.closest('.filter-btn');
       if (!btn) return;
       bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const cat = btn.dataset.cat;
-      grid.querySelectorAll('.proj-card').forEach(card => {
-        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+      list.querySelectorAll('.cat-entry').forEach(entry => {
+        entry.style.display = (cat === 'all' || entry.dataset.cat === cat) ? '' : 'none';
       });
     });
   </script>
 
   <style>
-    .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
-    @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+    .cat-section{padding-top:0;max-width:1200px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
+    @media(max-width:720px){.cat-section{padding-left:20px;padding-right:20px;padding-bottom:56px}}
 
-    .filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+    .filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
     .filter-btn{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:7px 16px;border:1px solid var(--line-soft);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s ease;white-space:nowrap}
     .filter-btn:hover{border-color:var(--accent);color:var(--accent)}
     .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -87,24 +100,34 @@ const filters = [
       .filter-bar::-webkit-scrollbar{display:none}
     }
 
-    .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-    @media(max-width:1100px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:600px){.proj-grid{grid-template-columns:1fr}}
+    .cat-list{display:flex;flex-direction:column}
+    .cat-entry{border-bottom:1px solid var(--line-soft)}
+    .cat-entry:first-child{border-top:1px solid var(--line-soft)}
 
-    .proj-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-soft);overflow:hidden}
-    .proj-card-link{display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit}
-    .proj-img-wrap{aspect-ratio:16/9;overflow:hidden;background:var(--line-soft)}
-    .proj-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
-    .proj-img-placeholder{width:100%;height:100%;background:var(--line-soft)}
-    .proj-card:hover .proj-img{transform:scale(1.03)}
+    .cat-entry-link{display:grid;grid-template-columns:180px 1fr;gap:36px;align-items:start;padding:32px 0;text-decoration:none;color:inherit}
+    @media(max-width:720px){.cat-entry-link{grid-template-columns:110px 1fr;gap:20px;padding:22px 0}}
+    @media(max-width:480px){.cat-entry-link{grid-template-columns:1fr;gap:14px;padding:20px 0}}
 
-    .proj-body{padding:24px 28px 28px;display:flex;flex-direction:column;flex:1}
-    @media(max-width:600px){.proj-body{padding:18px}}
-    .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-    .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-    .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:6px}
-    @media(max-width:600px){.proj-title{font-size:19px}}
-    .proj-roles{font-size:11px;color:var(--accent);font-weight:500;letter-spacing:.01em;margin-bottom:12px}
-    .proj-desc{font-size:13px;line-height:1.65;color:var(--ink-2);font-weight:350;flex:1;max-width:54ch}
+    .cat-thumb{aspect-ratio:4/3;overflow:hidden;background:var(--line-soft);flex-shrink:0}
+    .cat-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease,opacity .2s}
+    .cat-entry-link:hover .cat-thumb img{transform:scale(1.04);opacity:.88}
+
+    .cat-body{display:flex;flex-direction:column;gap:8px;padding-top:4px}
+
+    .cat-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:2px}
+    .cat-title{font-family:var(--serif);font-size:clamp(20px,2vw,26px);font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);transition:color .15s}
+    .cat-entry-link:hover .cat-title{color:var(--accent)}
+    .cat-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
+
+    .cat-meta{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin-bottom:6px}
+    .cat-cat{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-right:12px;border-right:1px solid var(--line-soft);margin-right:12px;white-space:nowrap}
+    .cat-roles{font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.01em}
+
+    .cat-desc{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;max-width:62ch}
+    @media(max-width:600px){.cat-desc{font-size:13px}}
+
+    .cat-cta{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);opacity:0;transition:opacity .15s;margin-top:4px}
+    .cat-entry-link:hover .cat-cta{opacity:1}
+    @media(max-width:720px){.cat-cta{display:none}}
   </style>
 </AppLayout>

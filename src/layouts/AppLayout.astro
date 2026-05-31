@@ -8,7 +8,7 @@ const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
 const navLinks = [
-  { href: `${b}portfolio/`,   label: 'Compositions' },
+  { href: `${b}portfolio/`,   label: 'Catalogue' },
   { href: `${b}visual-art/`,  label: 'Visual Art' },
   { href: `${b}catalogue/`,   label: 'Catalogue' },
   { href: `${b}calendar/`,    label: 'Calendar' },
@@ -20,7 +20,7 @@ const navLinks = [
 
 const mobileNav = [
   { href: b,                   label: 'Home',         icon: '<svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h4.5v-5h4v5h4.5v-9.5"/></svg>' },
-  { href: `${b}portfolio/`,    label: 'Compositions', icon: '<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>' },
+  { href: `${b}portfolio/`,    label: 'Catalogue',    icon: '<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>' },
   { href: `${b}visual-art/`,   label: 'Visual Art',   icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.3-6.4 2.1 2-6.3z"/></svg>' },
   { href: `${b}resume/`,       label: 'Resume',       icon: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>' },
   { href: `${b}calendar/`,     label: 'Calendar',     icon: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' },
