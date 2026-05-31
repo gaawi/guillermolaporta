@@ -1,136 +1,82 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { visualWork } from '../data/site.js';
+import { projects } from '../data/projects.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
-const videoList = [
-  { composer: 'Aaron Copland', work: 'Duo for Flute and Piano' },
-  { composer: 'Claude Debussy', work: 'Arabesque No. 1' },
-  { composer: 'Claude Debussy', work: 'Sonata for Flute, Viola and Harp' },
-  { composer: 'Maurice Ravel', work: 'Ma Mère l\'Oye' },
-  { composer: 'Olivier Messiaen', work: 'Le Merle Noir' },
-  { composer: 'Lili Boulanger', work: 'Nocturne' },
-  { composer: 'François Couperin', work: 'Les Barricades Mystérieuses' },
-  { composer: 'Michel van der Aa', work: 'Rekindle (flute & electronics)' },
-  { composer: 'Antonín Dvořák', work: 'American Quartet' },
-  { composer: 'György Kurtág', work: 'Tre Pezzi' },
-  { composer: 'Frank Martin', work: 'Ballade for Flute, Strings & Piano' },
-  { composer: 'Enrique Granados', year: '2023', work: 'Piano Quintet in G minor, Op. 49' },
-  { composer: 'Joaquín Turina', year: '2024', work: 'Piano Quartet in A minor, Op. 67' },
-  { composer: 'Gustav Mahler', work: 'Piano Quartet in A minor' },
-  { composer: 'Carl Maria von Weber', work: 'Trio in G minor, Op. 63' },
-  { composer: 'Alexander Scriabin', work: 'Romance' },
-  { composer: 'Antonio Vivaldi', work: '"La Notte" Concerto, RV 439' },
-  { composer: 'Arvo Pärt', year: '2022', work: 'Pari Intervallo' },
-  { composer: 'Steve Reich', year: '2022', work: 'Piano Phase' },
-  { composer: 'Henriette Renié', work: 'Légende' },
-  { composer: 'George Crumb', year: '2023', work: 'Vox Balaenae' },
-  { composer: 'Bryce Dessner', year: '2023', work: 'Murder Ballades' },
-  { composer: 'Jacob TV', work: 'Lipstick' },
-  { composer: 'Devin Cholodenko', year: '2024', work: 'Twilight at Dawn' },
-  { composer: 'Greg Karnilaw', work: 'Breath' },
-  { composer: 'Andrea Casarrubios', work: 'Afilador' },
-  { composer: 'Bryan Wysocki', work: 'We Can Learn Me Together' },
-  { composer: 'Philippe Gaubert', work: 'Trois Aquarelles' },
-  { composer: 'Tatiana Nikolayeva', work: 'Trio for Flute, Viola & Piano, Op. 18' },
-  { composer: 'Olivier Messiaen', year: '2019', work: 'Quartet for the End of Time' },
-  { composer: 'Guillermo Laporta', work: 'Harte Rate (flute & electronics)' },
-];
+function imgSrc(src) {
+  if (!src) return '';
+  if (src.startsWith('http')) return src;
+  return `${b}${src.replace(/^\//, '')}`;
+}
 ---
-<AppLayout title="Portfolio — Guillermo Laporta" description="Visual art portfolio: concert video, installations and theater design.">
+<AppLayout title="Portfolio — Guillermo Laporta" description="Selected creative works: opera, ballet, multimedia concert, visual concert and theater.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
-    <div class="subpage-num">02 — Visual Art</div>
-    <h1 class="subpage-title">Portfolio of <em>visual</em> work.</h1>
-    <p class="subpage-sub">Concert video, installations and theater design. Click any piece for details. Filter by medium below.</p>
+    <div class="subpage-num">02 — Portfolio</div>
+    <h1 class="subpage-title">Selected <em>works</em>.</h1>
+    <p class="subpage-sub">Opera, ballet, multimedia concert, visual concert and theater — as composer, director and designer.</p>
   </div>
 
   <section class="section section-tight">
-    <div class="archive-controls" role="toolbar" aria-label="Portfolio filters">
-      <button class="chip active" data-filter="All">All <span class="count">15</span></button>
-      <button class="chip" data-filter="video-art">Video art <span class="count">6</span></button>
-      <button class="chip" data-filter="installation">Installations <span class="count">5</span></button>
-      <button class="chip" data-filter="design">Theater design <span class="count">4</span></button>
-    </div>
-
-    <div class="va-grid" id="va-grid">
-      {visualWork.map((w) => (
-        <article class="va-card"
-          data-cat={w.cat}
-          data-lightbox
-          data-img={`${b}${w.image.replace(/^\//,'')}`}
-          data-title={w.title}
-          data-year={w.year}
-          data-kind={w.kind}
-          data-desc={w.desc}
-          data-url={w.url}
-          tabindex="0"
-          role="button"
-          aria-label={`Open details for ${w.title}`}
-        >
-          <div class="va-img">
-            <img src={`${b}${w.image.replace(/^\//,'')}`} alt={w.title} loading="lazy" />
-            <span class="va-num">№ {w.num}</span>
+    <div class="proj-grid">
+      {projects.map((p) => (
+        <article class="proj-card">
+          <div class="proj-img-wrap">
+            <img
+              class="proj-img"
+              src={imgSrc(p.image)}
+              alt={p.title}
+              loading="lazy"
+            />
           </div>
-          <div class="va-meta">
-            <span>{w.year}</span>
-            <span>{w.kind}</span>
+          <div class="proj-body">
+            <div class="proj-meta">
+              <span class="proj-year">{p.year}</span>
+            </div>
+            <h2 class="proj-title">{p.title}</h2>
+            <div class="proj-roles">{p.roles}</div>
+            <p class="proj-desc">{p.desc}</p>
+            {p.url && (
+              <a class="proj-link" href={p.url} target="_blank" rel="noopener">
+                Project page <span class="arr">↗</span>
+              </a>
+            )}
           </div>
-          <h3 class="va-title">{w.title}</h3>
-          <p class="va-desc">{w.desc}</p>
-          {w.url && (
-            <a class="va-link" href={w.url} target="_blank" rel="noopener" onclick="event.stopPropagation()">
-              View project <span class="arr">↗</span>
-            </a>
-          )}
         </article>
       ))}
-    </div>
-
-    <div class="va-list-section">
-      <div class="va-list-heading">Video art for concert productions — full list</div>
-      <p class="va-list-intro">
-        Original video art designed for live performance. Medium: digital video projection, motion graphics, filmed landscapes, abstract animation.
-        Presented at DiMenna Center, Culture Lab Queens, Mark Morris Center, Blue Gallery, Brooklyn Public Library, Greenwich House and other venues across NYC.
-      </p>
-      <ul class="va-list">
-        {videoList.map((v) => (
-          <li>
-            <span class="vl-composer">{v.composer}</span>
-            <span class="vl-year">{v.year || '—'}</span>
-            <span class="vl-status">Video soon</span>
-            <span class="vl-work">{v.work}</span>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 
   <style>
     .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
     @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
-  </style>
 
-  <script>
-    const grid = document.getElementById('va-grid');
-    if (grid) {
-      let active = 'All';
-      const filter = () => {
-        grid.querySelectorAll('.va-card').forEach((el) => {
-          const cat = (el as HTMLElement).dataset.cat || '';
-          (el as HTMLElement).style.display = active === 'All' || cat === active ? '' : 'none';
-        });
-      };
-      document.querySelectorAll('[data-filter]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          active = (btn as HTMLElement).dataset.filter || 'All';
-          document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          filter();
-        });
-      });
-    }
-  </script>
+    .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
+    @media(max-width:900px){.proj-grid{grid-template-columns:1fr}}
+
+    .proj-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-soft);overflow:hidden}
+
+    .proj-img-wrap{aspect-ratio:16/9;overflow:hidden;background:var(--line-soft)}
+    .proj-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+    .proj-card:hover .proj-img{transform:scale(1.03)}
+
+    .proj-body{padding:28px 32px 32px;display:flex;flex-direction:column;flex:1}
+    @media(max-width:600px){.proj-body{padding:20px}}
+
+    .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+    .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+    .proj-title{font-family:var(--serif);font-size:26px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px}
+    @media(max-width:600px){.proj-title{font-size:22px}}
+
+    .proj-roles{font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.01em;margin-bottom:14px}
+
+    .proj-desc{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:350;flex:1;max-width:56ch}
+
+    .proj-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;text-decoration:none}
+    .proj-link:hover{text-decoration:underline}
+    .arr{font-size:12px}
+  </style>
 </AppLayout>

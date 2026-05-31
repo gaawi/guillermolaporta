@@ -1,68 +1,10 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import { albums, liveRecordings } from '../data/site.js';
+import { projects as creativeWorks } from '../data/projects.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
-
-const creativeWorks = [
-  {
-    title: 'Architecture of a Common Man',
-    year: '2023',
-    roles: 'Composer · Dramaturg · Librettist · Designer',
-    desc: 'An opera-ballet-film production that follows the journey of a world-recognized photographer documenting his own life, exploring themes of legacy, success, and retrospection. Presented at Culture Lab, Queens, and Tenri Cultural Institute, NYC.',
-    url: 'https://creartbox.nyc/pages/architecture-of-a-common-man',
-  },
-  {
-    title: 'Queens Preludes',
-    year: '2021',
-    roles: 'Composer · Flutist · Video Artist',
-    desc: 'A multimedia chamber music concert for flute and piano. 48 minutes of original composition combined with original video art and projection design. Presented at Culture Lab (NYC), Cervantes Institute (Tokyo), and Madrid.',
-    url: 'https://creartbox.nyc/pages/queens-preludes',
-  },
-  {
-    title: 'Fragile Form',
-    year: '2022',
-    roles: 'Composer · Visual Designer',
-    desc: 'A trilogy — "Equilibrium," "Rupture," and "Metamorphosis" — presented as a visual concert at Blue Gallery, NYC. An immersive experience exploring the fragility of our surroundings, influenced by actions and the passage of time.',
-    url: 'https://creartbox.nyc/pages/fragile-form',
-  },
-  {
-    title: 'Two Roads',
-    year: '2019',
-    roles: 'Composer · Dramaturg · Librettist · Designer',
-    desc: 'An opera-ballet exploring the genesis of personal choices and the conscious and unconscious decisions that shape human lives — themes of addiction, routine, balance, guilt, and love. Featured as a "Critics\' Pick" in The New Yorker. Plaxall Theater & Tank Theater, NYC.',
-    url: 'https://creartbox.nyc/pages/two-roads',
-  },
-  {
-    title: 'Awave',
-    year: '2018–19',
-    roles: 'Composer · Flutist · Video Artist',
-    desc: 'A solo album with immersive video installation. Nine original pieces composed for flute, piano, electronics, and video, inspired by travels throughout Europe. Presented at Ryogoku Monten Hall (Tokyo) and Renee Weiler Concert Hall (NYC). Funded by the Spanish Embassy and the Amphion Foundation.',
-    url: 'https://creartbox.nyc/pages/awave',
-  },
-  {
-    title: 'Visuality',
-    year: '2014–16',
-    roles: 'Co-Director · Visual Designer',
-    desc: 'A concert-theater production placing live classical performance inside a theatrical visual system, using image, staging, and technology as part of the musical argument. Co-directed with Josefina Urraca. Queens Theater in the Park and Artosphere, Arlington, Virginia.',
-    url: 'https://creartbox.nyc/pages/visuality',
-  },
-  {
-    title: 'Noctum',
-    year: '2011',
-    roles: 'Dramaturg · Designer',
-    desc: 'An opera with music by Marcos Fernández. Concerto for flute and clarinet with chamber ensemble and video. Audiencia Theater (Soria), Barakaldo Theater (Bilbao), San Francisco Concert Hall (Huesca), Spain.',
-    url: '',
-  },
-  {
-    title: 'London: "The Show"',
-    year: '2009',
-    roles: 'Creator · Designer · Producer',
-    desc: 'A musical theater production featuring over 100 artists, combining cinema and live theater with jazz, drum & bass, Indian classical music, contemporary dance, acrobatics, video mapping, and narrative. Conceived and designed by Laporta at age 22. Budget exceeding $100,000. Audiencia Theater (Soria), San Francisco Concert Hall (Huesca), Palacio de Congresos (Huesca), Spain.',
-    url: '',
-  },
-];
 
 const designCredits = [
   { title: 'As One', year: '2018', role: 'Lighting and set design', venue: 'Opera by Laura Kaminsky. 14th Street Y Theater, NYC.' },
