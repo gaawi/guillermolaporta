@@ -1,26 +1,47 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { albums } from '../data/site.js';
+import { albums, liveRecordings } from '../data/site.js';
 ---
 <SiteLayout title='Discography - Guillermo Laporta'>
   <main class='page'>
-    <section class='page-hero' style="--hero-image:url('https://www.media.creartbox.nyc/pressreleasequeenspreludes.jpg')">
+    <section class='page-hero' style="--hero-image:url('/images/2021-10-queens-preludes.jpg')">
       <div>
         <div class='eyebrow'>Discography</div>
         <h1>Albums / Recordings</h1>
-        <p class='intro'>Original music, transcriptions, flute repertoire and multimedia recording projects.</p>
+        <p class='intro'>Studio recordings of original work, plus the full CreArtBox live catalogue. All releases on Bandcamp, also available on Spotify and Apple Music.</p>
+        <div class='button-row'>
+          <a class='button primary' href='https://creartbox.bandcamp.com' target='_blank' rel='noopener'>Full catalogue on Bandcamp</a>
+        </div>
       </div>
     </section>
 
     <section class='section'>
-      <div class='grid-3'>
-        {albums.map((album, index) => (
-          <article class={index === 0 ? 'card light' : 'card'}>
-            <div class='meta'>{album.year} / {album.format}</div>
-            <h3>{album.title}</h3>
-            <p>{album.description}</p>
-          </article>
-        ))}
+      <div class='section-grid'>
+        <div class='label'>Albums</div>
+        <div class='grid-2'>
+          {albums.map((album, index) => (
+            <a class={index === 0 ? 'card light' : 'card'} href={album.url} target='_blank' rel='noopener'>
+              <div class='meta'>{album.year} / {album.format}</div>
+              <h3>{album.title}</h3>
+              <p>{album.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class='section'>
+      <div class='section-grid'>
+        <div class='label'>Live sessions</div>
+        <div class='table-list'>
+          {liveRecordings.map((rec) => (
+            <a class='row' href={rec.url} target='_blank' rel='noopener'>
+              <strong>{rec.year}</strong>
+              <span>{rec.title}</span>
+              <span>{rec.composer}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
 
