@@ -152,17 +152,20 @@ button{font:inherit;cursor:pointer}
 .cal-row .status .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--ink);color:var(--paper)}
 .cal-row .arr{display:inline-block;transition:transform .25s;margin-left:4px}
 .cal-row:hover .arr{transform:translate(4px)}
-/* ── visual art grid (portfolio) ─────────────────────────── */
-.va-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px 24px}
-.va-card{display:flex;flex-direction:column;cursor:pointer;transition:transform .25s ease}
-.va-card:hover{transform:translateY(-2px)}
-.va-img{position:relative;aspect-ratio:4/3;border-radius:3px;overflow:hidden;background:var(--bg-warm);margin-bottom:14px;box-shadow:0 6px 20px -10px rgba(40,30,20,.2)}
-.va-img img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.8,.2,1)}
+/* ── visual art grid (portfolio preview) ─────────────────── */
+.va-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.va-card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line-soft);overflow:hidden}
+.va-card-link{display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit}
+.va-img{aspect-ratio:16/9;overflow:hidden;background:var(--line-soft)}
+.va-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
 .va-card:hover .va-img img{transform:scale(1.03)}
-.va-num{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;background:rgba(251,248,241,.92);color:var(--ink);padding:3px 7px;border-radius:999px;backdrop-filter:blur(4px)}
-.va-meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.va-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:6px}
-.va-desc{font-size:13px;line-height:1.55;color:var(--ink-2);font-weight:350;flex:1}
+.va-body{padding:20px 24px 24px;display:flex;flex-direction:column;flex:1}
+.va-meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.va-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.va-kind{font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding-left:12px;border-left:1px solid var(--line-soft)}
+.va-title{font-family:var(--serif);font-size:21px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px;transition:color .15s}
+.va-card:hover .va-title{color:var(--accent)}
+.va-desc{font-size:13px;line-height:1.6;color:var(--ink-2);font-weight:350;flex:1}
 .va-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500}
 .va-link:hover{text-decoration:underline}
 .archive-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
@@ -296,7 +299,7 @@ img[loading=lazy]{background:var(--bg-warm)}
   .leadership-grid{grid-template-columns:1fr}
   .disco-grid{grid-template-columns:1fr}
   .press-grid{grid-template-columns:repeat(2,1fr)}
-  .va-grid{grid-template-columns:repeat(2,1fr);gap:32px 20px}
+  .va-grid{grid-template-columns:repeat(2,1fr);gap:2px}
 }
 @media(max-width:720px){
   .topbar{display:none}
@@ -326,13 +329,20 @@ img[loading=lazy]{background:var(--bg-warm)}
   .cat-list .cat-title{font-size:17px}
   .lead-card{padding:24px}
   .lead-org{font-size:24px}
+  .cal-row{grid-template-columns:72px 1fr;grid-template-rows:auto auto;gap:4px 16px;padding:14px 20px;align-items:start}
   .cal-row .ix{display:none}
-  .cal-row .when{font-size:14px}
-  .cal-row .name{font-size:18px}
+  .cal-row .when{font-size:13px}
+  .cal-row .when small{font-size:9px;margin-top:3px}
+  .cal-row .name{font-size:15px;line-height:1.25}
+  .cal-row .name small{font-size:11px;margin-top:3px}
+  .cal-row .venue{display:none}
+  .cal-row .status{grid-column:2;text-align:left}
+  .cal-row .status .pill{font-size:9px;padding:4px 9px}
   .archive-grid{grid-template-columns:repeat(2,1fr);gap:16px}
   .arch-title{font-size:14px}
-  .va-grid{grid-template-columns:1fr;gap:28px}
-  .va-title{font-size:19px}
+  .va-grid{grid-template-columns:repeat(2,1fr);gap:2px}
+  .va-body{padding:14px 16px 18px}
+  .va-title{font-size:18px}
   .press-grid{grid-template-columns:1fr;gap:14px}
   .press-card{padding:24px 22px}
   .press-quote{font-size:16px}

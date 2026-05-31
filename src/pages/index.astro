@@ -91,16 +91,6 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
         </div>
         <a class="lead-link" href="https://festivaladar.com" target="_blank" rel="noopener">festivaladar.com ↗</a>
       </div>
-      <div class="lead-card">
-        <div class="lead-head">
-          <div class="lead-org">CreArt Music Series</div>
-          <div class="lead-period">New York · 2008 – 2013</div>
-          <div class="lead-role">Founder & Artistic Director</div>
-        </div>
-        <div class="lead-body">
-          Annual chamber music series at the Kosciuszko Foundation (Manhattan) that presented 25+ concerts featuring international soloists and emerging composers. Predecessor to the CreArtBox nonprofit.
-        </div>
-      </div>
     </div>
   </section>
 
@@ -117,33 +107,25 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
     </div>
     <div class="va-grid">
       {featuredWork.map((w) => (
-        <article class="va-card"
-          data-lightbox
-          data-img={`${b}${w.image.replace(/^\//,'')}`}
-          data-title={w.title}
-          data-year={w.year}
-          data-kind={w.kind}
-          data-desc={w.desc}
-          data-url={w.url}
-          tabindex="0"
-          role="button"
-          aria-label={`Open details for ${w.title}`}
-        >
-          <div class="va-img">
-            <img src={`${b}${w.image.replace(/^\//,'')}`} alt={w.title} loading="lazy" />
-            <span class="va-num">№ {w.num}</span>
-          </div>
-          <div class="va-meta">
-            <span>{w.year}</span>
-            <span>{w.kind}</span>
-          </div>
-          <h3 class="va-title">{w.title}</h3>
-          <p class="va-desc">{w.desc}</p>
+        <article class="va-card">
+          <a class="va-card-link" href={`${b}portfolio/${w.slug}/`}>
+            <div class="va-img">
+              <img src={w.image.startsWith('http') ? w.image : `${b}${w.image.replace(/^\//,'')}`} alt={w.title} loading="lazy" />
+            </div>
+            <div class="va-body">
+              <div class="va-meta">
+                <span class="va-year">{w.year}</span>
+                <span class="va-kind">{w.kind}</span>
+              </div>
+              <h3 class="va-title">{w.title}</h3>
+              <p class="va-desc">{w.desc}</p>
+            </div>
+          </a>
         </article>
       ))}
     </div>
     <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
-      <a class="btn" href={`${b}portfolio/`}>All 18 works <span class="arr">→</span></a>
+      <a class="btn" href={`${b}visual-art/`}>All 18 works <span class="arr">→</span></a>
     </div>
   </section>
 
