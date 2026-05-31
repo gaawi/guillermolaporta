@@ -1,31 +1,85 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
+import AppLayout from '../layouts/AppLayout.astro';
 import { catalogue } from '../data/site.js';
----
-<SiteLayout title='Composer Catalogue - Guillermo Laporta'>
-  <main class='page'>
-    <section class='page-hero' style="--hero-image:url('https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/acm/acm06.jpg')">
-      <div>
-        <div class='eyebrow'>Composer catalogue</div>
-        <h1>Works / Scores / Media</h1>
-        <p class='intro'>Original compositions, opera, ballet, multimedia music, visual concerts and stage works.</p>
-      </div>
-    </section>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Catalogue</div>
-        <div class='table-list'>
-          {catalogue.map((work) => (
-            <div class='row'>
-              <strong>{work.title}</strong>
-              <span>{work.category}<br />{work.instrumentation}</span>
-              <span>{work.year}</span>
-              <span>{work.duration}<br />{work.notes}</span>
-            </div>
-          ))}
+const b = import.meta.env.BASE_URL;
+
+const operas = catalogue.filter(w => w.category.toLowerCase().includes('opera') || w.category.toLowerCase().includes('ballet') || w.category.toLowerCase().includes('theater'));
+const chamber = catalogue.filter(w => w.category.toLowerCase().includes('chamber') || w.category.toLowerCase().includes('solo') || w.category.toLowerCase().includes('flute'));
+const multimedia = catalogue.filter(w => w.category.toLowerCase().includes('multimedia') || w.category.toLowerCase().includes('electro') || w.category.toLowerCase().includes('visual'));
+const other = catalogue.filter(w => !operas.includes(w) && !chamber.includes(w) && !multimedia.includes(w));
+---
+<AppLayout title="Composer Catalogue — Guillermo Laporta" description="Original compositions, opera, ballet, multimedia music, visual concerts and stage works.">
+  <div class="subpage-head">
+    <a class="subpage-back" href={b}>← Home</a>
+    <div class="subpage-num">01 — Composer Catalogue</div>
+    <h1 class="subpage-title">Works &amp; <em>scores</em>.</h1>
+    <p class="subpage-sub">Original compositions organized by category. Opera, chamber music, multimedia works, electroacoustic and stage pieces.</p>
+  </div>
+
+  <section class="section section-tight">
+    <div class="catalogue-grid">
+      {operas.length > 0 && (
+        <div class="cat-block">
+          <div class="cat-heading">Opera / Stage / Theater</div>
+          <ul class="cat-list">
+            {operas.map((w) => (
+              <li>
+                <span class="cat-title">{w.title} <small style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-left:8px">{w.year}</small></span>
+                <span class="cat-forces">{w.instrumentation}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </section>
-  </main>
-</SiteLayout>
+      )}
+      {chamber.length > 0 && (
+        <div class="cat-block">
+          <div class="cat-heading">Chamber & Solo</div>
+          <ul class="cat-list">
+            {chamber.map((w) => (
+              <li>
+                <span class="cat-title">{w.title} <small style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-left:8px">{w.year}</small></span>
+                <span class="cat-forces">{w.instrumentation}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {multimedia.length > 0 && (
+        <div class="cat-block">
+          <div class="cat-heading">Multimedia & Electroacoustic</div>
+          <ul class="cat-list">
+            {multimedia.map((w) => (
+              <li>
+                <span class="cat-title">{w.title} <small style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-left:8px">{w.year}</small></span>
+                <span class="cat-forces">{w.instrumentation}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {other.length > 0 && (
+        <div class="cat-block">
+          <div class="cat-heading">Other Works</div>
+          <ul class="cat-list">
+            {other.map((w) => (
+              <li>
+                <span class="cat-title">{w.title} <small style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-left:8px">{w.year}</small></span>
+                <span class="cat-forces">{w.instrumentation}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
+      <a class="btn" href={`${b}discography/`}>Recordings & Albums <span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <style>
+    .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
+    @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+  </style>
+</AppLayout>

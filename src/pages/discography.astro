@@ -1,58 +1,74 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
+import AppLayout from '../layouts/AppLayout.astro';
 import { albums, liveRecordings } from '../data/site.js';
+
+const b = import.meta.env.BASE_URL;
 ---
-<SiteLayout title='Discography - Guillermo Laporta'>
-  <main class='page'>
-    <section class='page-hero' style="--hero-image:url('/images/2021-10-queens-preludes.jpg')">
-      <div>
-        <div class='eyebrow'>Discography</div>
-        <h1>Albums / Recordings</h1>
-        <p class='intro'>Studio recordings of original work, plus the full CreArtBox live catalogue. All releases on Bandcamp, also available on Spotify and Apple Music.</p>
-        <div class='button-row'>
-          <a class='button primary' href='https://creartbox.bandcamp.com' target='_blank' rel='noopener'>Full catalogue on Bandcamp</a>
-        </div>
-      </div>
-    </section>
+<AppLayout title="Discography — Guillermo Laporta" description="Studio recordings of original work, plus the full CreArtBox live catalogue.">
+  <div class="subpage-head">
+    <a class="subpage-back" href={b}>← Home</a>
+    <div class="subpage-num">05 — Discography</div>
+    <h1 class="subpage-title">Albums &amp; <em>recordings</em>.</h1>
+    <p class="subpage-sub">Studio recordings of original work, plus the full CreArtBox live catalogue. All releases on Bandcamp, also available on Spotify and Apple Music.</p>
+  </div>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Albums</div>
-        <div class='grid-2'>
-          {albums.map((album, index) => (
-            <a class={index === 0 ? 'card light' : 'card'} href={album.url} target='_blank' rel='noopener'>
-              <div class='meta'>{album.year} / {album.format}</div>
-              <h3>{album.title}</h3>
-              <p>{album.description}</p>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
+  <section class="section section-tight">
+    <div class="disco-section-label">Studio Albums</div>
+    <div class="disco-grid">
+      {albums.map((album) => (
+        <a class="disco-card" href={album.url} target="_blank" rel="noopener">
+          <div class="disco-cover" style="background:var(--ink);display:grid;place-items:center">
+            <span style="font-family:var(--serif);font-style:italic;font-size:40px;font-weight:300;color:var(--paper);letter-spacing:-.02em">{album.title.slice(0,1)}</span>
+          </div>
+          <div class="disco-meta">
+            <span>{album.year}</span>
+            <span>{album.format}</span>
+          </div>
+          <div class="disco-title">{album.title}</div>
+          <div class="disco-artist">{album.description}</div>
+          <div class="disco-cta">Listen on Bandcamp ↗</div>
+        </a>
+      ))}
+    </div>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Live sessions</div>
-        <div class='table-list'>
-          {liveRecordings.map((rec) => (
-            <a class='row' href={rec.url} target='_blank' rel='noopener'>
-              <strong>{rec.year}</strong>
-              <span>{rec.title}</span>
-              <span>{rec.composer}</span>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div style="margin-top:72px"></div>
 
-    <section class='section'>
-      <div class='section-grid'>
-        <div class='label'>Recording focus</div>
-        <div>
-          <h2>Flute as a chamber, visual and theatrical voice.</h2>
-          <p class='lead'>The recordings connect original music with expanded approaches to repertoire, including arrangements of violin literature and works for flute, piano, electronics and video.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-</SiteLayout>
+    <div class="disco-section-label">CreArtBox Live Sessions</div>
+    <div class="disco-grid-dense">
+      {liveRecordings.map((r) => (
+        <a class="disco-card" href={r.url} target="_blank" rel="noopener">
+          <div class="disco-cover">
+            <img src={`${b}${r.cover.replace(/^\//,'')}`} alt={r.title} loading="lazy" />
+          </div>
+          <div class="disco-meta">
+            <span>{r.year}</span>
+            <span>Live</span>
+          </div>
+          <div class="disco-title" style="font-size:16px;line-height:1.2">{r.title}</div>
+          <div class="disco-artist" style="font-size:12px">{r.composer}</div>
+        </a>
+      ))}
+    </div>
+
+    <div style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
+      <a class="btn primary" href="https://creartbox.bandcamp.com" target="_blank" rel="noopener">
+        Full catalogue on Bandcamp ↗
+      </a>
+    </div>
+
+    <div style="margin-top:72px;padding-top:40px;border-top:1px solid var(--line-soft)">
+      <div class="disco-section-label">Recording focus</div>
+      <p style="font-family:var(--serif);font-weight:300;font-size:clamp(22px,2vw,30px);line-height:1.4;color:var(--ink);letter-spacing:-.01em;max-width:60ch">
+        Flute as a chamber, visual and <em style="font-style:italic;color:var(--accent)">theatrical</em> voice.
+      </p>
+      <p style="margin-top:16px;font-size:15px;line-height:1.65;color:var(--ink-2);max-width:66ch">
+        The recordings connect original music with expanded approaches to repertoire, including arrangements of violin literature and works for flute, piano, electronics and video.
+      </p>
+    </div>
+  </section>
+
+  <style>
+    .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
+    @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+  </style>
+</AppLayout>
