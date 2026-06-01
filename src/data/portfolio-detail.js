@@ -25,7 +25,7 @@ export const projectDetails = [
       { role: 'Cello', name: 'Clare Monfredo, Noah Kho' },
       { role: 'Piano', name: 'Josefina Urraca' },
     ],
-    venues: ['Culture Lab LIC, Queens, NY', 'Tenri Cultural Institute, NYC'],
+    venues: ['Culture Lab LIC, Queens, NY'],
     funders: ['NYC Cultural Affairs', 'NYSCA', 'Amphion Foundation', 'Flushing Town Hall', 'Aaron Copland Fund', 'New York Public Library'],
     press: [],
     gallery: [
