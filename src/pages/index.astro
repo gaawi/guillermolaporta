@@ -1,19 +1,18 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { calendar, visualWork, albums, liveRecordings } from '../data/site.js';
+import { calendar, albums, liveRecordings } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 const today = new Date().toISOString().split('T')[0];
 const upcoming = calendar.filter(e => e.date >= today).slice(0, 4);
-const featuredWork = visualWork.slice(0, 3);
 const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
 ---
 <AppLayout
   title="Guillermo Laporta — Flutist · Composer · Director"
   description="Guillermo Laporta is a flutist, composer and cultural producer based between New York City and Asturias, Spain. Founder of CreArtBox and Festival ADAR."
 >
-  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <!-- ── HERO ─────────────────────────────────────────────── -->
   <section class="hero" id="top">
     <div class="hero-grid">
       <div class="hero-left">
@@ -33,8 +32,7 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
           through visual concerts, interdisciplinary collaboration and cultural entrepreneurship.
         </p>
         <div class="hero-actions">
-          <a class="btn primary" href={`${b}portfolio/`}>Portfolio <span class="arr">→</span></a>
-          <a class="btn" href={`${b}catalogue/`}>Catalogue</a>
+          <a class="btn primary" href={`${b}catalogue/`}>Catalogue <span class="arr">→</span></a>
           <a class="btn" href={`${b}calendar/`}>Upcoming dates</a>
         </div>
       </div>
@@ -56,7 +54,7 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
     </div>
   </section>
 
-  <!-- ── ABOUT / STATEMENT ─────────────────────────────────────── -->
+  <!-- ── ABOUT / STATEMENT ───────────────────────────────────── -->
   <section class="section" id="about">
     <div class="section-head">
       <div class="lhs">
@@ -68,7 +66,7 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
       </div>
     </div>
     <div class="statement">
-      <div class="quote-mark">"</div>
+      <div class="quote-mark">“</div>
       <div class="statement-body">
         <p>The concert can be a <em>total experience</em> — music, image, space and story arriving together. I design my productions to reach people who may not have grown up with classical music, but respond immediately when it is presented in the right visual and theatrical context.</p>
         <p>My work runs across three areas: original composition (opera, chamber music, multimedia works); concert design that integrates projection, lighting and spatial narrative; and building organisations — CreArtBox in New York and Festival ADAR in rural Asturias — that create genuine access to this kind of work.</p>
@@ -121,50 +119,7 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
     </div>
   </section>
 
-  <!-- ── PORTFOLIO PREVIEW ─────────────────────────────────────── -->
-  <section class="section" id="portfolio-preview">
-    <div class="section-head">
-      <div class="lhs">
-        <div class="section-num">03 — Visual work</div>
-        <h2 class="section-title"><em>Visual</em> art portfolio.</h2>
-      </div>
-      <div class="section-rhs">
-        Concert video, installations and theater design.
-      </div>
-    </div>
-    <div class="va-grid">
-      {featuredWork.map((w) => (
-        <article class="va-card"
-          data-lightbox
-          data-img={`${b}${w.image.replace(/^\//,'')}`}
-          data-title={w.title}
-          data-year={w.year}
-          data-kind={w.kind}
-          data-desc={w.desc}
-          data-url={w.url}
-          tabindex="0"
-          role="button"
-          aria-label={`Open details for ${w.title}`}
-        >
-          <div class="va-img">
-            <img src={`${b}${w.image.replace(/^\//,'')}`} alt={w.title} loading="lazy" />
-            <span class="va-num">№ {w.num}</span>
-          </div>
-          <div class="va-meta">
-            <span>{w.year}</span>
-            <span>{w.kind}</span>
-          </div>
-          <h3 class="va-title">{w.title}</h3>
-          <p class="va-desc">{w.desc}</p>
-        </article>
-      ))}
-    </div>
-    <div style="margin-top:40px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
-      <a class="btn" href={`${b}portfolio/`}>All 15 works <span class="arr">→</span></a>
-    </div>
-  </section>
-
-  <!-- ── CALENDAR ───────────────────────────────────────────────── -->
+  <!-- ── CALENDAR ─────────────────────────────────────────────── -->
   <section class="section" id="calendar-preview">
     <div class="section-head">
       <div class="lhs">
@@ -243,7 +198,7 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
     </div>
   </section>
 
-  <!-- ── PRESS ──────────────────────────────────────────────────── -->
+  <!-- ── PRESS ────────────────────────────────────────────────── -->
   <section class="section" id="press">
     <div class="section-head">
       <div class="lhs">
@@ -253,17 +208,17 @@ const heroImg = `${b}images/2025-12-musica-ricercata.jpg`;
     </div>
     <div class="press-grid">
       <div class="press-card">
-        <div class="press-mark">"</div>
+        <div class="press-mark">“</div>
         <div class="press-quote">Critics top pick for the best music, art and theatre.</div>
         <div class="press-source">The New Yorker</div>
       </div>
       <div class="press-card">
-        <div class="press-mark">"</div>
+        <div class="press-mark">“</div>
         <div class="press-quote">A remarkable production fusing together a variety of art forms to create a wholly authentic, visually and aurally compelling experience.</div>
         <div class="press-source">Broadway World</div>
       </div>
       <div class="press-card">
-        <div class="press-mark">"</div>
+        <div class="press-mark">“</div>
         <div class="press-quote">The CreArtBox Music Festival has solidified its presence as one of the most sought-after classical music festivals.</div>
         <div class="press-source">Broadway World</div>
       </div>
