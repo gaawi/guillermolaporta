@@ -11,16 +11,24 @@ export const bio = {
   practiceNote: 'My practice has three sides that feed each other. I play the flute — chamber music, recitals and the occasional orchestral seat. I write pieces, mostly for chamber forces, and lately more for stage works that combine music, projection and design. And I run two organisations: CreArtBox in New York and Festival ADAR in rural Asturias. Most projects start as something practical — a venue, a programme, a deadline — and the composing follows from that. I tend to design my own visuals and lighting too, because the music and the room usually want to be thought about together. The day-to-day is grant writing, rehearsing, editing video, and patient logistics with collaborators on two continents.'
 };
 
+// Source: https://creartbox.nyc/concerts.html — kept in sync with the CreArtBox season listing.
+const CB = 'https://creartbox.nyc/concerts';
+const CBIMG = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg';
+
 export const calendar = [
-  { date: '2026-03-29', displayDate: 'Mar 29', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'On sale' },
-  { date: '2026-03-30', displayDate: 'Mar 30', year: '2026', title: 'Chamber Music Lehigh Valley', subtitle: 'Touring', location: 'Bethlehem, Pennsylvania', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'On sale' },
-  { date: '2026-08-16', displayDate: 'Aug 3–16', year: '2026', title: 'Festival ADAR 2026', subtitle: 'Festival', location: 'Multiple venues · Asturias, Spain', url: 'https://festivaladar.com', image: '/images/2025-08-festival-adar.jpg', status: 'Announced' },
-  { date: '2026-10-30', displayDate: 'Oct 30', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
-  { date: '2026-12-11', displayDate: 'Dec 11', year: '2026', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
-  { date: '2027-02-28', displayDate: 'Feb 28', year: '2027', title: 'University of Louisville', subtitle: 'School of Music', location: 'Comstock Hall · Louisville, KY', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
-  { date: '2027-03-23', displayDate: 'Mar 23', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
-  { date: '2027-05-07', displayDate: 'May 7', year: '2027', title: 'DiMenna Center Series', subtitle: 'NYC Series', location: 'The DiMenna Center · 450 W 37th, NYC', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
-  { date: '2027-09-28', displayDate: 'Sep 28', year: '2027', title: 'Gettysburg Community Concert', subtitle: 'Touring', location: 'St. James Lutheran Church · Gettysburg, PA', url: 'https://creartbox.nyc', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg', status: 'Announced' },
+  { date: '2026-10-09', displayDate: 'Oct 5–9',  year: '2026', title: 'Kuopio Conservatory Residency',           subtitle: 'Residency · International',                       location: 'Kuopio Conservatory · Kuopio, Finland',                  url: `${CB}/kuopio-residency-2026.html`,              image: CBIMG, status: 'Announced', note: 'Masterclasses & staging workshop' },
+  { date: '2026-10-06', displayDate: 'Oct 6',    year: '2026', title: 'Residency Showcase',                       subtitle: 'Residency · Kuopio Conservatory',                 location: 'Kamarimusiikkisali · Kuopio Music Centre, Finland',      url: `${CB}/umbral-zero-kuopio-2026.html`,            image: CBIMG, status: 'Announced', note: 'Boulanger, Debussy, Janáček, Messiaen, Martin, de Falla' },
+  { date: '2026-10-30', displayDate: 'Oct 30',   year: '2026', title: 'Currents',                                 subtitle: 'New York Series · Autumn',                        location: 'The DiMenna Center · 450 W 37th St, New York',           url: `${CB}/currents-2026.html`,                      image: CBIMG, status: 'Announced', note: 'Laporta, Brahms, Moe, Clara Schumann, Robert Schumann' },
+  { date: '2026-11-06', displayDate: 'Nov 6',    year: '2026', title: 'Engelbach-Hart Music Festival',            subtitle: 'Touring · Fine Arts Series, Illinois College',    location: 'Rammelkamp Chapel · Illinois College, Jacksonville, IL', url: `${CB}/illinois-college-piano-trio-2026.html`,   image: CBIMG, status: 'Announced' },
+  { date: '2026-12-11', displayDate: 'Dec 11',   year: '2026', title: 'Winterlight',                              subtitle: 'New York Series · Winter',                        location: 'The DiMenna Center · 450 W 37th St, New York',           url: `${CB}/tectonic-lullaby-2026.html`,              image: CBIMG, status: 'Announced' },
+  { date: '2026-12-12', displayDate: 'Dec 12',   year: '2026', title: 'Queens Mother Goose',                      subtitle: 'Education · Queens Public Library',               location: 'Queens Public Library · Queens, New York',               url: `${CB}/queens-mother-goose-2026.html`,           image: CBIMG, status: 'Announced' },
+  { date: '2027-02-28', displayDate: 'Feb 28',   year: '2027', title: 'Chamber Music Society of Louisville',      subtitle: 'Touring · The Chamber Music Society of Louisville', location: 'Comstock Hall · Louisville, KY',                        url: `${CB}/louisville-chamber-music-society-2027.html`, image: CBIMG, status: 'Announced' },
+  { date: '2027-04-18', displayDate: 'Apr 18',   year: '2027', title: 'Masked Sounds',                            subtitle: 'Touring · Saugerties',                            location: 'Saugerties, New York',                                   url: `${CB}/saugerties-2027.html`,                    image: CBIMG, status: 'Announced' },
+  { date: '2027-04-23', displayDate: 'Apr 23',   year: '2027', title: 'Pressure and Release',                     subtitle: 'New York Series · Spring',                        location: 'The DiMenna Center · 450 W 37th St, New York',           url: `${CB}/pressure-and-release-2027.html`,          image: CBIMG, status: 'Announced' },
+  { date: '2027-05-07', displayDate: 'May 7',    year: '2027', title: 'Feverdream',                               subtitle: 'New York Series · Season close',                  location: 'The DiMenna Center · 450 W 37th St, New York',           url: `${CB}/feverdream-2027.html`,                    image: CBIMG, status: 'Announced' },
+  { date: '2027-08-15', displayDate: 'Aug 2–15', year: '2027', title: 'Festival ADAR 2027',                       subtitle: 'Festival ADAR · 7th edition',                     location: 'Multiple venues · Asturias, Spain',                      url: `${CB}/festival-adar-2027.html`,                 image: '/images/2025-08-festival-adar.jpg', status: 'Announced' },
+  { date: '2027-09-28', displayDate: 'Sep 28',   year: '2027', title: 'Getsbury Community Concert Association',   subtitle: 'Touring · Getsbury Community Concert Association', location: 'Getsbury',                                              url: `${CB}/getsbury-community-concert-2027.html`,    image: CBIMG, status: 'Announced' },
+  { date: '2027-10-17', displayDate: 'Oct 17',   year: '2027', title: 'The Chapel Restoration',                   subtitle: 'Touring · The Chapel Restoration',                location: 'The Chapel Restoration',                                 url: `${CB}/chapel-restoration-2027.html`,            image: CBIMG, status: 'Announced' },
 ];
 
 export const visualWork = [
@@ -301,63 +309,6 @@ export const funders = {
   ]
 };
 
-export const archive = [
-  { date: '2025-12', year: 2025, series: 'Series', title: 'Musica Ricercata', venue: 'DiMenna Center · NYC', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0161.jpg' },
-  { date: '2025-11', year: 2025, series: 'Series', title: 'Music on Madison', venue: 'Madison Ave Presbyterian · NYC', image: '/images/2025-11-music-on-madison.jpg' },
-  { date: '2025-10', year: 2025, series: 'NYC Series', title: 'Beyond the Surface', venue: 'DiMenna Center · NYC', image: '/images/2025-10-beyond-surface.jpg' },
-  { date: '2025-10', year: 2025, series: 'Festival ADAR', title: 'Música de Cristal', venue: 'Oviedo, Spain', image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251004/LNB_MUSICA%20DE%20CRISTAL_IVAN%20MARTINEZ_7515.jpg' },
-  { date: '2025-08', year: 2025, series: 'Festival ADAR', title: 'Festival ADAR 2025', venue: 'Asturias, Spain', image: '/images/2025-08-festival-adar.jpg' },
-  { date: '2025-06', year: 2025, series: 'Queens Rising', title: 'Approaching Zero', venue: 'Flushing Town Hall · NY', image: '/images/2025-06-approaching-zero.jpg' },
-  { date: '2025-05', year: 2025, series: 'NYC Series', title: 'Perennial', venue: 'Mark Morris Center · Brooklyn', image: '/images/2025-05-perennial.jpg' },
-  { date: '2025-02', year: 2025, series: 'DiMenna Series', title: 'Evolving Threads', venue: 'The DiMenna Center', image: '/images/2025-02-evolving-threads.jpg' },
-  { date: '2024-12', year: 2024, series: 'Touring', title: 'X is the new Y', venue: 'DiMenna Center · NYC', image: '/images/2024-12-x-is-new-y.jpg' },
-  { date: '2024-09', year: 2024, series: 'Lyric Chamber Music', title: 'Spanish Steps', venue: 'Kosciuszko Foundation · NYC', image: '/images/2024-09-spanish-steps.jpg' },
-  { date: '2024-08', year: 2024, series: 'Festival ADAR', title: 'Festival ADAR 2024', venue: 'Asturias, Spain', image: '/images/2024-08-festival-adar.jpg' },
-  { date: '2023-12', year: 2023, series: 'Circle Series', title: 'Circle Noir (Part II)', venue: 'The William Vale · Brooklyn', image: '/images/2023-12-circle-noir.jpg' },
-  { date: '2023-12', year: 2023, series: 'CreArt Festival', title: 'Mountains we love to climb', venue: 'Culture Lab LIC · NYC', image: '/images/2023-12-mountains.jpg' },
-  { date: '2023-12', year: 2023, series: '7th CreArt Festival', title: 'Masked Sounds', venue: 'Culture Lab LIC · NYC', image: '/images/2023-12-masked-sounds.jpg' },
-  { date: '2023-12', year: 2023, series: '7th CreArt Festival', title: 'Echoes of Solitude', venue: 'Culture Lab LIC · NYC', image: '/images/2023-12-echoes-solitude.jpg' },
-  { date: '2023-11', year: 2023, series: 'Circle Series', title: 'Circle Noir (Part I)', venue: 'The William Vale · Brooklyn', image: '/images/2023-11-circle-noir-i.jpg' },
-  { date: '2023-08', year: 2023, series: 'Festival ADAR', title: 'Festival ADAR 2023', venue: 'Asturias, Spain', image: '/images/2023-08-festival-adar.jpg' },
-  { date: '2023-06', year: 2023, series: 'Touring', title: 'Cervantes Institute, Tokyo', venue: 'Tokyo, Japan', image: '/images/2023-06-tokyo.jpg' },
-  { date: '2023-03', year: 2023, series: 'Opera/Ballet', title: 'Architecture of a Common Man', venue: 'Culture Lab Theater · NYC', image: '/images/2023-03-architecture.jpg' },
-  { date: '2022-09', year: 2022, series: 'CreArt Festival', title: 'The Fragile Form Trilogy', venue: 'Blue Gallery · NYC', image: '/images/2022-09-fragile-form.jpg' },
-  { date: '2022-08', year: 2022, series: 'Festival ADAR', title: 'Festival ADAR 2022', venue: 'Asturias, Spain', image: '/images/2022-08-festival-adar.jpg' },
-  { date: '2022-04', year: 2022, series: 'CreArt Festival', title: 'Wherever one turns', venue: 'Culture Lab Theater · Queens', image: '/images/2022-04-wherever-one-turns.jpg' },
-  { date: '2022-04', year: 2022, series: 'CreArt Festival', title: 'We Can Learn', venue: 'Culture Lab Theater · Queens', image: '/images/2022-04-we-can-learn.jpg' },
-  { date: '2022-04', year: 2022, series: 'CreArt Festival', title: 'Childhood Memories', venue: 'Culture Lab Theater · Queens', image: '/images/2022-04-childhood-memories.jpg' },
-  { date: '2021-12', year: 2021, series: 'CreArt Festival', title: 'Pari Intervallo', venue: 'Culture Lab Theater · Queens', image: '/images/2021-12-pari-intervallo.jpg' },
-  { date: '2021-12', year: 2021, series: 'CreArt Festival', title: 'A Wonderful Day', venue: 'Culture Lab Theater · Queens', image: '/images/2021-12-wonderful-day.jpg' },
-  { date: '2021-12', year: 2021, series: 'CreArt Festival', title: 'The Bringer of Peace', venue: 'Culture Lab Theater · Queens', image: '/images/2021-12-bringer-peace.jpg' },
-  { date: '2021-12', year: 2021, series: 'CreArt Festival', title: 'Then I Knew', venue: 'Culture Lab Theater · Queens', image: '/images/2021-12-then-i-knew.jpg' },
-  { date: '2021-10', year: 2021, series: 'Concert', title: 'Lighting the Dark', venue: 'Culture Lab Theater · Queens', image: '/images/2021-10-lighting-dark.jpg' },
-  { date: '2021-10', year: 2021, series: 'Multimedia', title: 'Queens Preludes', venue: 'Culture Lab Theater · Queens', image: '/images/2021-10-queens-preludes.jpg' },
-  { date: '2021-08', year: 2021, series: 'Festival ADAR', title: 'Festival ADAR 2021', venue: 'Leiguarda · Asturias', image: '/images/2021-08-festival-adar.jpg' },
-  { date: '2020-02', year: 2020, series: 'Opera/Ballet', title: 'Two Roads', venue: 'The Tank Theater · NYC', image: '/images/2020-02-two-roads.jpg' },
-  { date: '2019-12', year: 2019, series: 'CreArt Series', title: 'Brandenburg', venue: 'Renee Weiler · NYC', image: '/images/2019-12-brandenburg.jpg' },
-  { date: '2019-12', year: 2019, series: 'Touring', title: 'AWAVE — Japan Debut', venue: 'Monten Hall · Tokyo', image: '/images/2019-12-awave-japan.jpg' },
-  { date: '2019-09', year: 2019, series: 'CreArt Festival', title: 'Two Roads', venue: 'Plaxall Gallery · Queens', image: '/images/2019-09-two-roads.jpg' },
-  { date: '2019-08', year: 2019, series: 'CreArt Festival', title: 'End of Time', venue: 'Plaxall Gallery · Queens', image: '/images/2019-08-end-of-time.jpg' },
-  { date: '2019-08', year: 2019, series: 'CreArt Festival', title: 'Memories', venue: 'Plaxall Gallery · Queens', image: '/images/2019-08-memories.jpg' },
-  { date: '2019-01', year: 2019, series: 'CreArt Series', title: 'AWAVE Within', venue: 'Renee Weiler · NYC', image: '/images/2019-12-awave-japan.jpg' },
-  { date: '2018-09', year: 2018, series: 'CreArt Festival', title: 'Just as They Are', venue: 'Plaxall Gallery · Queens', image: '/images/2018-09-just-as-they-are.jpg' },
-  { date: '2018-08', year: 2018, series: 'CreArt Festival', title: 'Folk Culture', venue: 'Plaxall Gallery · Queens', image: '/images/2018-08-folk-culture.jpg' },
-  { date: '2018-03', year: 2018, series: 'CreArt Series', title: 'Mahler 4th Symphony', venue: 'Society for Ethical Culture · NYC', image: '/images/2018-03-mahler-4th.jpg' },
-  { date: '2018-01', year: 2018, series: 'CreArt Series', title: 'Ethical Culture (Lewis Lockwood)', venue: 'Society for Ethical Culture · NYC', image: '/images/2018-01-ethical-culture.jpg' },
-  { date: '2017-10', year: 2017, series: 'CreArt Series', title: 'Ethical Culture IV (JP Jofre)', venue: 'Society for Ethical Culture · NYC', image: '/images/2017-10-ethical-culture.jpg' },
-  { date: '2017-05', year: 2017, series: 'CreArt Series', title: 'Ethical Culture III', venue: 'Society for Ethical Culture · NYC', image: '/images/2017-05-ethical-culture.jpg' },
-  { date: '2016-12', year: 2016, series: 'Touring', title: 'Visuality VII', venue: 'Queens Theatre · NYC', image: '/images/2016-12-visuality-vii.jpg' },
-  { date: '2016-11', year: 2016, series: 'CreArt Series', title: 'DiMenna (Todd Reynolds)', venue: 'Mary Flagler Cary Hall · NYC', image: '/images/2016-11-dimenna.jpg' },
-  { date: '2015-10', year: 2015, series: 'Concert', title: 'Steinway Hall Series', venue: 'Steinway Concert Hall · NYC', image: '/images/2015-10-steinway.jpg' },
-  { date: '2015-05', year: 2015, series: 'Visuality', title: 'Visuality VI', venue: 'Clemente Soto Velez · NYC', image: '/images/2015-05-visuality-vi.jpg' },
-  { date: '2015-03', year: 2015, series: 'Visuality', title: 'Visuality V', venue: 'The Tank Theater · NYC', image: '/images/2015-03-visuality-v.jpg' },
-  { date: '2014-11', year: 2014, series: 'Visuality', title: 'Visuality IV', venue: 'Artisphere · Arlington, VA', image: '/images/2014-11-visuality-iv.jpg' },
-  { date: '2013-12', year: 2013, series: 'Concert', title: 'Paris a.m.', venue: 'Gershwin Hotel · NYC', image: '/images/2013-12-paris-am.jpg' },
-  { date: '2013-12', year: 2013, series: 'Concert', title: 'Paris a.m. — Cervantes', venue: 'Cervantes Institute · NYC', image: '/images/2013-12-paris-am2.jpg' },
-  { date: '2013-08', year: 2013, series: 'Concert', title: 'Opera America Center', venue: 'National Opera America · NYC', image: '/images/2013-08-opera-america.jpg' },
-  { date: '2011-00', year: 2011, series: 'Touring', title: 'Noctum', venue: 'Spanish Tour', image: '/images/2011-noctum.jpg' },
-  { date: '2009-00', year: 2009, series: 'Touring', title: 'London The Show', venue: 'Spanish Tour', image: '/images/2009-london-show.jpg' }
-];
 
 export const mediaImages = [
   { title: 'Architecture of a Common Man', category: 'opera / film / ballet', src: '/images/2023-03-architecture.jpg', alt: 'Architecture of a Common Man production image' },

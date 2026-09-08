@@ -9,7 +9,7 @@ const b = _base.endsWith('/') ? _base : _base + '/';
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">06 — Press</div>
-    <h1 class="subpage-title">Selected <em>press</em>.</h1>
+    <h1 class="subpage-title">Selected press.</h1>
     <p class="subpage-sub">Coverage of CreArtBox, Festival ADAR and Guillermo Laporta's productions.</p>
   </div>
 
@@ -17,7 +17,6 @@ const b = _base.endsWith('/') ? _base : _base + '/';
     <div class="press-grid">
       {press.map((item) => (
         <div class="press-card">
-          <div class="press-mark">"</div>
           <div class="press-quote">{item.quote}</div>
           <div class="press-source">{item.source}</div>
         </div>
