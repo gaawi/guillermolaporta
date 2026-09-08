@@ -1,16 +1,12 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
+import { asset } from '../../lib/asset.js';
 import { visualWork } from '../../data/site.js';
 import { projectDetails } from '../../data/portfolio-detail.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
-function imgSrc(src) {
-  if (!src) return '';
-  if (src.startsWith('http')) return src;
-  return `${b}${src.replace(/^\//, '')}`;
-}
 
 const works = [...visualWork].sort((a, bk) => parseInt(bk.year) - parseInt(a.year));
 
@@ -55,7 +51,7 @@ function getGallery(slug, fallbackImage) {
                   {gallery.map((img, i) => (
                     <div class="proj-slide">
                       <img
-                        src={imgSrc(img)}
+                        src={asset(img)}
                         alt={`${p.title} — ${i + 1}`}
                         loading={i === 0 ? 'eager' : 'lazy'}
                         draggable="false"
@@ -70,7 +66,7 @@ function getGallery(slug, fallbackImage) {
             ) : (
               <div class="proj-img-wrap">
                 {p.image
-                  ? <img class="proj-img" src={imgSrc(p.image)} alt={p.title} loading="lazy" />
+                  ? <img class="proj-img" src={asset(p.image)} alt={p.title} loading="lazy" />
                   : <div class="proj-img-placeholder" />}
               </div>
             )}

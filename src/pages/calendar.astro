@@ -1,5 +1,6 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
+import { asset } from '../lib/asset.js';
 import { calendar } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
@@ -26,31 +27,56 @@ const years = Object.keys(byYear).sort();
         <h2 class="cal-year-label">{year}</h2>
         <div class="calendar">
           {byYear[year].map((event, i) => (
-            <div class="cal-row"
-              data-lightbox
-              data-img={`${b}${event.image.replace(/^\//,'')}`}
-              data-title={event.title}
-              data-year={event.year}
-              data-kind={event.subtitle}
-              data-desc={event.location}
-              data-url={event.url}
-              tabindex="0"
-              role="button"
-              aria-label={`Details for ${event.title} on ${event.displayDate}`}
-            >
-              <div class="ix">№{String(i+1).padStart(2,'0')}</div>
-              <div class="when">
-                {event.displayDate}
-                <small>{event.year}</small>
+            <div class="cal-item">
+              <div class="cal-row"
+                data-lightbox
+                data-img={asset(event.image)}
+                data-title={event.title}
+                data-year={event.year}
+                data-kind={event.subtitle}
+                data-desc={event.location}
+                data-url={event.url}
+                tabindex="0"
+                role="button"
+                aria-label={`Details for ${event.title} on ${event.displayDate}`}
+              >
+                <div class="ix">№{String(i+1).padStart(2,'0')}</div>
+                <div class="when">
+                  {event.displayDate}
+                  <small>{event.year}</small>
+                </div>
+                <div class="name">
+                  {event.title}
+                  <small>{event.subtitle}</small>
+                </div>
+                <div class="venue">{event.location}</div>
+                <div class="status">
+                  <span class="pill">{event.status} <span class="arr">→</span></span>
+                </div>
               </div>
-              <div class="name">
-                {event.title}
-                <small>{event.subtitle}</small>
-              </div>
-              <div class="venue">{event.location}</div>
-              <div class="status">
-                <span class="pill">{event.status} <span class="arr">→</span></span>
-              </div>
+
+              {event.program && (
+                <details class="cal-prog">
+                  <summary>
+                    Programme
+                    <span class="prog-n">{event.program.length} works</span>
+                  </summary>
+                  <ol class="prog-list">
+                    {event.program.map((w) => (
+                      <li>
+                        <span class="prog-composer">{w.composer}</span>
+                        <span class="prog-work">{w.work}</span>
+                        {w.dur && <span class="prog-dur">{w.dur}</span>}
+                        {w.tag && <span class="prog-tag">{w.tag}</span>}
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+              )}
+
+              {!event.program && event.note && (
+                <p class="cal-note">{event.note}</p>
+              )}
             </div>
           ))}
         </div>
@@ -61,5 +87,44 @@ const years = Object.keys(byYear).sort();
   <style>
     .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
     @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+
+    /* ── programme ── */
+    .cal-item{border-bottom:1px solid var(--line-soft)}
+    .cal-item:last-child{border-bottom:none}
+    .cal-item .cal-row{border-bottom:none}
+
+    .cal-prog{padding:0 32px 18px}
+    .cal-prog summary{
+      display:inline-flex;align-items:center;gap:10px;
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--muted);cursor:pointer;list-style:none;
+      padding:5px 0;transition:color .15s;
+    }
+    .cal-prog summary::-webkit-details-marker{display:none}
+    .cal-prog summary::before{content:"+";font-size:13px;line-height:1;width:9px}
+    .cal-prog[open] summary::before{content:"–"}
+    .cal-prog summary:hover{color:var(--accent)}
+    .prog-n{color:var(--line);font-size:9px}
+
+    .prog-list{list-style:none;margin-top:10px;padding-left:19px;max-width:76ch}
+    .prog-list li{
+      display:grid;grid-template-columns:1fr auto;gap:2px 14px;
+      padding:7px 0;border-top:1px solid var(--line-soft);align-items:baseline;
+    }
+    .prog-composer{font-weight:500;color:var(--ink);font-size:13.5px}
+    .prog-work{grid-column:1;font-size:13px;color:var(--ink-2);line-height:1.4}
+    .prog-dur{grid-row:1;font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+    .prog-tag{
+      grid-column:1;justify-self:start;margin-top:3px;
+      font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--accent);border:1px solid var(--accent);padding:2px 6px;
+    }
+
+    .cal-note{padding:0 32px 18px;font-size:13px;line-height:1.5;color:var(--muted);max-width:76ch}
+
+    @media(max-width:720px){
+      .cal-prog,.cal-note{padding-left:22px;padding-right:22px}
+      .prog-list{padding-left:0}
+    }
   </style>
 </AppLayout>

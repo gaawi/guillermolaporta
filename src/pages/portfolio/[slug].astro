@@ -1,5 +1,6 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
+import { asset } from '../../lib/asset.js';
 import { projectDetails } from '../../data/portfolio-detail.js';
 
 const _base = import.meta.env.BASE_URL || '/';
@@ -12,11 +13,6 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const project = projectDetails.find(p => p.slug === slug);
 
-function imgSrc(src) {
-  if (!src) return '';
-  if (src.startsWith('http')) return src;
-  return `${b}${src.replace(/^\//, '')}`;
-}
 
 const catLabels = {
   opera: 'Opera & Ballet',
@@ -34,7 +30,7 @@ const catLabels = {
 >
   <!-- Hero -->
   <div class="proj-hero">
-    <img class="proj-hero-img" src={imgSrc(project.hero)} alt={project.title} />
+    <img class="proj-hero-img" src={asset(project.hero)} alt={project.title} />
     <div class="proj-hero-overlay">
       <div class="proj-hero-inner">
         <div class="proj-hero-cat">{catLabels[project.cat] || project.cat}</div>
@@ -143,7 +139,7 @@ const catLabels = {
           {project.gallery.map((img, i) => (
             <div class="proj-gallery-item" data-index={i}>
               <img
-                src={imgSrc(img)}
+                src={asset(img)}
                 alt={`${project.title} — image ${i + 1}`}
                 loading="lazy"
                 class="proj-gallery-img"

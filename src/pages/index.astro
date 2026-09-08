@@ -1,5 +1,6 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
+import { asset } from '../lib/asset.js';
 import { calendar, visualWork, albums, liveRecordings, bio } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
@@ -109,7 +110,7 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
         <article class="va-card">
           <a class="va-card-link" href={`${b}portfolio/${w.slug}/`}>
             <div class="va-img">
-              <img src={w.image.startsWith('http') ? w.image : `${b}${w.image.replace(/^\//,'')}`} alt={w.title} loading="lazy" />
+              <img src={asset(w.image)} alt={w.title} loading="lazy" />
             </div>
             <div class="va-body">
               <div class="va-meta">
@@ -140,7 +141,7 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
       {upcoming.map((event, i) => (
         <div class="cal-row"
           data-lightbox
-          data-img={`${b}${event.image.replace(/^\//,'')}`}
+          data-img={asset(event.image)}
           data-title={event.title}
           data-year={event.year}
           data-kind={event.subtitle}
@@ -191,7 +192,7 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
       {liveRecordings.slice(0, 4).map((r) => (
         <a class="disco-card" href={r.url} target="_blank" rel="noopener">
           <div class="disco-cover">
-            <img src={`${b}${r.cover.replace(/^\//,'')}`} alt={r.title} loading="lazy" />
+            <img src={asset(r.cover)} alt={r.title} loading="lazy" />
           </div>
           <div class="disco-meta">
             <span>{r.year}</span>
