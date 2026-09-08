@@ -36,7 +36,7 @@ function isActive(href) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#FAFAF8" />
+    <meta name="theme-color" content="#FBF9F3" />
     <meta name="description" content={description} />
     <link rel="canonical" href={`https://gaawi.github.io${path}`} />
     <meta property="og:type" content="website" />
@@ -51,7 +51,16 @@ function isActive(href) {
     <title>{title}</title>
     <style is:global>
 /* ── variables ──────────────────────────────────────────── */
-:root{--bg:#FAFAF8;--paper:#FFFFFF;--bg-warm:#F1F1EE;--ink:#141414;--ink-2:#4A4A47;--muted:#8A8A84;--line:#E2E2DD;--line-soft:#EDEDE9;--accent:#8A4B2B;--serif:"Saira Condensed",system-ui,sans-serif;--sans:"Saira",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
+/* Palette: coolors.co/8cb369-f4e285-f4a259-5b8e7d-bc4b51
+   Contrast on the paper background (WCAG AA needs 4.5:1 for small text):
+     red    #BC4B51  4.68  — the only one that carries small text
+     teal   #5B8E7D  3.56  — large text, borders, icons only
+     green  #8CB369  2.28  — fills and tints, never text on paper
+     orange #F4A259  1.96  — fills and tints, never text on paper
+     yellow #F4E285  1.24  — fills only; on the dark footer it is 14:1
+   So the three light hues are used as fills/tints, and on the dark
+   footer where they invert to 7.7–14:1. */
+:root{--p-green:#8CB369;--p-yellow:#F4E285;--p-orange:#F4A259;--p-teal:#5B8E7D;--p-red:#BC4B51;--bg:#FBF9F3;--paper:#FFFFFF;--bg-warm:#F3EFE4;--ink:#1A1A18;--ink-2:#4A4A45;--muted:#8A8A80;--line:#E4DFD1;--line-soft:#EFEBDF;--accent:#BC4B51;--accent-2:#5B8E7D;--tint:#F2F6EC;--serif:"Saira Condensed",system-ui,sans-serif;--sans:"Saira",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
 /* ── reset ──────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--ink)}
@@ -70,8 +79,8 @@ button{font:inherit;cursor:pointer}
 .topnav a.active{color:var(--ink)}
 .topnav a.active::after{content:"";position:absolute;left:50%;bottom:-2px;width:4px;height:4px;border-radius:50%;background:var(--accent);transform:translate(-50%)}
 .topbar-right{display:flex;gap:14px;align-items:center;font-size:13px}
-.tag-now{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font-size:12px;color:var(--ink-2)}
-.tag-now .pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2.5s ease-out infinite;flex-shrink:0}
+.tag-now{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--accent-2);border-radius:999px;background:var(--paper);font-size:12px;color:var(--ink-2)}
+.tag-now .pulse{width:7px;height:7px;border-radius:50%;background:var(--p-green);animation:pulse 2.5s ease-out infinite;flex-shrink:0}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 50%,transparent)}70%{box-shadow:0 0 0 8px transparent}to{box-shadow:0 0 0 0 transparent}}
 /* ── pill nav (mobile bottom bar) ───────────────────────── */
 .pill-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;padding:8px 12px env(safe-area-inset-bottom,8px);background:color-mix(in srgb,var(--paper) 95%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--line-soft)}
@@ -79,7 +88,7 @@ button{font:inherit;cursor:pointer}
 .pill-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px;border-radius:14px;min-width:52px;color:var(--muted);transition:color .2s,background .2s;border:none;background:transparent;font-size:8.5px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono)}
 .pill-item svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .pill-label{text-align:center;line-height:1.2}
-.pill-item:hover{color:var(--ink);background:var(--bg-warm)}
+.pill-item:hover{color:var(--ink);background:var(--tint)}
 .pill-item.active{color:var(--accent)}
 /* ── hero ────────────────────────────────────────────────── */
 .hero{padding:60px 40px 40px;position:relative}
@@ -101,7 +110,7 @@ button{font:inherit;cursor:pointer}
 .hero-card .meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .hero-card h3{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.05;letter-spacing:-.015em}
 .hero-card .where{font-size:12px;color:var(--muted);margin-top:6px}
-.hero-card .badge{font-family:var(--mono);font-size:10px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);background:var(--bg-warm);white-space:nowrap}
+.hero-card .badge{font-family:var(--mono);font-size:10px;padding:6px 10px;border:1px solid var(--accent-2);border-radius:999px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);background:var(--bg-warm);white-space:nowrap}
 /* ── buttons ─────────────────────────────────────────────── */
 .btn{display:inline-flex;align-items:center;gap:12px;padding:14px 22px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);font-size:14px;font-weight:500;cursor:pointer;transition:all .25s ease}
 .btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateY(-1px)}
@@ -135,7 +144,7 @@ button{font:inherit;cursor:pointer}
 .cal-year-label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);padding-bottom:12px;border-bottom:1px solid var(--line-soft);margin-bottom:18px;font-weight:500}
 .cal-row{display:grid;grid-template-columns:60px 130px 1fr 220px 120px;gap:24px;padding:26px 32px;border-bottom:1px solid var(--line-soft);align-items:center;cursor:pointer;transition:background .25s,padding .25s}
 .cal-row:last-child{border-bottom:none}
-.cal-row:hover{background:var(--bg-warm);padding-left:40px}
+.cal-row:hover{background:var(--tint);padding-left:40px}
 .cal-row .ix{font-family:var(--mono);font-size:11px;color:var(--muted)}
 .cal-row .when{font-family:var(--serif);font-size:22px;line-height:1;letter-spacing:-.015em}
 .cal-row .when small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:6px;font-weight:400}
@@ -219,7 +228,7 @@ button{font:inherit;cursor:pointer}
 .bio-card.dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .bio-card.dark .lbl{color:color-mix(in srgb,var(--paper) 60%,transparent)}
 .bio-card.dark .desc{color:color-mix(in srgb,var(--paper) 70%,transparent)}
-.bio-card.dark .val{color:var(--paper)}
+.bio-card.dark .val{color:var(--p-yellow)}
 /* ── lightbox ────────────────────────────────────────────── */
 .lightbox{position:fixed;inset:0;background:rgba(15,12,10,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;z-index:200;padding:5vh 5vw;overflow:auto}
 .lightbox.open{display:grid;place-items:center}
@@ -239,12 +248,12 @@ button{font:inherit;cursor:pointer}
 .footer{background:var(--ink);color:var(--paper);padding:80px 40px 32px}
 .footer-inner{max-width:1480px;margin:0 auto}
 .footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:56px;padding-bottom:48px}
-.footer h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#968d7e;margin-bottom:18px;font-weight:400}
-.footer p{font-size:14px;line-height:1.6;color:#d8cfbc;max-width:36ch}
-.footer a{color:#d8cfbc;transition:color .2s}
-.footer a:hover{color:#fff}
+.footer h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--p-green);margin-bottom:18px;font-weight:400}
+.footer p{font-size:14px;line-height:1.6;color:#E8E3D5;max-width:36ch}
+.footer a{color:#E8E3D5;transition:color .2s}
+.footer a:hover{color:var(--p-yellow)}
 .footer ul{list-style:none;display:grid;gap:8px;font-size:14px}
-.footer-bottom{padding-top:24px;border-top:1px solid #3A332A;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8a8378}
+.footer-bottom{padding-top:24px;border-top:1px solid #33322C;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8F8C7F}
 /* ── va list (portfolio detail) ──────────────────────────── */
 .va-list-section{margin-top:80px}
 .va-list-heading{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-soft);margin-bottom:4px;font-weight:500}

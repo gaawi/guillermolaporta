@@ -114,10 +114,12 @@ const years = Object.keys(byYear).sort();
     .prog-composer{font-weight:500;color:var(--ink);font-size:13.5px}
     .prog-work{grid-column:1;font-size:13px;color:var(--ink-2);line-height:1.4}
     .prog-dur{grid-row:1;font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+    /* Orange fails as text on paper (1.96:1) but carries dark ink at 8.43:1,
+       so it is used as a fill here rather than a text colour. */
     .prog-tag{
-      grid-column:1;justify-self:start;margin-top:3px;
+      grid-column:1;justify-self:start;margin-top:4px;
       font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
-      color:var(--accent);border:1px solid var(--accent);padding:2px 6px;
+      color:var(--ink);background:var(--p-orange);padding:3px 7px;
     }
 
     .cal-note{padding:0 32px 18px;font-size:13px;line-height:1.5;color:var(--muted);max-width:76ch}
