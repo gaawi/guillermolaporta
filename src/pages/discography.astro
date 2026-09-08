@@ -1,7 +1,7 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import { asset } from '../lib/asset.js';
-import { albums, liveRecordings } from '../data/site.js';
+import { discography } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -11,66 +11,70 @@ const b = _base.endsWith('/') ? _base : _base + '/';
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">05 — Discography</div>
     <h1 class="subpage-title">Albums &amp; recordings.</h1>
-    <p class="subpage-sub">Studio recordings of original work, plus the full CreArtBox live catalogue. All releases on Bandcamp, also available on Spotify and Apple Music.</p>
+    <p class="subpage-sub">{discography.length} releases — studio albums and the CreArtBox live catalogue.</p>
   </div>
 
   <section class="section section-tight">
-    <div class="disco-section-label">Studio Albums</div>
-    <div class="disco-grid">
-      {albums.map((album) => (
-        <a class="disco-card" href={album.url} target="_blank" rel="noopener">
-          <div class="disco-cover" style="background:var(--ink);display:grid;place-items:center">
-            <span style="font-family:var(--serif);font-style:italic;font-size:40px;font-weight:300;color:var(--paper);letter-spacing:-.02em">{album.title.slice(0,1)}</span>
+    <div class="rel-grid">
+      {discography.map((r) => (
+        <a class="rel-card" href={r.spotify || r.bandcamp} target="_blank" rel="noopener">
+          <div class="rel-cover">
+            {r.cover
+              ? <img src={asset(r.cover)} alt={r.title} loading="lazy" />
+              : <span class="rel-nocover" aria-hidden="true">{r.title.slice(0,1)}</span>}
           </div>
-          <div class="disco-meta">
-            <span>{album.year}</span>
-            <span>{album.format}</span>
-          </div>
-          <div class="disco-title">{album.title}</div>
-          <div class="disco-artist">{album.description}</div>
-          <div class="disco-cta">Listen on Bandcamp ↗</div>
-        </a>
-      ))}
-    </div>
-
-    <div style="margin-top:72px"></div>
-
-    <div class="disco-section-label">CreArtBox Live Sessions</div>
-    <div class="disco-grid-dense">
-      {liveRecordings.map((r) => (
-        <a class="disco-card" href={r.url} target="_blank" rel="noopener">
-          <div class="disco-cover">
-            <img src={asset(r.cover)} alt={r.title} loading="lazy" />
-          </div>
-          <div class="disco-meta">
+          <div class="rel-meta">
             <span>{r.year}</span>
-            <span>Live</span>
+            <span>{r.kind}</span>
           </div>
-          <div class="disco-title" style="font-size:16px;line-height:1.2">{r.title}</div>
-          <div class="disco-artist" style="font-size:12px">{r.composer}</div>
+          <div class="rel-title">{r.title}</div>
+          <div class="rel-artist">{r.artist}</div>
+          <div class={`rel-cta ${r.spotify ? 'spotify' : ''}`}>
+            {r.spotify ? 'Listen on Spotify ↗' : 'Listen on Bandcamp ↗'}
+          </div>
         </a>
       ))}
-    </div>
-
-    <div style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line-soft);display:flex;justify-content:center">
-      <a class="btn primary" href="https://creartbox.bandcamp.com" target="_blank" rel="noopener">
-        Full catalogue on Bandcamp ↗
-      </a>
-    </div>
-
-    <div style="margin-top:72px;padding-top:40px;border-top:1px solid var(--line-soft)">
-      <div class="disco-section-label">Recording focus</div>
-      <p style="font-family:var(--serif);font-weight:300;font-size:clamp(22px,2vw,30px);line-height:1.4;color:var(--ink);letter-spacing:-.01em;max-width:60ch">
-        Flute as a chamber, visual and <em style="font-style:italic;color:var(--accent)">theatrical</em> voice.
-      </p>
-      <p style="margin-top:16px;font-size:15px;line-height:1.65;color:var(--ink-2);max-width:66ch">
-        The recordings connect original music with expanded approaches to repertoire, including arrangements of violin literature and works for flute, piano, electronics and video.
-      </p>
     </div>
   </section>
 
   <style>
     .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
     @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+
+    .rel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px 24px}
+    @media(max-width:1100px){.rel-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:720px){.rel-grid{grid-template-columns:repeat(2,1fr);gap:24px 16px}}
+
+    .rel-card{display:flex;flex-direction:column;gap:8px;transition:transform .22s ease}
+    .rel-card:hover{transform:translateY(-3px)}
+
+    .rel-cover{
+      aspect-ratio:1/1;overflow:hidden;border-radius:3px;
+      background:var(--bg-warm);display:grid;place-items:center;
+      box-shadow:0 6px 20px -12px rgba(0,0,0,.35);transition:box-shadow .22s;
+    }
+    .rel-card:hover .rel-cover{box-shadow:0 14px 28px -16px rgba(0,0,0,.45)}
+    .rel-cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .rel-nocover{
+      font-family:var(--serif);font-size:44px;font-weight:500;
+      color:var(--muted);letter-spacing:-.02em;
+    }
+
+    .rel-meta{
+      display:flex;justify-content:space-between;gap:8px;margin-top:2px;
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    }
+    .rel-title{
+      font-family:var(--serif);font-size:17px;font-weight:500;line-height:1.2;
+      letter-spacing:-.01em;color:var(--ink);
+    }
+    .rel-artist{font-size:12.5px;color:var(--muted);line-height:1.35}
+    .rel-cta{
+      margin-top:2px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--muted);transition:color .18s;
+    }
+    .rel-card:hover .rel-cta{color:var(--accent)}
+    .rel-cta.spotify{color:#1DB954}
+    .rel-card:hover .rel-cta.spotify{color:#17a045}
   </style>
 </AppLayout>

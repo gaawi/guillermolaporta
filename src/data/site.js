@@ -348,54 +348,48 @@ export const catalogue = [
   }
 ];
 
-export const albums = [
-  {
-    title: 'Architecture of a Common Man',
-    year: '2023',
-    format: 'Album',
-    description: 'Original compositions for the opera-ballet-film. Guillermo Laporta & CreArtBox.',
-    url: 'https://creartbox.bandcamp.com'
-  },
-  {
-    title: '12 Preludes',
-    year: '2023',
-    format: 'Album',
-    description: 'A collection of original preludes connected to memory, image and travel. Guillermo Laporta & CreArtBox.',
-    url: 'https://creartbox.bandcamp.com'
-  },
-  {
-    title: 'AWAVE',
-    year: '2020',
-    format: 'Album',
-    description: 'Original compositions for flute, piano, electronics and video.',
-    url: 'https://creartbox.bandcamp.com'
-  },
-  {
-    title: 'Debussy & Respighi Violin Sonatas',
-    year: '2019',
-    format: 'Transcriptions for flute and piano',
-    description: 'Arrangements and recordings bringing violin repertoire into the flute chamber music world.',
-    url: 'https://creartbox.bandcamp.com'
-  }
+// Discography — one list, newest first.
+// Bandcamp slugs verified individually against creartbox.bandcamp.com (all HTTP 200).
+// `spotify` is optional: when present the card links there, otherwise it falls back
+// to Bandcamp. AWAVE and the Debussy & Respighi sonatas are not on Bandcamp and
+// have no artwork on file yet — they carry no cover and link to the artist page.
+const BC = 'https://creartbox.bandcamp.com/album';
+const BC_ARTIST = 'https://creartbox.bandcamp.com';
+
+export const discography = [
+  { title: 'Architecture of a Common Man',            artist: 'Guillermo Laporta & CreArtBox',        year: '2023', kind: 'Studio', cover: '/covers/architecture-of-a-common-man.jpg',                  bandcamp: `${BC}/architecture-of-a-common-man`,
+    description: 'Original compositions for the opera-ballet-film.' },
+  { title: '12 Preludes',                             artist: 'Guillermo Laporta & CreArtBox',        year: '2023', kind: 'Studio', cover: '/covers/12-preludes.jpg',                                    bandcamp: `${BC}/12-preludes`,
+    description: 'Original preludes connected to memory, image and travel.' },
+  { title: 'Piano Quintet in G minor, Op. 49 (live)', artist: 'Granados',                             year: '2023', kind: 'Live',   cover: '/covers/piano-quintet-in-g-minor-op-49-live.jpg',            bandcamp: `${BC}/piano-quintet-in-g-minor-op-49-live` },
+  { title: 'Piano Quartet in A minor, Op. 67 (live)', artist: 'Turina',                               year: '2023', kind: 'Live',   cover: '/covers/turina-piano-quartet.jpg',                           bandcamp: `${BC}/turina-piano-quartet` },
+  { title: 'Piano Trio No. 1 in C minor, Op. 8 (live)', artist: 'Shostakovich',                       year: '2023', kind: 'Live',   cover: '/covers/piano-trio-no-1-in-c-minor-op-8-live.jpg',           bandcamp: `${BC}/piano-trio-no-1-in-c-minor-op-8-live` },
+  { title: 'Heart Meditation',                        artist: 'Annamaria Kowalsky',                   year: '2023', kind: 'Live',   cover: '/covers/heart-meditation.jpg',                               bandcamp: `${BC}/heart-meditation` },
+  { title: 'Trio for flute, viola & harp, Op. 18',    artist: 'Nikolayeva',                           year: '2023', kind: 'Live',   cover: '/covers/trio-for-flute-viola-harp-op-18.jpg',                bandcamp: `${BC}/trio-for-flute-viola-harp-op-18` },
+  { title: 'Symphony No. 94 — Chamber version (live)', artist: 'Haydn',                               year: '2023', kind: 'Live',   cover: '/covers/symphony-no-94-chamber-version-live.jpg',            bandcamp: `${BC}/symphony-no-94-chamber-version-live` },
+  { title: 'Petite Suite for flute, viola & harp (live)', artist: 'Jolivet',                          year: '2023', kind: 'Live',   cover: '/covers/petite-suite-for-flute-viola-harp-live.jpg',         bandcamp: `${BC}/petite-suite-for-flute-viola-harp-live` },
+  { title: 'Mandalas in the Rubble (live, NY premiere)', artist: 'Dai Wei',                            year: '2023', kind: 'Live',   cover: '/covers/mandalas-in-the-rubble-live-new-york-premiere.jpg',  bandcamp: `${BC}/mandalas-in-the-rubble-live-new-york-premiere` },
+  { title: 'Made of Wood',                            artist: 'Timo Andres',                          year: '2023', kind: 'Live',   cover: '/covers/made-of-wood.jpg',                                   bandcamp: `${BC}/made-of-wood` },
+  { title: 'Petroushskates',                          artist: 'Joan Tower',                           year: '2023', kind: 'Live',   cover: '/covers/petroushskates.jpg',                                 bandcamp: `${BC}/petroushskates` },
+  { title: 'Noctum — Concerto for flute & clarinet',  artist: 'Marcos Fernández',                     year: '2023', kind: 'Live',   cover: '/covers/noctum-concerto-for-flute-and-clarinet.jpg',         bandcamp: `${BC}/noctum-concerto-for-flute-and-clarinet` },
+  { title: 'AWAVE',                                   artist: 'Guillermo Laporta',                    year: '2020', kind: 'Studio', cover: null,                                                         bandcamp: BC_ARTIST,
+    description: 'Original compositions for flute, piano, electronics and video.' },
+  { title: 'Brandenburg Concerto No. 5 (live)',       artist: 'J.S. Bach',                            year: '2019', kind: 'Live',   cover: '/covers/brandenburg-concerto-no-5-live.jpg',                 bandcamp: `${BC}/brandenburg-concerto-no-5-live` },
+  { title: 'Quartet for the End of Time (live)',      artist: 'Messiaen',                             year: '2019', kind: 'Live',   cover: '/covers/quartet-for-the-end-of-time-live.jpg',               bandcamp: `${BC}/quartet-for-the-end-of-time-live` },
+  { title: 'Debussy & Respighi Violin Sonatas',       artist: 'Guillermo Laporta',                    year: '2019', kind: 'Studio', cover: null,                                                         bandcamp: BC_ARTIST,
+    description: 'Transcriptions for flute and piano.' },
+  { title: 'Symphony No. 4 — Chamber version (live)', artist: 'Mahler · CreArtBox · Le Train Bleu',   year: '2018', kind: 'Live',   cover: '/covers/symphony-no-4-chamber-version-live.jpg',             bandcamp: `${BC}/symphony-no-4-chamber-version-live` },
+  { title: 'CreArtProject I (live)',                  artist: 'Debussy · Wilson · Nilson · Higdon',   year: '2008', kind: 'Live',   cover: '/covers/creartproject-i-live.jpg',                           bandcamp: `${BC}/creartproject-i-live` },
 ];
 
-export const liveRecordings = [
-  { title: 'Piano Quintet in G Minor, Op. 49 (live)', composer: 'Granados', year: '2023', cover: '/covers/piano-quintet-in-g-minor-op-49-live.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Piano Quartet in A minor, Op. 67 (live)', composer: 'Turina', year: '2023', cover: '/covers/turina-piano-quartet.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Piano Trio No. 1 in C Minor, Op. 8 (live)', composer: 'Shostakovich', year: '2023', cover: '/covers/piano-trio-no-1-in-c-minor-op-8-live.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Heart Meditation', composer: 'Annamaria Kowalsky', year: '2023', cover: '/covers/heart-meditation.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Trio for flute, viola & harp, Op. 18', composer: 'Nikolayeva', year: '2023', cover: '/covers/trio-for-flute-viola-harp-op-18.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Symphony No. 94 — Chamber version (live)', composer: 'Haydn', year: '2023', cover: '/covers/symphony-no-94-chamber-version-live.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Petite Suite for flute, viola & harp (live)', composer: 'Jolivet', year: '2023', cover: '/covers/petite-suite-for-flute-viola-harp-live.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Mandalas in the Rubble (live, NY Premiere)', composer: 'Dai Wei', year: '2023', cover: '/covers/mandalas-in-the-rubble-live-new-york-premiere.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Made of Wood', composer: 'Timo Andres', year: '2023', cover: '/covers/made-of-wood.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Petroushskates', composer: 'Joan Tower', year: '2023', cover: '/covers/petroushskates.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Noctum — Concerto for flute & clarinet', composer: 'Marcos Fernández', year: '2023', cover: '/covers/noctum-concerto-for-flute-and-clarinet.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Brandenburg Concerto No. 5 (live)', composer: 'J.S. Bach', year: '2019', cover: '/covers/brandenburg-concerto-no-5-live.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Quartet for the End of Time (live)', composer: 'Messiaen', year: '2019', cover: '/covers/quartet-for-the-end-of-time-live.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'Symphony No. 4 — Chamber version (live)', composer: 'Mahler · CreArtBox · Le Train Bleu', year: '2018', cover: '/covers/symphony-no-4-chamber-version-live.jpg', url: 'https://creartbox.bandcamp.com' },
-  { title: 'CreArtProject I (live)', composer: 'Debussy · Wilson · Nilson · Higdon', year: '2008', cover: '/covers/creartproject-i-live.jpg', url: 'https://creartbox.bandcamp.com' }
-];
+// Derived views kept for the pages that still ask for them.
+export const albums = discography.filter(r => r.kind === 'Studio').map(r => ({
+  title: r.title, year: r.year, format: r.kind, description: r.description || '', url: r.spotify || r.bandcamp, cover: r.cover,
+}));
+export const liveRecordings = discography.filter(r => r.kind === 'Live').map(r => ({
+  title: r.title, composer: r.artist, year: r.year, cover: r.cover, url: r.spotify || r.bandcamp,
+}));
+
 
 export const press = [
   { quote: 'Critics top pick for the best music, art and theatre.', source: 'The New Yorker' },
