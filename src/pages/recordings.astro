@@ -175,6 +175,13 @@ const recordings = [
     ],
   },
 ];
+
+// Keep the original array index — the player looks recordings up by it.
+const indexed = recordings.map((r, i) => ({ ...r, i }));
+const shelves = [
+  { title: 'Video',  items: indexed.filter(r => r.type === 'video') },
+  { title: 'Audio',  items: indexed.filter(r => r.type === 'audio') },
+];
 ---
 <AppLayout
   title="Recordings — Guillermo Laporta"
@@ -188,36 +195,49 @@ const recordings = [
   </div>
 
   <section class="rec-section">
-    <ul class="rec-list">
-      {recordings.map((r, i) => (
-        <li class="rec-row">
-          <div class="rec-thumb">
-            <img src={r.cover} alt={r.title} loading="lazy" />
+    {shelves.map((shelf) => (
+      <div class="shelf">
+        <div class="shelf-head">
+          <h2 class="shelf-title">{shelf.title}</h2>
+          <span class="shelf-count">{shelf.items.length} recordings</span>
+        </div>
+        <div class="shelf-viewport">
+          <button class="shelf-arrow prev" data-dir="-1" aria-label={`Scroll ${shelf.title} left`} type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <div class="shelf-scroller">
+            {shelf.items.map((r) => (
+              <button
+                class={`rec-play-btn rec-card ${r.type}`}
+                data-index={r.i}
+                type="button"
+                aria-label={r.type === 'video' ? `Watch ${r.title}` : `Listen to ${r.title}`}
+              >
+                <span class="rc-art">
+                  <img src={r.cover} alt="" loading="lazy" />
+                  <span class="rc-scrim"></span>
+                  <span class="rc-kind">{r.type === 'video' ? 'Video' : 'Audio'}</span>
+                  <span class="rc-play">
+                    {r.type === 'video'
+                      ? (<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>)
+                      : (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M9 18V6l13-2v12M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0m13-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/></svg>)
+                    }
+                  </span>
+                </span>
+                <span class="rc-meta">
+                  <span class="rc-composer">{r.composer}</span>
+                  <span class="rc-title">{r.title}</span>
+                  <span class="rc-sub">{r.year} · {r.role}{r.note ? ` · ${r.note}` : ''}</span>
+                </span>
+              </button>
+            ))}
           </div>
-          <div class="rec-info">
-            <div class="rec-composer">{r.composer}</div>
-            <h2 class="rec-title">{r.title}</h2>
-            <div class="rec-meta">
-              <span class="rec-year">{r.year}</span>
-              <span class={`rec-badge ${r.role.includes('Arr') ? 'arr' : ''}`}>{r.role}</span>
-              {r.note && <span class="rec-note">{r.note}</span>}
-            </div>
-          </div>
-          <div class="rec-action">
-            <button
-              class={`rec-play-btn ${r.type}`}
-              data-index={i}
-              aria-label={r.type === 'video' ? `Watch ${r.title}` : `Listen to ${r.title}`}
-            >
-              {r.type === 'video'
-                ? (<><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg> Watch</>)
-                : (<><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 18V6l13-2v12M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0m13-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/></svg> Listen</>)
-              }
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
+          <button class="shelf-arrow next" data-dir="1" aria-label={`Scroll ${shelf.title} right`} type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    ))}
   </section>
 
   <!-- ── MODAL ─────────────────────────────────────────────────────── -->
@@ -309,6 +329,28 @@ const recordings = [
       audioEl.src = '';
     }
 
+    /* ── shelf arrows ── */
+    document.querySelectorAll('.shelf-viewport').forEach(vp => {
+      const scroller = vp.querySelector('.shelf-scroller');
+      const prev = vp.querySelector('.shelf-arrow.prev');
+      const next = vp.querySelector('.shelf-arrow.next');
+      if (!scroller || !prev || !next) return;
+
+      function sync() {
+        const max = scroller.scrollWidth - scroller.clientWidth;
+        prev.hidden = scroller.scrollLeft <= 4;
+        next.hidden = scroller.scrollLeft >= max - 4;
+      }
+      function page(dir) {
+        scroller.scrollBy({ left: dir * scroller.clientWidth * 0.85, behavior: 'smooth' });
+      }
+      prev.addEventListener('click', () => page(-1));
+      next.addEventListener('click', () => page(1));
+      scroller.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
+    });
+
     document.querySelectorAll('.rec-play-btn').forEach(btn => {
       btn.addEventListener('click', () => openModal(Number(btn.dataset.index)));
     });
@@ -318,133 +360,176 @@ const recordings = [
   </script>
 
   <style>
-    /* ── list layout ── */
-    .rec-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 40px 96px;
-    }
-    @media (max-width: 720px) { .rec-section { padding: 0 20px 64px; } }
+    /* ── shelves (horizontal rows) ── */
+    .rec-section { padding: 0 0 88px; }
 
-    .rec-list {
-      list-style: none;
-      border-top: 1px solid var(--line-soft);
-    }
+    .shelf { margin-bottom: 40px; }
+    .shelf:last-child { margin-bottom: 0; }
 
-    .rec-row {
-      display: grid;
-      grid-template-columns: 80px 1fr auto;
-      gap: 24px;
-      align-items: center;
-      padding: 20px 0;
-      border-bottom: 1px solid var(--line-soft);
-      transition: background .15s;
+    .shelf-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 40px;
+      margin-bottom: 14px;
     }
-    .rec-row:hover { background: var(--surface); margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
-
-    .rec-thumb {
-      width: 80px;
-      height: 80px;
-      flex-shrink: 0;
-      overflow: hidden;
-      background: var(--line-soft);
+    .shelf-title {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -.01em;
+      color: var(--ink);
     }
-    .rec-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .rec-info { min-width: 0; }
-
-    .rec-composer {
+    .shelf-count {
       font-family: var(--mono);
       font-size: 10px;
       letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 4px;
+      white-space: nowrap;
     }
 
-    .rec-title {
+    .shelf-viewport { position: relative; }
+
+    .shelf-scroller {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      scroll-behavior: smooth;
+      padding: 4px 40px 10px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .shelf-scroller::-webkit-scrollbar { display: none; }
+
+    /* ── card ── */
+    .rec-card {
+      flex: 0 0 clamp(200px, 21vw, 280px);
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+      color: inherit;
+      cursor: pointer;
+      transition: transform .28s cubic-bezier(.2,.7,.2,1);
+    }
+    .rec-card:hover, .rec-card:focus-visible { transform: scale(1.04); z-index: 2; }
+
+    .rc-art {
+      position: relative;
+      display: block;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 3px;
+      background: var(--bg-warm);
+      box-shadow: 0 2px 10px -6px rgba(0,0,0,.3);
+      transition: box-shadow .28s;
+    }
+    .rec-card:hover .rc-art { box-shadow: 0 14px 30px -14px rgba(0,0,0,.45); }
+    .rc-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .rc-scrim {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 55%);
+      opacity: .75;
+      transition: opacity .28s;
+    }
+    .rec-card:hover .rc-scrim { opacity: .95; }
+
+    .rc-kind {
+      position: absolute; top: 8px; left: 8px;
+      font-family: var(--mono);
+      font-size: 8.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(0,0,0,.55);
+      padding: 3px 7px;
+      border-radius: 2px;
+      backdrop-filter: blur(3px);
+    }
+
+    .rc-play {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%) scale(.85);
+      width: 46px; height: 46px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      color: #111;
+      opacity: 0;
+      transition: opacity .22s, transform .22s;
+    }
+    .rc-play svg { width: 18px; height: 18px; }
+    .rec-card:hover .rc-play,
+    .rec-card:focus-visible .rc-play { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+    .rc-meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .rc-composer {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .rc-title {
       font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 400;
+      font-size: 16px;
+      font-weight: 500;
       line-height: 1.2;
       letter-spacing: -.01em;
       color: var(--ink);
-      margin-bottom: 8px;
-      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
+    .rc-sub { font-size: 12px; color: var(--muted); line-height: 1.35; }
 
-    .rec-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .rec-year {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .12em;
-      color: var(--muted);
-    }
-
-    .rec-badge {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border: 1px solid var(--line-soft);
-      color: var(--muted);
-    }
-
-    .rec-badge.arr { border-color: var(--accent); color: var(--accent); }
-
-    .rec-note {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    .rec-play-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      padding: 9px 18px;
-      border: 1px solid var(--line-soft);
-      background: transparent;
+    /* ── arrows (desktop) ── */
+    .shelf-arrow {
+      position: absolute;
+      top: 0;
+      bottom: 18px;
+      width: 40px;
+      display: grid;
+      place-items: center;
+      border: none;
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
       color: var(--ink);
       cursor: pointer;
-      white-space: nowrap;
-      transition: all .15s;
+      opacity: 0;
+      transition: opacity .2s;
+      z-index: 3;
     }
-    .rec-play-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-    .rec-play-btn:hover, .rec-play-btn.video:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-    .rec-play-btn.audio:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .shelf-arrow.prev { left: 0; }
+    .shelf-arrow.next { right: 0; }
+    .shelf-arrow svg { width: 20px; height: 20px; }
+    .shelf-viewport:hover .shelf-arrow { opacity: 1; }
+    .shelf-arrow:focus-visible { opacity: 1; }
+    .shelf-arrow[hidden] { display: none; }
+
+    @media (hover: none) {
+      .shelf-arrow { display: none; }
+      .rec-card:hover { transform: none; }
+      .rc-play { opacity: 1; transform: translate(-50%, -50%) scale(1); width: 40px; height: 40px; }
+    }
 
     @media (max-width: 720px) {
-      .rec-row { grid-template-columns: 64px 1fr; gap: 16px; }
-      .rec-thumb { width: 64px; height: 64px; }
-      .rec-title { font-size: 15px; }
-      .rec-action { grid-column: 1 / -1; padding-left: 80px; }
-      .rec-play-btn { padding: 7px 14px; font-size: 9px; }
+      .shelf-head { padding: 0 20px; }
+      .shelf-scroller { padding: 4px 20px 10px; gap: 10px; }
+      .rec-card { flex: 0 0 76vw; }
+      .shelf-title { font-size: 17px; }
+      .rc-title { font-size: 15px; }
     }
-    @media (max-width: 480px) {
-      .rec-action { padding-left: 0; }
-    }
+
 
     /* ── modal ── */
     .media-modal {
