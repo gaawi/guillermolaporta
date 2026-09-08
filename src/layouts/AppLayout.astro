@@ -48,15 +48,15 @@ function isActive(href) {
     <link rel="icon" href={`${b}favicon.svg`} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Saira+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap" />
     <title>{title}</title>
     <style is:global>
 /* ── variables ──────────────────────────────────────────── */
-:root{--bg:#F6F2EA;--paper:#FBF8F1;--bg-warm:#EFE8DA;--ink:#1A1614;--ink-2:#3A322D;--muted:#7A716A;--line:#D4CDBE;--line-soft:#E5DECF;--accent:#8A4B2B;--accent-2:#2F4A4A;--gold:#B89968;--serif:"Fraunces","Times New Roman",serif;--sans:"Manrope",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
+:root{--bg:#F6F2EA;--paper:#FBF8F1;--bg-warm:#EFE8DA;--ink:#1A1614;--ink-2:#3A322D;--muted:#7A716A;--line:#D4CDBE;--line-soft:#E5DECF;--accent:#8A4B2B;--accent-2:#2F4A4A;--gold:#B89968;--serif:"Saira Condensed",system-ui,sans-serif;--sans:"Saira",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
 /* ── reset ──────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--ink)}
-body{font-family:var(--sans);font-size:15px;line-height:1.55;font-weight:350;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;overscroll-behavior-y:none}
+body{font-family:var(--sans);font-size:15px;line-height:1.55;font-weight:400;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;overscroll-behavior-y:none}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer}
@@ -92,7 +92,7 @@ button{font:inherit;cursor:pointer}
 .hero-title{font-family:var(--serif);font-weight:300;font-size:clamp(64px,9.5vw,152px);line-height:.92;letter-spacing:-.035em;color:var(--ink)}
 .hero-title .row{display:block}
 .hero-title em{font-style:italic;font-weight:300;color:var(--accent)}
-.hero-sub{margin-top:36px;max-width:46ch;font-size:17px;line-height:1.6;color:var(--ink-2);font-weight:350}
+.hero-sub{margin-top:36px;max-width:46ch;font-size:17px;line-height:1.6;color:var(--ink-2);font-weight:400}
 .hero-sub b{color:var(--ink);font-weight:500}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 /* ── hero card (featured image) ─────────────────────────── */
@@ -127,7 +127,7 @@ button{font:inherit;cursor:pointer}
 .subpage-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
 .subpage-title{font-family:var(--serif);font-weight:300;font-size:clamp(48px,8vw,96px);line-height:1;letter-spacing:-.025em;color:var(--ink);margin-bottom:18px}
 .subpage-title em{font-style:italic;color:var(--accent);font-weight:300}
-.subpage-sub{font-size:16px;line-height:1.55;color:var(--ink-2);font-weight:350;max-width:60ch}
+.subpage-sub{font-size:16px;line-height:1.55;color:var(--ink-2);font-weight:400;max-width:60ch}
 /* ── statement ───────────────────────────────────────────── */
 .statement{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start}
 .quote-mark{font-family:var(--serif);font-style:italic;font-weight:300;font-size:220px;line-height:.7;color:var(--gold);opacity:.45}
@@ -147,7 +147,7 @@ button{font:inherit;cursor:pointer}
 .cal-row .when{font-family:var(--serif);font-size:22px;line-height:1;letter-spacing:-.015em}
 .cal-row .when small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:6px;font-weight:400}
 .cal-row .name{font-family:var(--serif);font-size:24px;font-weight:400;line-height:1.15;letter-spacing:-.015em}
-.cal-row .name small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:350;margin-top:4px;letter-spacing:0}
+.cal-row .name small{display:block;font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:400;margin-top:4px;letter-spacing:0}
 .cal-row .venue{font-size:13px;color:var(--ink-2);line-height:1.45}
 .cal-row .status{text-align:right;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
 .cal-row .status .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--ink);color:var(--paper)}
@@ -166,7 +166,7 @@ button{font:inherit;cursor:pointer}
 .va-kind{font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding-left:12px;border-left:1px solid var(--line-soft)}
 .va-title{font-family:var(--serif);font-size:21px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:8px;transition:color .15s}
 .va-card:hover .va-title{color:var(--accent)}
-.va-desc{font-size:13px;line-height:1.6;color:var(--ink-2);font-weight:350;flex:1}
+.va-desc{font-size:13px;line-height:1.6;color:var(--ink-2);font-weight:400;flex:1}
 .va-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500}
 .va-link:hover{text-decoration:underline}
 .archive-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
@@ -218,7 +218,7 @@ button{font:inherit;cursor:pointer}
 .lead-org{font-family:var(--serif);font-size:28px;line-height:1.05;letter-spacing:-.015em;font-weight:400;color:var(--ink)}
 .lead-period{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .lead-role{font-size:13px;color:var(--ink-2);font-weight:500}
-.lead-body{font-size:14px;line-height:1.6;color:var(--ink-2);font-weight:350;flex:1}
+.lead-body{font-size:14px;line-height:1.6;color:var(--ink-2);font-weight:400;flex:1}
 .lead-link{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-top:auto;display:inline-flex;align-items:center;gap:6px}
 .lead-link:hover{text-decoration:underline}
 /* ── bio strip ───────────────────────────────────────────── */
@@ -277,7 +277,7 @@ button{font:inherit;cursor:pointer}
 .va-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
 .va-list li{display:grid;grid-template-columns:1fr auto auto;gap:12px 18px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line-soft)}
 .va-list .vl-composer{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink)}
-.va-list .vl-work{font-size:13px;color:var(--ink-2);font-style:italic;grid-column:1;grid-row:2;margin-top:-6px;font-weight:350}
+.va-list .vl-work{font-size:13px;color:var(--ink-2);font-style:italic;grid-column:1;grid-row:2;margin-top:-6px;font-weight:400}
 .va-list .vl-year{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);grid-row:1}
 .va-list .vl-status{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:3px 8px;border:1px solid var(--line);border-radius:999px;grid-row:1}
 /* ── focus ───────────────────────────────────────────────── */
