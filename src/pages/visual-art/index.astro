@@ -22,19 +22,28 @@ const latestYear = (w) => {
 };
 const byYearDesc = (a, bk) => latestYear(bk) - latestYear(a);
 
-const filters = [
-  { key: 'all',          label: 'All' },
+// Only works with photography are shown for now. That currently empties
+// Theater Design, so the filter bar is derived from the categories actually
+// present rather than hardcoded — no button that leads to an empty grid.
+const works = visualWork.filter(w => w.images?.length).sort(byYearDesc);
+
+const CATS = [
   { key: 'installation', label: 'Installation' },
   { key: 'video-art',    label: 'Video Art' },
   { key: 'design',       label: 'Theater Design' },
 ];
+const filters = [
+  { key: 'all', label: 'All' },
+  ...CATS.filter(c => works.some(w => w.cat === c.key)),
+];
 
-// One mixed stream, newest first — the types are told apart by how each card
-// is presented, not by being filed into separate bands.
-const works = [...visualWork].sort(byYearDesc);
-
-// Images come from the archive CDN via visualWork.images. Projects with an
-// empty array have no photography yet and render as text only.
+// One mixed stream, newest first. Each type carries its own mark in the meta
+// line so they stay tellable apart without separate bands.
+const ICONS = {
+  'installation': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="M12 12 4 7.5M12 12l8-4.5M12 12v9"/></svg>',
+  'video-art':    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m10 9.5 5 2.5-5 2.5z"/></svg>',
+  'design':       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18M5 4v6a7 7 0 0 0 14 0V4"/><path d="M9 21h6M12 17v4"/></svg>',
+};
 ---
 <AppLayout title="Visual Art — Guillermo Laporta" description="Installation, video art and theater design — visual works by Guillermo Laporta.">
   <div class="subpage-head">
@@ -55,13 +64,12 @@ const works = [...visualWork].sort(byYearDesc);
 
     <div class="proj-grid" id="projGrid">
       {works.map((p) => {
-        const imgs = p.images || [];
+        const imgs = p.images;
         const hasDetail = detailSlugs.has(p.slug);
-        const isVideo = p.cat === 'video-art';
         return (
-          <article class={`proj-card cat-${p.cat}${imgs.length ? '' : ' no-media'}`} data-cat={p.cat}>
+          <article class={`proj-card cat-${p.cat}`} data-cat={p.cat}>
             {imgs.length > 0 && (
-              <div class={`proj-media${isVideo ? ' as-screen' : ''}`}>
+              <div class="proj-media">
                 {imgs.length > 1 ? (
                   <div class="proj-gallery-wrap" data-count={imgs.length}>
                     <div class="proj-carousel">
@@ -90,7 +98,10 @@ const works = [...visualWork].sort(byYearDesc);
             <div class="proj-body">
               <div class="proj-meta">
                 <span class="proj-year">{p.year}</span>
-                <span class="proj-kind">{p.kind}</span>
+                <span class="proj-kind">
+                  <span class="proj-icon" set:html={ICONS[p.cat]} />
+                  {p.kind}
+                </span>
               </div>
               {hasDetail
                 ? <a class="proj-title-link" href={`${b}portfolio/${p.slug}/`}><h3 class="proj-title">{p.title}</h3></a>
@@ -211,36 +222,6 @@ const works = [...visualWork].sort(byYearDesc);
     @media(max-width:1100px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:600px){.proj-grid{grid-template-columns:1fr}}
 
-    /* ── video art reads as a screen ──────────────────────────
-       Types are mixed in one stream, so each is told apart by how it is
-       presented rather than by being filed into a separate band. Video art
-       sits inside a device bezel — dark frame, rounded corners, a camera dot
-       and a home bar — so it reads as footage on a screen. Installation and
-       theater design stay flush to the card edge. */
-    .proj-media.as-screen{
-      background:#141414;
-      padding:14px 14px 20px;
-      border-radius:16px;
-      margin:14px 14px 0;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.10), 0 6px 18px -12px rgba(0,0,0,.5);
-      position:relative;
-    }
-    .proj-media.as-screen .proj-gallery-wrap,
-    .proj-media.as-screen .proj-img-wrap{border-radius:4px;overflow:hidden}
-    /* camera dot */
-    .proj-media.as-screen::before{
-      content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);
-      width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.28);
-    }
-    /* home bar */
-    .proj-media.as-screen::after{
-      content:"";position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-      width:56px;height:3px;border-radius:2px;background:rgba(255,255,255,.28);
-    }
-
-    @media(max-width:600px){
-      .proj-media.as-screen{margin:10px 10px 0;padding:11px 11px 17px;border-radius:13px}
-    }
 
     .proj-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-soft);overflow:hidden}
     /* .proj-card's display:flex outranks the browser's [hidden] rule, so the
@@ -252,10 +233,6 @@ const works = [...visualWork].sort(byYearDesc);
     .proj-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
     .proj-card:hover .proj-img{transform:scale(1.03)}
 
-    /* No photography yet: text only, no placeholder tile. A rule at the top
-       stands in for the missing image so the card still reads as a card. */
-    .proj-card.no-media{border-top:2px solid var(--accent-2)}
-    .proj-card.no-media .proj-body{padding-top:20px}
 
     /* carousel */
     .proj-gallery-wrap{position:relative;aspect-ratio:16/9;overflow:hidden}
@@ -325,7 +302,10 @@ const works = [...visualWork].sort(byYearDesc);
     .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
     /* Was var(--line) — the hairline colour, 1.26:1 on paper, effectively
        invisible. Accent carries it at 4.68:1 and marks the type. */
-    .proj-kind{font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);font-weight:500;padding-left:12px;border-left:1px solid var(--line-soft)}
+    .proj-kind{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);font-weight:500;padding-left:12px;border-left:1px solid var(--line-soft)}
+    /* Each type carries its own mark, since the cards otherwise look alike. */
+    .proj-icon{display:inline-flex;flex-shrink:0}
+    .proj-icon svg{width:13px;height:13px;display:block}
 
     .proj-title-link{text-decoration:none;color:inherit}
     .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:10px;transition:color .15s}
