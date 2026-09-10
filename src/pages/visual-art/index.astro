@@ -127,16 +127,56 @@ const works = [...visualWork].sort(byYearDesc);
     });
 
     /* ── carousels ── */
+    const ARROW = dir =>
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="${dir < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'}"/></svg>`;
+
     document.querySelectorAll('.proj-gallery-wrap').forEach(wrap => {
       const carousel = wrap.querySelector('.proj-carousel');
       const curEl    = wrap.querySelector('.pc-cur');
+      const total    = carousel.children.length;
+
+      /* dots — make the extra frames visible without interaction */
+      const dots = document.createElement('div');
+      dots.className = 'proj-dots';
+      for (let i = 0; i < total; i++) {
+        const d = document.createElement('button');
+        d.type = 'button';
+        d.className = 'proj-dot' + (i === 0 ? ' on' : '');
+        d.setAttribute('aria-label', `Image ${i + 1} of ${total}`);
+        d.addEventListener('click', () => {
+          carousel.scrollTo({ left: i * carousel.offsetWidth, behavior: 'smooth' });
+        });
+        dots.appendChild(d);
+      }
+      wrap.appendChild(dots);
+
+      /* arrows — pointer devices only */
+      const prev = document.createElement('button');
+      const next = document.createElement('button');
+      prev.type = next.type = 'button';
+      prev.className = 'proj-nav prev';
+      next.className = 'proj-nav next';
+      prev.innerHTML = ARROW(-1);
+      next.innerHTML = ARROW(1);
+      prev.setAttribute('aria-label', 'Previous image');
+      next.setAttribute('aria-label', 'Next image');
+      const step = dir => carousel.scrollBy({ left: dir * carousel.offsetWidth, behavior: 'smooth' });
+      prev.addEventListener('click', () => step(-1));
+      next.addEventListener('click', () => step(1));
+      wrap.append(prev, next);
 
       function updateCounter() {
         const w   = carousel.offsetWidth;
         const idx = w > 0 ? Math.round(carousel.scrollLeft / w) : 0;
         curEl.textContent = idx + 1;
+        dots.querySelectorAll('.proj-dot').forEach((d, i) => d.classList.toggle('on', i === idx));
+        prev.hidden = idx <= 0;
+        next.hidden = idx >= total - 1;
       }
       carousel.addEventListener('scroll', updateCounter, { passive: true });
+      updateCounter();
 
       let down = false, originX = 0, originScroll = 0;
       carousel.addEventListener('mousedown', e => {
@@ -197,14 +237,15 @@ const works = [...visualWork].sort(byYearDesc);
       content:"";position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
       width:56px;height:3px;border-radius:2px;background:rgba(255,255,255,.28);
     }
-    .proj-media.as-screen .proj-counter{bottom:26px;right:22px}
 
     @media(max-width:600px){
       .proj-media.as-screen{margin:10px 10px 0;padding:11px 11px 17px;border-radius:13px}
-      .proj-media.as-screen .proj-counter{bottom:22px;right:18px}
     }
 
     .proj-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-soft);overflow:hidden}
+    /* .proj-card's display:flex outranks the browser's [hidden] rule, so the
+       filter needs this to actually hide a card. */
+    .proj-card[hidden]{display:none}
 
     /* single image */
     .proj-img-wrap{aspect-ratio:16/9;overflow:hidden;background:var(--line-soft)}
@@ -247,12 +288,44 @@ const works = [...visualWork].sort(byYearDesc);
       pointer-events:none;
     }
 
+    /* ── swipe affordance ──────────────────────────────────────
+       Nothing signalled that a carousel had more than one image. Dots make
+       the extra frames visible at rest; arrows appear on pointer devices. */
+    .proj-dots{
+      position:absolute;bottom:10px;left:12px;
+      display:flex;gap:5px;align-items:center;
+      padding:5px 8px;border-radius:999px;
+      background:rgba(0,0,0,.45);backdrop-filter:blur(4px);
+    }
+    .proj-dot{
+      width:5px;height:5px;border-radius:50%;padding:0;border:none;
+      background:rgba(255,255,255,.42);cursor:pointer;transition:background .18s,transform .18s;
+    }
+    .proj-dot.on{background:#fff;transform:scale(1.35)}
+
+    .proj-nav{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:30px;height:30px;border:none;border-radius:50%;
+      display:grid;place-items:center;
+      background:rgba(0,0,0,.42);color:#fff;cursor:pointer;
+      opacity:0;transition:opacity .18s;backdrop-filter:blur(4px);
+    }
+    .proj-nav svg{width:14px;height:14px}
+    .proj-nav.prev{left:8px}
+    .proj-nav.next{right:8px}
+    .proj-gallery-wrap:hover .proj-nav{opacity:1}
+    .proj-nav:focus-visible{opacity:1}
+    .proj-nav[hidden]{display:none}
+    @media(hover:none){ .proj-nav{display:none} }
+
     /* body */
     .proj-body{padding:24px 28px 28px;display:flex;flex-direction:column;flex:1}
     @media(max-width:600px){.proj-body{padding:18px}}
     .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-    .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-    .proj-kind{font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--line);padding-left:12px;border-left:1px solid var(--line-soft)}
+    .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+    /* Was var(--line) — the hairline colour, 1.26:1 on paper, effectively
+       invisible. Accent carries it at 4.68:1 and marks the type. */
+    .proj-kind{font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);font-weight:500;padding-left:12px;border-left:1px solid var(--line-soft)}
 
     .proj-title-link{text-decoration:none;color:inherit}
     .proj-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink);margin-bottom:10px;transition:color .15s}
