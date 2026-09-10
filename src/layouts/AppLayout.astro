@@ -70,18 +70,17 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer}
 /* ── topbar (desktop) ────────────────────────────────────── */
 .topbar{position:sticky;top:0;z-index:50;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:18px 40px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
-.brand{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-.01em}
-.brand .glyph{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--serif);font-size:18px;font-weight:400;flex-shrink:0}
-.brand .name b{font-weight:600}
+.brand{display:flex;flex-direction:column;gap:2px;line-height:1.1}
+.brand-name{font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.brand-role{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .topnav ul{list-style:none;display:flex;gap:28px;justify-content:center;font-size:14px;font-weight:400;color:var(--ink-2)}
 .topnav a{position:relative;padding:6px 0;transition:color .2s}
 .topnav a:hover{color:var(--accent)}
 .topnav a.active{color:var(--ink)}
 .topnav a.active::after{content:"";position:absolute;left:50%;bottom:-2px;width:4px;height:4px;border-radius:50%;background:var(--accent);transform:translate(-50%)}
 .topbar-right{display:flex;gap:14px;align-items:center;font-size:13px}
-.tag-now{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--accent-2);border-radius:999px;background:var(--paper);font-size:12px;color:var(--ink-2)}
-.tag-now .pulse{width:7px;height:7px;border-radius:50%;background:var(--p-green);animation:pulse 2.5s ease-out infinite;flex-shrink:0}
-@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 50%,transparent)}70%{box-shadow:0 0 0 8px transparent}to{box-shadow:0 0 0 0 transparent}}
+.tag-now{display:inline-flex;align-items:center;padding:7px 16px;border:1px solid var(--accent-2);font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--paper);color:var(--ink-2);transition:all .18s}
+.tag-now:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 /* ── pill nav (mobile bottom bar) ───────────────────────── */
 .pill-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;padding:8px 12px env(safe-area-inset-bottom,8px);background:color-mix(in srgb,var(--paper) 95%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--line-soft)}
 .pill-nav-inner{display:flex;justify-content:space-around;align-items:center;gap:4px}
@@ -343,8 +342,8 @@ img[loading=lazy]{background:var(--bg-warm)}
   <body>
     <header class="topbar">
       <a href={b} class="brand">
-        <span class="glyph">G</span>
-        <span class="name"><b>Guillermo</b> Laporta</span>
+        <span class="brand-name">Guillermo Laporta</span>
+        <span class="brand-role">Flutist · Composer · Director</span>
       </a>
       <nav class="topnav" aria-label="Main">
         <ul>
@@ -358,10 +357,7 @@ img[loading=lazy]{background:var(--bg-warm)}
         </ul>
       </nav>
       <div class="topbar-right">
-        <span class="tag-now">
-          <span class="pulse"></span>
-          Now: NYC · Composing
-        </span>
+        <a class="tag-now" href="mailto:guillermo@creartbox.nyc">Contact</a>
       </div>
     </header>
 

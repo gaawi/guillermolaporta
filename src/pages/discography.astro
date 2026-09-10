@@ -17,7 +17,7 @@ const b = _base.endsWith('/') ? _base : _base + '/';
   <section class="section section-tight">
     <div class="rel-grid">
       {discography.map((r) => (
-        <a class="rel-card" href={r.spotify || r.bandcamp} target="_blank" rel="noopener">
+        <a class="rel-card" href={r.spotify || r.bandcamp || r.apple} target="_blank" rel="noopener">
           <div class="rel-cover">
             {r.cover
               ? <img src={asset(r.cover)} alt={r.title} loading="lazy" />
@@ -30,7 +30,7 @@ const b = _base.endsWith('/') ? _base : _base + '/';
           <div class="rel-title">{r.title}</div>
           <div class="rel-artist">{r.artist}</div>
           <div class={`rel-cta ${r.spotify ? 'spotify' : ''}`}>
-            {r.spotify ? 'Listen on Spotify ↗' : 'Listen on Bandcamp ↗'}
+            {r.spotify ? 'Listen on Spotify ↗' : r.bandcamp ? 'Listen on Bandcamp ↗' : 'Listen on Apple Music ↗'}
           </div>
         </a>
       ))}
