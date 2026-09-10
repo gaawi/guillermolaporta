@@ -8,16 +8,37 @@ const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
 
-const works = [...visualWork].sort((a, bk) => parseInt(bk.year) - parseInt(a.year));
+// A work only links out when portfolio/[slug] actually builds a page for it.
+// 10 of the 18 have no entry here — every video-art piece and four theater
+// designs — so linking them unconditionally shipped 404s.
+const detailSlugs = new Set(projectDetails.map(p => p.slug));
+
+// Newest first. Years can be ranges ("2014–16", "2016 / 2018"), so sort on the
+// latest year mentioned rather than parseInt of the whole string.
+const latestYear = (w) => {
+  const years = String(w.year).match(/\d{4}/g);
+  return years ? Math.max(...years.map(Number)) : 0;
+};
+const byYearDesc = (a, bk) => latestYear(bk) - latestYear(a);
 
 const filters = [
   { key: 'all',          label: 'All' },
   { key: 'installation', label: 'Installation' },
-  { key: 'video-art',   label: 'Video Art' },
-  { key: 'design',      label: 'Theater Design' },
+  { key: 'video-art',    label: 'Video Art' },
+  { key: 'design',       label: 'Theater Design' },
 ];
 
-function getGallery(slug, fallbackImage) {
+// Grouped for the "All" view; the group headings hide under a single filter,
+// where the active button already names the type.
+const groups = filters
+  .filter(f => f.key !== 'all')
+  .map(f => ({
+    ...f,
+    items: visualWork.filter(w => w.cat === f.key).sort(byYearDesc),
+  }))
+  .filter(g => g.items.length);
+
+function getGallery(slug) {
   const detail = projectDetails.find(p => p.slug === slug);
   if (detail?.gallery?.length > 1) return detail.gallery;
   return null;
@@ -41,8 +62,14 @@ function getGallery(slug, fallbackImage) {
     </div>
 
     <div class="proj-grid" id="projGrid">
-      {works.map((p) => {
-        const gallery = getGallery(p.slug, p.image);
+      {groups.map((g) => [
+        <h2 class="group-head" data-group={g.key}>
+          {g.label}
+          <span class="group-n">{g.items.length}</span>
+        </h2>,
+        ...g.items.map((p) => {
+        const gallery = getGallery(p.slug);
+        const hasDetail = detailSlugs.has(p.slug);
         return (
           <article class="proj-card" data-cat={p.cat}>
             {gallery ? (
@@ -75,20 +102,22 @@ function getGallery(slug, fallbackImage) {
                 <span class="proj-year">{p.year}</span>
                 <span class="proj-kind">{p.kind}</span>
               </div>
-              <a class="proj-title-link" href={`${b}portfolio/${p.slug}/`}>
-                <h2 class="proj-title">{p.title}</h2>
-              </a>
+              {hasDetail
+                ? <a class="proj-title-link" href={`${b}portfolio/${p.slug}/`}><h3 class="proj-title">{p.title}</h3></a>
+                : <h3 class="proj-title">{p.title}</h3>}
               {p.desc && <p class="proj-desc">{p.desc}</p>}
-              <a class="proj-cta" href={`${b}portfolio/${p.slug}/`}>
-                Ver proyecto completo
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                  <path d="M3 8h10M9 4l4 4-4 4"/>
-                </svg>
-              </a>
+              {hasDetail && (
+                <a class="proj-cta" href={`${b}portfolio/${p.slug}/`}>
+                  View project
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4"/>
+                  </svg>
+                </a>
+              )}
             </div>
           </article>
         );
-      })}
+      })])}
     </div>
   </section>
 
@@ -103,7 +132,12 @@ function getGallery(slug, fallbackImage) {
       btn.classList.add('active');
       const cat = btn.dataset.cat;
       grid.querySelectorAll('.proj-card').forEach(card => {
-        card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+        card.hidden = !(cat === 'all' || card.dataset.cat === cat);
+      });
+      // Headings only earn their place in the combined view; under a single
+      // filter the active button already says which type you are looking at.
+      grid.querySelectorAll('.group-head').forEach(head => {
+        head.hidden = cat !== 'all';
       });
     });
 
@@ -151,6 +185,18 @@ function getGallery(slug, fallbackImage) {
     .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
     @media(max-width:1100px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:600px){.proj-grid{grid-template-columns:1fr}}
+
+    /* Group heading spans the full grid so each type reads as its own band. */
+    .group-head{
+      grid-column:1/-1;
+      display:flex;align-items:baseline;gap:10px;
+      font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+      font-weight:500;color:var(--accent);
+      margin:34px 0 10px;padding-bottom:9px;
+      border-bottom:1px solid var(--accent-2);
+    }
+    .group-head:first-child{margin-top:4px}
+    .group-n{font-size:9px;color:var(--muted);letter-spacing:.12em}
 
     .proj-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-soft);overflow:hidden}
 
