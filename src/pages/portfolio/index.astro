@@ -75,7 +75,10 @@ const arrangementSections = [
             <div class="cv-entry-title">{w.title}</div>
             <div class="cv-entry-date">{w.year}</div>
           </div>
-          <div class="cv-entry-role">{catLabels[w.cat] || w.cat} · {w.roles}</div>
+          <div class="cv-entry-tags">
+            <span class="cv-kind">{catLabels[w.cat] || w.cat}</span>
+            <span class="cv-roles">{w.roles}</span>
+          </div>
           <p class="cv-entry-body">{w.desc}</p>
           <a class="stage-cta" href={`${b}portfolio/${w.slug}/`}>
             View project
@@ -146,6 +149,18 @@ const arrangementSections = [
     .cv-entry-title{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
     .cv-entry-date{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
     .cv-entry-role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:10px;letter-spacing:-.005em}
+
+    /* Project type is a classification, not another role — the two used to run
+       together in one dot-separated line, so the type read as a fourth role.
+       Type: mono caps in a teal-bordered chip (teal is border-only at 3.56:1).
+       Roles: the accent line, as elsewhere. */
+    .cv-entry-tags{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 10px;margin-bottom:10px}
+    .cv-kind{
+      font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+      color:var(--ink-2);border:1px solid var(--accent-2);padding:3px 8px;
+      white-space:nowrap;flex-shrink:0;
+    }
+    .cv-roles{font-size:13px;color:var(--accent);font-weight:500;letter-spacing:-.005em}
     .cv-entry-body{font-size:14px;line-height:1.65;color:var(--ink-2);font-weight:400;max-width:72ch;margin-bottom:16px}
 
     @media(max-width:600px){
