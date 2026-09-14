@@ -125,7 +125,9 @@ button{font:inherit;cursor:pointer}
 .section-title{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.4vw,30px);line-height:1.15;letter-spacing:-.015em}
 .section-rhs{max-width:38ch;text-align:right;color:var(--muted);font-size:14px;line-height:1.55}
 /* ── subpage head ────────────────────────────────────────── */
-.subpage-head{padding:28px 40px 22px;border-bottom:1px solid var(--line-soft);margin-bottom:28px}
+/* Same centred container as .section, so the page head and the sections below
+   share one left edge instead of stepping in from the viewport. */
+.subpage-head{max-width:1480px;margin:0 auto 28px;padding:28px 40px 22px;border-bottom:1px solid var(--line-soft)}
 .subpage-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;transition:color .2s}
 .subpage-back:hover{color:var(--accent)}
 .subpage-num{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
@@ -297,7 +299,7 @@ img[loading=lazy]{background:var(--bg-warm)}
   .section{padding:56px 20px}
   .section-head{grid-template-columns:1fr;gap:20px;margin-bottom:36px}
   .section-rhs{text-align:left;max-width:100%}
-  .subpage-head{padding:20px 20px 18px;margin-bottom:24px}
+  .subpage-head{padding:20px 20px 18px;margin:0 auto 24px}
   .subpage-back{margin-bottom:24px}
   .subpage-title{font-size:28px}
   .statement{grid-template-columns:1fr;gap:20px}

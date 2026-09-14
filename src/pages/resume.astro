@@ -167,7 +167,6 @@ const catalogueSections = [
 
   <!-- ── CV HEADING ───────────────────────────────────────────────── -->
   <div class="cv-page-head">
-    <div class="cv-page-kicker">Curriculum Vitae</div>
     <h2 class="cv-page-title">Experience &amp; work.</h2>
   </div>
 
@@ -502,9 +501,12 @@ const catalogueSections = [
   </section>
 
   <style>
-    .cv-section{max-width:1480px;padding-left:40px;padding-right:40px;display:grid;grid-template-columns:220px 1fr;gap:40px;border-bottom:1px solid var(--line-soft)}
+    /* Was a 220px label column, which pushed every entry ~260px right of the page
+   head and the section labels, giving the page three stacked left edges.
+   The label now sits above its entries and everything shares one edge. */
+    .cv-section{max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;border-bottom:1px solid var(--line-soft)}
     .cv-section:last-of-type{border-bottom:none}
-    .cv-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);padding-top:4px;font-weight:500}
+    .cv-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--line-soft)}
     .cv-sublabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line-soft);font-weight:500}
     .cv-entries{display:flex;flex-direction:column;gap:0}
     .cv-entry{padding:28px 0;border-bottom:1px solid var(--line-soft)}
@@ -524,16 +526,16 @@ const catalogueSections = [
     .mentor-card{padding:14px;background:var(--bg);border:1px solid var(--line-soft);border-radius:6px}
     .mentor-name{font-family:var(--serif);font-size:16px;font-weight:400;color:var(--ink);margin-bottom:4px}
     .mentor-desc{font-size:12px;color:var(--muted);line-height:1.5}
-    @media(max-width:900px){.cv-section{grid-template-columns:1fr;gap:20px;padding-left:20px;padding-right:20px}.mentors-grid{grid-template-columns:1fr}}
+    @media(max-width:900px){.cv-section{padding-left:20px;padding-right:20px}.mentors-grid{grid-template-columns:1fr}}
     @media(max-width:600px){.cv-entry-head{flex-direction:column;gap:4px}.cv-entry-title{font-size:18px}}
 
     /* ── CV page heading ── */
-    .cv-page-head{max-width:1480px;margin:0 auto;padding:72px 40px 56px;border-bottom:1px solid var(--line-soft)}
+    .cv-page-head{max-width:1480px;margin:0 auto;padding:8px 40px 18px;border-bottom:1px solid var(--line-soft)}
     .cv-page-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;font-weight:500}
-    .cv-page-title{font-family:var(--serif);font-size:clamp(40px,6vw,72px);font-weight:400;line-height:1.05;letter-spacing:-.025em;color:var(--ink)}
+    .cv-page-title{font-family:var(--serif);font-size:clamp(24px,2.4vw,30px);font-weight:500;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
     .cv-page-title em{font-style:italic;color:var(--muted)}
-    @media(max-width:900px){.cv-page-head{padding:56px 20px 40px}}
-    @media(max-width:600px){.cv-page-head{padding:48px 20px 32px}}
+    @media(max-width:900px){.cv-page-head{padding:8px 20px 16px}}
+    @media(max-width:600px){.cv-page-head{padding:8px 20px 14px}}
 
     /* ── Bio switcher ── */
     .bio-sw-section{padding-top:0;border-bottom:1px solid var(--line-soft);padding-bottom:64px}
