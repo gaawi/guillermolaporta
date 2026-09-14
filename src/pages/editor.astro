@@ -43,9 +43,9 @@ const initial = {
   projects: projects.map(p => ({ ...p, notes: '' })),
   catalogue: catalogue.map(w => ({ ...w, notes: w.notes || '' })),
   education: [
-    { id: 'rcm', title: 'M.Mus. Advanced Performance — Flute', date: 'London, 2010–12', institution: 'Royal College of Music', body: 'Studied with Jaime Martín, Paul Edmund Davies and Sue Thomas. Full scholarship.', notes: '' },
+    { id: 'rcm', title: 'M.Mus. Advanced Performance, Flute', date: 'London, 2010–12', institution: 'Royal College of Music', body: 'Studied with Jaime Martín, Paul Edmund Davies and Sue Thomas. Full scholarship.', notes: '' },
     { id: 'uah', title: 'M.A. Arts Management', date: 'Madrid, 2012–14', institution: 'University of Alcalá de Henares', body: '', notes: '' },
-    { id: 'musikene', title: 'Superior Degree in Music — Flute', date: 'San Sebastián, 2004–09', institution: 'Musikene — Superior Conservatory of Music of the Basque Country', body: 'With distinction. Studies with Jaime Martín.', notes: '' },
+    { id: 'musikene', title: 'Superior Degree in Music, Flute', date: 'San Sebastián, 2004–09', institution: 'Musikene, Superior Conservatory of Music of the Basque Country', body: 'With distinction. Studies with Jaime Martín.', notes: '' },
   ],
   albums: albums.map(a => ({ ...a, notes: '' })),
   funders: {
@@ -62,7 +62,7 @@ const initial = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Resume Editor — Guillermo Laporta</title>
+  <title>Resume Editor · Guillermo Laporta</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -170,7 +170,7 @@ const initial = {
 <!-- Topbar -->
 <div class="topbar">
   <div class="topbar-title">Resume Editor</div>
-  <div class="topbar-status" id="save-status">—</div>
+  <div class="topbar-status" id="save-status"></div>
   <div class="topbar-actions">
     <button class="btn" onclick="resetToDefault()">Restablecer</button>
     <button class="btn primary" onclick="copyForClaude()">Copiar para Claude ↗</button>
@@ -255,7 +255,7 @@ const initial = {
   <div class="section" id="sec-albums">
     <div class="section-header" onclick="toggleSection('albums')">
       <span class="section-tag">06</span>
-      <span class="section-title">Discography — Studio Albums</span>
+      <span class="section-title">Discography: Studio Albums</span>
       <span class="section-count" id="count-albums"></span>
       <span class="chevron">▼</span>
     </div>
@@ -280,7 +280,7 @@ const initial = {
             <textarea class="tall" data-key="funders.us" id="funder-us"></textarea>
           </div>
           <div class="notes-field">
-            <label>Notas para Claude — US</label>
+            <label>Notas para Claude: US</label>
             <textarea placeholder="Ej: Añadir X funder, eliminar Y..." data-key="funders.usNotes" id="funder-us-notes"></textarea>
           </div>
         </div>
@@ -290,7 +290,7 @@ const initial = {
             <textarea class="tall" data-key="funders.europe" id="funder-eu"></textarea>
           </div>
           <div class="notes-field">
-            <label>Notas para Claude — Europa</label>
+            <label>Notas para Claude: Europa</label>
             <textarea placeholder="Ej: Actualizar importes, añadir año..." data-key="funders.europeNotes" id="funder-eu-notes"></textarea>
           </div>
         </div>
@@ -555,7 +555,7 @@ function copyForClaude() {
   const hr = '═'.repeat(60);
   const div = '─'.repeat(40);
 
-  lines.push('RESUME EDITOR — ' + new Date().toLocaleString('es'));
+  lines.push('RESUME EDITOR: ' + new Date().toLocaleString('es'));
   lines.push(hr);
 
   if (s.generalNotes?.trim()) {

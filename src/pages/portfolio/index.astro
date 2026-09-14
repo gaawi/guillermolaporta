@@ -20,7 +20,7 @@ const compositionSections = [
     items: [
       { title: 'Twelve Preludes',            year: '2020', forces: 'Flute, with piano and media versions' },
       { title: 'Piano Trio "Craziest Thing"', year: '2019', forces: 'Violin, cello and piano' },
-      { title: 'Traveling · Balance · Ballet',year: '2018', forces: 'Solo piano — three pieces' },
+      { title: 'Traveling · Balance · Ballet',year: '2018', forces: 'Solo piano, three pieces' },
     ],
   },
   {
@@ -38,31 +38,31 @@ const arrangementSections = [
   {
     heading: 'Chamber Ensemble / Piano Quintet with Flute',
     items: [
-      { title: 'Modest Mussorgsky — Pictures at an Exhibition',  forces: 'Piano quintet with flute' },
-      { title: 'Igor Stravinsky — Petrushka',                   forces: 'Chamber ensemble with flute' },
-      { title: 'Manuel de Falla — Siete canciones populares españolas', forces: 'Flute + ensemble' },
-      { title: 'Frank Martin — Ballade',                        forces: 'Flute + chamber ensemble' },
-      { title: 'György Ligeti — Musica Ricercata',              forces: 'Chamber arrangement' },
-      { title: 'Antonín Dvořák — American String Quartet, Op. 96', forces: 'Chamber ensemble with flute' },
-      { title: 'Antonín Dvořák — Piano Quintet No. 2, Op. 81', forces: 'Flute + piano quartet' },
+      { title: 'Modest Mussorgsky · Pictures at an Exhibition',  forces: 'Piano quintet with flute' },
+      { title: 'Igor Stravinsky · Petrushka',                   forces: 'Chamber ensemble with flute' },
+      { title: 'Manuel de Falla · Siete canciones populares españolas', forces: 'Flute + ensemble' },
+      { title: 'Frank Martin · Ballade',                        forces: 'Flute + chamber ensemble' },
+      { title: 'György Ligeti · Musica Ricercata',              forces: 'Chamber arrangement' },
+      { title: 'Antonín Dvořák · American String Quartet, Op. 96', forces: 'Chamber ensemble with flute' },
+      { title: 'Antonín Dvořák · Piano Quintet No. 2, Op. 81', forces: 'Flute + piano quartet' },
     ],
   },
   {
     heading: 'Flute & Piano',
     items: [
-      { title: 'Claude Debussy — Violin Sonata',              forces: 'Flute and piano' },
-      { title: 'Ottorino Respighi — Violin Sonata in B minor',forces: 'Flute and piano' },
-      { title: 'Leoš Janáček — Violin Sonata',                forces: 'Flute and piano' },
+      { title: 'Claude Debussy · Violin Sonata',              forces: 'Flute and piano' },
+      { title: 'Ottorino Respighi · Violin Sonata in B minor',forces: 'Flute and piano' },
+      { title: 'Leoš Janáček · Violin Sonata',                forces: 'Flute and piano' },
     ],
   },
 ];
 ---
-<AppLayout title="Compositions Catalogue — Guillermo Laporta" description="Complete catalogue of original compositions and arrangements — Guillermo Laporta.">
+<AppLayout title="Compositions Catalogue · Guillermo Laporta" description="Complete catalogue of original compositions and arrangements. Guillermo Laporta.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">Catalogue</div>
     <h1 class="subpage-title">Compositions catalogue.</h1>
-    <p class="subpage-sub">Stage works, original compositions and arrangements — as composer, dramaturg and designer.</p>
+    <p class="subpage-sub">Stage works, original compositions and arrangements, as composer, dramaturg and designer.</p>
   </div>
 
   <!-- ── STAGE WORKS ──────────────────────────────────────────── -->
@@ -150,7 +150,7 @@ const arrangementSections = [
     .cv-entry-date{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;flex-shrink:0}
     .cv-entry-role{font-size:13px;color:var(--accent);font-weight:500;margin-bottom:10px;letter-spacing:-.005em}
 
-    /* Project type is a classification, not another role — the two used to run
+    /* Project type is a classification, not another role. The two used to run
        together in one dot-separated line, so the type read as a fourth role.
        Type: mono caps in a teal-bordered chip (teal is border-only at 3.56:1).
        Roles: the accent line, as elsewhere. */

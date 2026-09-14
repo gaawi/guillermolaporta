@@ -8,7 +8,7 @@ export const projectDetails = [
     url: 'https://creartbox.nyc/pages/architecture-of-a-common-man',
     hero: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/acm/acm06.jpg',
     desc: [
-      'An opera-ballet-film performance following a world-recognized photographer creating a documentary about his own life. The protagonist is split into three performers: an actor on screen plus two alter egos on stage — a contemporary dancer and an opera baritone.',
+      'An opera-ballet-film performance following a world-recognized photographer creating a documentary about his own life. The protagonist is split into three performers: an actor on screen plus two alter egos on stage, a contemporary dancer and an opera baritone.',
       'The piece examines the pressure society places on individuals to achieve exceptional success, while exploring the true meaning of happiness and what it means to be "a common man." Through originally composed music for soprano, baritone, string quartet, piano, synthesizer, and choir, the work traces the protagonist\'s relationships with work, family, health, and spirituality.',
     ],
     credits: [
@@ -18,8 +18,8 @@ export const projectDetails = [
       { role: 'Soprano', name: 'Rebecca Madeira' },
       { role: 'Dancer / Choreographer', name: 'Peter Cheng' },
       { role: 'Guest Performer', name: 'Jin Suganomata' },
-      { role: 'Film — Actor', name: 'Sammy Rivas, John Backstrom' },
-      { role: 'Film — Cinematographer', name: 'Matt Harvey' },
+      { role: 'Film, Actor', name: 'Sammy Rivas, John Backstrom' },
+      { role: 'Film, Cinematographer', name: 'Matt Harvey' },
       { role: 'Violin', name: 'Yezu Woo, Johnna Wu' },
       { role: 'Viola', name: 'Matthew Cohen' },
       { role: 'Cello', name: 'Clare Monfredo, Noah Kho' },
@@ -78,7 +78,7 @@ export const projectDetails = [
     url: 'https://creartbox.nyc/pages/fragile-form',
     hero: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20220927/001.jpg',
     desc: [
-      'A three-part visual concert — "Equilibrium," "Rupture," and "Metamorphosis" — exploring fragility through classical and contemporary chamber music combined with visual art and theatrical design.',
+      'A three-part visual concert, "Equilibrium," "Rupture," and "Metamorphosis," exploring fragility through classical and contemporary chamber music combined with visual art and theatrical design.',
       'The trilogy examines how objects, emotions, and thoughts alter suddenly between complete and broken states, creating an immersive experience at the intersection of music, lighting, projection, and dance. Presented over three evenings at Blue Gallery, Manhattan.',
     ],
     credits: [
@@ -93,7 +93,7 @@ export const projectDetails = [
       { role: 'Flute', name: 'Guillermo Laporta' },
       { role: 'Piano', name: 'Josefina Urraca' },
     ],
-    venues: ['Blue Gallery, Manhattan, NY — September 27–29, 2022'],
+    venues: ['Blue Gallery, Manhattan, NY · September 27–29, 2022'],
     funders: ['NYC Cultural Affairs', 'NYSCA', 'Amphion Foundation', 'Aaron Copland Fund', 'New York Public Library'],
     press: [],
     gallery: [
@@ -131,7 +131,7 @@ export const projectDetails = [
       { role: 'Actress', name: 'Julie Berndt' },
       { role: 'Piano', name: 'Josefina Urraca' },
     ],
-    venues: ['Plaxall Gallery, Long Island City, Queens — 2019', 'The Tank Theater, NYC — 2020'],
+    venues: ['Plaxall Gallery, Long Island City, Queens · 2019', 'The Tank Theater, NYC · 2020'],
     funders: ['NYC Cultural Affairs', 'NYSCA', 'Amphion Foundation', 'Flushing Town Hall', 'Aaron Copland Fund', 'New York Public Library'],
     press: [
       { quote: 'Critics\' Pick.', source: 'The New Yorker' },
@@ -162,7 +162,7 @@ export const projectDetails = [
     url: 'https://creartbox.nyc/pages/awave',
     hero: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20191201/001.jpg',
     desc: [
-      'A multimedia concert of nine original pieces for flute, piano, electronics, and video, inspired by travels throughout Europe. The suite — composed as a single arc — pairs live performance with an immersive video installation designed by set and costume artist Mizuko Kaji.',
+      'A multimedia concert of nine original pieces for flute, piano, electronics, and video, inspired by travels throughout Europe. The suite, composed as a single arc, pairs live performance with an immersive video installation designed by set and costume artist Mizuko Kaji.',
       'Presented at Ryogoku Monten Hall (Tokyo) and Renee Weiler Concert Hall (NYC). Subsequently released as a studio album. Funded by the Spanish Embassy and the Amphion Foundation.',
     ],
     credits: [
@@ -170,7 +170,7 @@ export const projectDetails = [
       { role: 'Piano', name: 'Josefina Urraca' },
       { role: 'Set & Costume Design', name: 'Mizuko Kaji' },
     ],
-    venues: ['Ryogoku Monten Hall, Tokyo — December 2019', 'Renee Weiler Concert Hall, NYC', 'Plaxall Gallery, Queens, NY'],
+    venues: ['Ryogoku Monten Hall, Tokyo · December 2019', 'Renee Weiler Concert Hall, NYC', 'Plaxall Gallery, Queens, NY'],
     funders: ['Spanish Embassy (US)', 'Amphion Foundation', 'NYC Cultural Affairs', 'NYSCA', 'Aaron Copland Fund'],
     press: [
       { quote: 'You should check out this amazing presentation of Awave.', source: 'Times Ledger' },
@@ -212,10 +212,10 @@ export const projectDetails = [
       { role: 'Projection & Set Design', name: 'Guillermo Laporta' },
     ],
     venues: [
-      'Artisphere Theater, Washington D.C. — November 2014',
-      'The Tank Theater, NYC — March 2015',
-      'CSV Center, NYC — May 2015',
-      'Queens Theatre in the Park — December 2016',
+      'Artisphere Theater, Washington D.C. · November 2014',
+      'The Tank Theater, NYC · March 2015',
+      'CSV Center, NYC · May 2015',
+      'Queens Theatre in the Park · December 2016',
     ],
     funders: ['NYC Cultural Affairs', 'NYSCA', 'Amphion Foundation', 'Flushing Town Hall', 'Aaron Copland Fund', 'New York Public Library'],
     press: [
@@ -297,7 +297,7 @@ export const projectDetails = [
       { role: 'Composer & Flute', name: 'Guillermo Laporta' },
       { role: 'Photography', name: 'Ivan Martínez' },
     ],
-    venues: ['Capilla de los Dolores, Grado, Asturias — Festival ADAR 2025'],
+    venues: ['Capilla de los Dolores, Grado, Asturias · Festival ADAR 2025'],
     funders: ['Government of the Principality of Asturias'],
     press: [],
     gallery: [
@@ -328,12 +328,12 @@ export const projectDetails = [
     hero: 'https://creartbox-media-cdn.b-cdn.net/adarimages/ADAR_Eventos/2023/10_Micro_concierto_en_la_Capilla_de_los_Dolores_Grado_2023/31.jpg',
     desc: [
       'A performance art installation score for live flute and electronics (25 min). A site-specific work exploring the intrusion of man-made materials into the natural environment, performed in the intimate space of the Capilla de los Dolores in Grado, Asturias.',
-      'Part of a larger ADAR programming day including a sound walk at Palacio Fontela and a main concert at Palacio de Miranda-Valdecarzana. The piece features Michel van der Aa\'s Rekindle — exploring the relationship between performer and space through delicate sonic textures and an expressive use of silence.',
+      'Part of a larger ADAR programming day including a sound walk at Palacio Fontela and a main concert at Palacio de Miranda-Valdecarzana. The piece features Michel van der Aa\'s Rekindle, exploring the relationship between performer and space through delicate sonic textures and an expressive use of silence.',
     ],
     credits: [
       { role: 'Flute & Electronics', name: 'Guillermo Laporta' },
     ],
-    venues: ['Capilla de los Dolores, Grado, Asturias — August 10, 2023 · Festival ADAR'],
+    venues: ['Capilla de los Dolores, Grado, Asturias · August 10, 2023 · Festival ADAR'],
     funders: ['Government of the Principality of Asturias'],
     press: [],
     gallery: [
@@ -364,7 +364,7 @@ export const projectDetails = [
       { role: 'Flute', name: 'Guillermo Laporta' },
       { role: 'Piano', name: 'Josefina Urraca' },
     ],
-    venues: ['The William Vale, Brooklyn — November & December 2023'],
+    venues: ['The William Vale, Brooklyn · November & December 2023'],
     funders: ['NYC Cultural Affairs', 'NYSCA', 'Amphion Foundation', 'Aaron Copland Fund'],
     press: [],
     gallery: [
@@ -394,7 +394,7 @@ export const projectDetails = [
       { role: 'Staging Design', name: 'Mizuko Kaji' },
       { role: 'Piano', name: 'Josefina Urraca' },
     ],
-    venues: ['Culture Lab LIC, Queens, NY — October 2021'],
+    venues: ['Culture Lab LIC, Queens, NY · October 2021'],
     funders: ['Queens Council for the Arts', 'NYC Cultural Affairs', 'NYSCA', 'Amphion Foundation', 'Aaron Copland Fund'],
     press: [],
     gallery: [
@@ -419,7 +419,7 @@ export const projectDetails = [
     hero: '/images/tusks.jpg',
     desc: ['A sculptural concert-installation at Plaxall Gallery, Long Island City. Part of the CreArt Festival.'],
     credits: [{ role: 'Concept & Design', name: 'Guillermo Laporta' }],
-    venues: ['Plaxall Gallery, Long Island City — 2018'],
+    venues: ['Plaxall Gallery, Long Island City · 2018'],
     funders: [],
     press: [],
     gallery: ['/images/tusks.jpg'],

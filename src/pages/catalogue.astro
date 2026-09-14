@@ -10,10 +10,10 @@ const chamber = catalogue.filter(w => w.category.toLowerCase().includes('chamber
 const multimedia = catalogue.filter(w => w.category.toLowerCase().includes('multimedia') || w.category.toLowerCase().includes('electro') || w.category.toLowerCase().includes('visual'));
 const other = catalogue.filter(w => !operas.includes(w) && !chamber.includes(w) && !multimedia.includes(w));
 ---
-<AppLayout title="Composer Catalogue — Guillermo Laporta" description="Original compositions, opera, ballet, multimedia music, visual concerts and stage works.">
+<AppLayout title="Composer Catalogue · Guillermo Laporta" description="Original compositions, opera, ballet, multimedia music, visual concerts and stage works.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
-    <div class="subpage-num">01 — Composer Catalogue</div>
+    <div class="subpage-num">01 · Composer Catalogue</div>
     <h1 class="subpage-title">Works &amp; scores.</h1>
     <p class="subpage-sub">Original compositions organized by category. Opera, chamber music, multimedia works, electroacoustic and stage pieces.</p>
   </div>

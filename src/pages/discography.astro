@@ -6,12 +6,12 @@ import { discography } from '../data/site.js';
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 ---
-<AppLayout title="Discography — Guillermo Laporta" description="Studio recordings of original work, plus the full CreArtBox live catalogue.">
+<AppLayout title="Discography · Guillermo Laporta" description="Studio recordings of original work, plus the full CreArtBox live catalogue.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
-    <div class="subpage-num">05 — Discography</div>
+    <div class="subpage-num">05 · Discography</div>
     <h1 class="subpage-title">Albums &amp; recordings.</h1>
-    <p class="subpage-sub">{discography.length} releases — studio albums and the CreArtBox live catalogue.</p>
+    <p class="subpage-sub">{discography.length} releases, studio albums and the CreArtBox live catalogue.</p>
   </div>
 
   <section class="section section-tight">

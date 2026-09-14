@@ -29,7 +29,7 @@ const recordings = [
   },
   {
     composer: 'Antonín Dvořák',
-    title: 'American Quartet — String Quartet No. 12',
+    title: 'American Quartet, String Quartet No. 12',
     year: '2024',
     role: 'Flute · Arr.',
     type: 'audio',
@@ -37,7 +37,7 @@ const recordings = [
     tracks: [
       { label: 'I. Allegro ma non troppo', src: `${CDN}/webimg/projects_photos/20241211/audio/07DvorakI.mp3` },
       { label: 'II. Lento', src: `${CDN}/webimg/projects_photos/20241211/audio/08DvorakII.mp3` },
-      { label: 'III. Molto vivace — Trio', src: `${CDN}/webimg/projects_photos/20241211/audio/09DvorakIII.mp3` },
+      { label: 'III. Molto vivace, Trio', src: `${CDN}/webimg/projects_photos/20241211/audio/09DvorakIII.mp3` },
       { label: 'IV. Finale. Vivace ma non troppo', src: `${CDN}/webimg/projects_photos/20241211/audio/10DvorakIV.mp3` },
     ],
   },
@@ -99,7 +99,7 @@ const recordings = [
   },
   {
     composer: 'Marcos Fernández',
-    title: 'Noctum — Concerto for flute and clarinet',
+    title: 'Noctum, concerto for flute and clarinet',
     year: '2022',
     role: 'Flute',
     type: 'audio',
@@ -176,7 +176,7 @@ const recordings = [
   },
 ];
 
-// Keep the original array index — the player looks recordings up by it.
+// Keep the original array index: the player looks recordings up by it.
 const indexed = recordings.map((r, i) => ({ ...r, i }));
 const shelves = [
   { title: 'Video',  items: indexed.filter(r => r.type === 'video') },
@@ -184,14 +184,14 @@ const shelves = [
 ];
 ---
 <AppLayout
-  title="Recordings — Guillermo Laporta"
-  description="Concert recordings of Guillermo Laporta as flutist — chamber music, original works and orchestral transcriptions."
+  title="Recordings · Guillermo Laporta"
+  description="Concert recordings of Guillermo Laporta as flutist: chamber music, original works and orchestral transcriptions."
 >
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">Recordings</div>
     <h1 class="subpage-title">Live recordings.</h1>
-    <p class="subpage-sub">Concert recordings — chamber music, new works and orchestral transcriptions. Press play to listen or watch.</p>
+    <p class="subpage-sub">Concert recordings · chamber music, new works and orchestral transcriptions. Press play to listen or watch.</p>
   </div>
 
   <section class="rec-section">

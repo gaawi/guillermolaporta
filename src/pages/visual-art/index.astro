@@ -10,8 +10,8 @@ const b = _base.endsWith('/') ? _base : _base + '/';
 
 
 // A work only links out when portfolio/[slug] actually builds a page for it.
-// 10 of the 18 have no entry here — every video-art piece and four theater
-// designs — so linking them unconditionally shipped 404s.
+// 10 of the 18 have no entry here: every video-art piece and four theater
+// designs. Linking them unconditionally shipped 404s.
 const detailSlugs = new Set(projectDetails.map(p => p.slug));
 
 // Newest first. Years can be ranges ("2014–16", "2016 / 2018"), so sort on the
@@ -24,7 +24,7 @@ const byYearDesc = (a, bk) => latestYear(bk) - latestYear(a);
 
 // Only works with photography are shown for now. That currently empties
 // Theater Design, so the filter bar is derived from the categories actually
-// present rather than hardcoded — no button that leads to an empty grid.
+// present rather than hardcoded, so no button leads to an empty grid.
 const works = visualWork.filter(w => w.images?.length).sort(byYearDesc);
 
 const CATS = [
@@ -45,12 +45,12 @@ const ICONS = {
   'design':       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18M5 4v6a7 7 0 0 0 14 0V4"/><path d="M9 21h6M12 17v4"/></svg>',
 };
 ---
-<AppLayout title="Visual Art — Guillermo Laporta" description="Installation, video art and theater design — visual works by Guillermo Laporta.">
+<AppLayout title="Visual Art · Guillermo Laporta" description="Installation, video art and theater design. Visual works by Guillermo Laporta.">
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">Visual Art</div>
     <h1 class="subpage-title">Visual art.</h1>
-    <p class="subpage-sub">Installation, video art and theater design — as composer, director and designer.</p>
+    <p class="subpage-sub">Installation, video art and theater design, as composer, director and designer.</p>
   </div>
 
   <section class="section section-tight">
@@ -77,7 +77,7 @@ const ICONS = {
                         <div class="proj-slide">
                           <img
                             src={asset(img)}
-                            alt={`${p.title} — ${i + 1}`}
+                            alt={`${p.title}, image ${i + 1}`}
                             loading={i === 0 ? 'eager' : 'lazy'}
                             draggable="false"
                           />
@@ -148,7 +148,7 @@ const ICONS = {
       const curEl    = wrap.querySelector('.pc-cur');
       const total    = carousel.children.length;
 
-      /* dots — make the extra frames visible without interaction */
+      /* dots: make the extra frames visible without interaction */
       const dots = document.createElement('div');
       dots.className = 'proj-dots';
       for (let i = 0; i < total; i++) {
@@ -163,7 +163,7 @@ const ICONS = {
       }
       wrap.appendChild(dots);
 
-      /* arrows — pointer devices only */
+      /* arrows: pointer devices only */
       const prev = document.createElement('button');
       const next = document.createElement('button');
       prev.type = next.type = 'button';
@@ -300,7 +300,7 @@ const ICONS = {
     @media(max-width:600px){.proj-body{padding:18px}}
     .proj-meta{display:flex;align-items:center;gap:12px;margin-bottom:8px}
     .proj-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
-    /* Was var(--line) — the hairline colour, 1.26:1 on paper, effectively
+    /* Was var(--line), the hairline colour, 1.26:1 on paper, effectively
        invisible. Accent carries it at 4.68:1 and marks the type. */
     .proj-kind{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);font-weight:500;padding-left:12px;border-left:1px solid var(--line-soft)}
     /* Each type carries its own mark, since the cards otherwise look alike. */

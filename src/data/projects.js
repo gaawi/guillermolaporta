@@ -27,7 +27,7 @@ export const projects = [
     roles: 'Composer · Visual Designer',
     image: '/images/2022-09-fragile-form.jpg',
     url: 'https://creartbox.nyc/pages/fragile-form',
-    desc: 'A trilogy — "Equilibrium," "Rupture," and "Metamorphosis" — presented as a visual concert at Blue Gallery, NYC. An immersive experience exploring the fragility of our surroundings, influenced by actions and the passage of time.',
+    desc: 'A trilogy, "Equilibrium," "Rupture," and "Metamorphosis," presented as a visual concert at Blue Gallery, NYC. An immersive experience exploring the fragility of our surroundings, influenced by actions and the passage of time.',
   },
   {
     slug: 'two-roads',
@@ -37,7 +37,7 @@ export const projects = [
     roles: 'Composer · Dramaturg · Librettist · Designer',
     image: 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20190901/001.jpg',
     url: 'https://creartbox.nyc/pages/two-roads',
-    desc: 'An opera-ballet exploring the genesis of personal choices and the conscious and unconscious decisions that shape human lives — themes of addiction, routine, balance, guilt, and love. Featured as a "Critics\' Pick" in The New Yorker. Plaxall Theater & Tank Theater, NYC.',
+    desc: 'An opera-ballet exploring the genesis of personal choices and the conscious and unconscious decisions that shape human lives: themes of addiction, routine, balance, guilt, and love. Featured as a "Critics\' Pick" in The New Yorker. Plaxall Theater & Tank Theater, NYC.',
   },
   {
     slug: 'awave',

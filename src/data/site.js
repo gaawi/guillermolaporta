@@ -1,17 +1,17 @@
 export const bio = {
-  short: 'Guillermo Laporta is a flutist, composer and cultural producer based between New York City and Asturias, Spain. Co-founder and Executive Director of CreArtBox (NYC, 2013) and Festival ADAR (Spain, 2020), his practice integrates classical and contemporary chamber music with theatre, dance, video art and immersive design — what he calls the visual concert.',
+  short: 'Guillermo Laporta is a flutist, composer and cultural producer based between New York City and Asturias, Spain. Co-founder and Executive Director of CreArtBox (NYC, 2013) and Festival ADAR (Spain, 2020), his practice integrates classical and contemporary chamber music with theatre, dance, video art and immersive design.',
   long: [
-    'Guillermo Laporta is a flutist, composer, designer and cultural producer based between New York City and Spain. His practice integrates classical and contemporary chamber music with theatre, dance, video art and immersive design — what he calls the visual concert: a form in which visual and theatrical elements are as integral to the experience as the music itself.',
+    'Guillermo Laporta is a flutist, composer, designer and cultural producer based between New York City and Spain. His practice integrates classical and contemporary chamber music with theatre, dance, video art and immersive design. The visual concert is a form in which visual and theatrical elements are as integral to the experience as the music itself.',
     'He co-founded CreArtBox in 2013 with pianist Josefina Urraca, building it from a small ensemble into a nationally recognized nonprofit with a roster of more than 20 professional artists and a 20+ performance season at venues including The DiMenna Center, Mark Morris Center, The William Vale, Greenwich House and the New York Society for Ethical Culture. CreArtBox traces its roots to Cre.Art Project, founded in Spain in 2006 with clarinetist Tagore González and supported by the Montehermoso Contemporary Creation Award. CreArtBox has received sustained support from the New York State Council on the Arts and recognition from The New Yorker, Broadway World and Time Out.',
-    'In 2020 he founded the Association for the Development of the Arts in Rural Areas (ADAR) in Asturias and directs an itinerant festival bringing world-class chamber music performances, composer commissions and visual installations to underserved rural communities — transforming rural landscapes into immersive artistic environments. The festival is supported by the Government of the Principality of Asturias (€120,000 across four awards, 2021–25).',
+    'In 2020 he founded the Association for the Development of the Arts in Rural Areas (ADAR) in Asturias and directs an itinerant festival bringing world-class chamber music performances, composer commissions and visual installations to underserved rural communities, transforming rural landscapes into immersive artistic environments. The festival is supported by the Government of the Principality of Asturias (€120,000 across four awards, 2021–25).',
     'As a flutist Laporta served as Co-Principal Flute of the Oviedo Filarmonía (2009–12), Principal Flute of the Herald Chamber Orchestra (2012–15) and the New York International Chamber Orchestra (2013–18). He has performed with the BBC Orchestra, Orquesta del Principado de Asturias, Le Train Bleu Ensemble and Orquesta Sinfónica de Euskadi at Carnegie Hall and Lincoln Center, sharing the stage with Sir Roger Norrington, Andrew Litton, Pablo González and Vladimir Ashkenazy. He has recorded for Warner, EMI and Naxos.',
     'His original creative work includes the opera-ballet-film Architecture of a Common Man (2023), the opera-ballet Two Roads (2019, a New Yorker Critics\' Pick, at The Tank and Plaxall Theater), the multimedia concert Queens Preludes (2021, toured to NYC, Madrid and Tokyo), the visual concert trilogy Fragile Form (2022), and AWAVE (2018–19), a solo album and immersive video installation presented in New York and Tokyo, supported by the Spanish Embassy and the Amphion Foundation.',
     'He holds an M.Mus. in Advanced Performance from the Royal College of Music, London (Jaime Martín, Paul Edmund Davies, Sue Thomas), an M.A. in Arts Management from Alcalá de Henares University, and a Superior Degree in Music from Musikene, San Sebastián. As a designer he has created lighting and set design for opera and theatre productions off-Broadway and in Toronto, and composed sound and music for virtual reality experiences released with Mozilla and other developers.'
   ],
-  practiceNote: 'My practice has three sides that feed each other. I play the flute — chamber music, recitals and the occasional orchestral seat. I write pieces, mostly for chamber forces, and lately more for stage works that combine music, projection and design. And I run two organisations: CreArtBox in New York and Festival ADAR in rural Asturias. Most projects start as something practical — a venue, a programme, a deadline — and the composing follows from that. I tend to design my own visuals and lighting too, because the music and the room usually want to be thought about together. The day-to-day is grant writing, rehearsing, editing video, and patient logistics with collaborators on two continents.'
+  practiceNote: 'My practice has three sides that feed each other. I play the flute: chamber music, recitals and the occasional orchestral seat. I write pieces, mostly for chamber forces, and lately more for stage works that combine music, projection and design. And I run two organisations: CreArtBox in New York and Festival ADAR in rural Asturias. Most projects start as something practical: a venue, a programme, a deadline. The composing follows from that. I tend to design my own visuals and lighting too, because the music and the room usually want to be thought about together. The day-to-day is grant writing, rehearsing, editing video, and patient logistics with collaborators on two continents.'
 };
 
-// Source: https://creartbox.nyc/concerts.html — kept in sync with the CreArtBox season listing.
+// Source: https://creartbox.nyc/concerts.html, kept in sync with the CreArtBox season listing.
 const CB = 'https://creartbox.nyc/concerts';
 const CBIMG = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg';
 
@@ -164,7 +164,7 @@ export const calendar = [
 // Visual art. Images live on the archive CDN under "visual art portfolio/";
 // VA_CDN carries the encoded space, so each entry stores only its relative path.
 // A project with an empty `images` array has no photography yet and renders as
-// text only — no placeholder tile.
+// text only, no placeholder tile.
 const VA_CDN = 'https://creartbox-archive.b-cdn.net/visual%20art%20portfolio';
 const va = (paths) => paths.map(p => `${VA_CDN}/${p}`);
 
@@ -176,12 +176,12 @@ export const visualWork = [
   { slug: 'tusks', cat: 'installation', kind: 'Installation', title: 'Tusks', year: '2018', desc: 'Sculptural concert-installation for chamber ensemble. Plaxall Gallery, Long Island City.', url: '', images: va(['instalacion/tusks/tusks-01.jpg']) },
   { slug: 'visuality', cat: 'installation', kind: 'Installation', title: 'Visuality', year: '2014–16', desc: 'Concert-theater production placing live classical performance inside a theatrical visual system using image, staging and technology. Co-directed with Josefina Urraca. Queens Theater in the Park and Artosphere, Arlington, Virginia.', url: 'https://creartbox.nyc/pages/visuality', images: va(['instalacion/visuality/visuality-01.jpg', 'instalacion/visuality/visuality-02.jpg', 'instalacion/visuality/visuality-03.jpg', 'instalacion/visuality/visuality-04.jpg']) },
   { slug: 'evolving-threads', cat: 'installation', kind: 'Installation', title: 'Evolving Threads', year: '', desc: '', url: '', images: va(['instalacion/evolving-threads/evolving-threads-01.jpg', 'instalacion/evolving-threads/evolving-threads-02.jpg', 'instalacion/evolving-threads/evolving-threads-03.jpg', 'instalacion/evolving-threads/evolving-threads-04.jpg', 'instalacion/evolving-threads/evolving-threads-05.jpg', 'instalacion/evolving-threads/evolving-threads-06.jpg', 'instalacion/evolving-threads/evolving-threads-07.jpg', 'instalacion/evolving-threads/evolving-threads-08.jpg', 'instalacion/evolving-threads/evolving-threads-09.jpg', 'instalacion/evolving-threads/evolving-threads-10.jpg']) },
-  { slug: 'twilight-at-dawn', cat: 'video-art', kind: 'Video art', title: 'Twilight at Dawn — Cholodenko', year: '2024', desc: 'World-premiere concert video for new work by Devin Cholodenko. DiMenna Center, NYC.', url: '', images: va(['video-arte/twilight-at-dawn/twilight-at-dawn-01.jpg', 'video-arte/twilight-at-dawn/twilight-at-dawn-02.jpg']) },
-  { slug: 'murder-ballades', cat: 'video-art', kind: 'Video art', title: 'Murder Ballades — Dessner', year: '2023', desc: '', url: '', images: [] },
-  { slug: 'vox-balaenae', cat: 'video-art', kind: 'Video art', title: 'Vox Balaenae — Crumb', year: '2023', desc: '', url: '', images: [] },
-  { slug: 'pari-intervallo', cat: 'video-art', kind: 'Video art', title: 'Pari Intervallo — Pärt', year: '2022', desc: 'Concert video for Arvo Pärt. CreArt Festival, NYC.', url: '', images: [] },
-  { slug: 'piano-phase', cat: 'video-art', kind: 'Video art', title: 'Piano Phase — Reich', year: '2022', desc: '', url: '', images: [] },
-  { slug: 'quartet-end-of-time', cat: 'video-art', kind: 'Video art', title: 'Quartet for the End of Time — Messiaen', year: '2019', desc: '', url: '', images: [] },
+  { slug: 'twilight-at-dawn', cat: 'video-art', kind: 'Video art', title: 'Twilight at Dawn · Cholodenko', year: '2024', desc: 'World-premiere concert video for new work by Devin Cholodenko. DiMenna Center, NYC.', url: '', images: va(['video-arte/twilight-at-dawn/twilight-at-dawn-01.jpg', 'video-arte/twilight-at-dawn/twilight-at-dawn-02.jpg']) },
+  { slug: 'murder-ballades', cat: 'video-art', kind: 'Video art', title: 'Murder Ballades · Dessner', year: '2023', desc: '', url: '', images: [] },
+  { slug: 'vox-balaenae', cat: 'video-art', kind: 'Video art', title: 'Vox Balaenae · Crumb', year: '2023', desc: '', url: '', images: [] },
+  { slug: 'pari-intervallo', cat: 'video-art', kind: 'Video art', title: 'Pari Intervallo · Pärt', year: '2022', desc: 'Concert video for Arvo Pärt. CreArt Festival, NYC.', url: '', images: [] },
+  { slug: 'piano-phase', cat: 'video-art', kind: 'Video art', title: 'Piano Phase · Reich', year: '2022', desc: '', url: '', images: [] },
+  { slug: 'quartet-end-of-time', cat: 'video-art', kind: 'Video art', title: 'Quartet for the End of Time · Messiaen', year: '2019', desc: '', url: '', images: [] },
   { slug: 'afilador', cat: 'video-art', kind: 'Video art', title: 'Afilador', year: '', desc: '', url: '', images: va(['video-arte/afilador/afilador-01.jpg', 'video-arte/afilador/afilador-02.jpg', 'video-arte/afilador/afilador-03.jpg', 'video-arte/afilador/afilador-04.jpg']) },
   { slug: 'aspas', cat: 'video-art', kind: 'Video art', title: 'Aspas', year: '', desc: '', url: '', images: va(['video-arte/aspas/aspas-01.jpg']) },
   { slug: 'berceuse', cat: 'video-art', kind: 'Video art', title: 'Berceuse', year: '', desc: '', url: '', images: va(['video-arte/berceuse/berceuse-01.jpg', 'video-arte/berceuse/berceuse-02.jpg', 'video-arte/berceuse/berceuse-03.jpg', 'video-arte/berceuse/berceuse-04.jpg']) },
@@ -369,11 +369,11 @@ export const catalogue = [
   }
 ];
 
-// Discography — one list, newest first.
+// Discography: one list, newest first.
 // Bandcamp slugs verified individually against creartbox.bandcamp.com (all HTTP 200).
 // `spotify` is optional: when present the card links there, otherwise it falls back
 // to Bandcamp. AWAVE and the Debussy & Respighi sonatas are not on Bandcamp and
-// have no artwork on file yet — they carry no cover and link to the artist page.
+// have no artwork on file yet, so they carry no cover and link to the artist page.
 const BC = 'https://creartbox.bandcamp.com/album';
 const BC_ARTIST = 'https://creartbox.bandcamp.com';
 const AM = 'https://music.apple.com/us/album';
@@ -386,17 +386,17 @@ export const discography = [
   { title: 'Piano Quintet in G minor, Op. 49 (live)', artist: 'Granados',                             year: '2023', kind: 'Live',   cover: '/covers/piano-quintet-in-g-minor-op-49-live.jpg',            bandcamp: `${BC}/piano-quintet-in-g-minor-op-49-live` },
   { title: 'Heart Meditation',                        artist: 'Annamaria Kowalsky',                   year: '2023', kind: 'Live',   cover: '/covers/heart-meditation.jpg',                               bandcamp: `${BC}/heart-meditation` },
   { title: 'Trio for flute, viola & harp, Op. 18',    artist: 'Nikolayeva',                           year: '2023', kind: 'Live',   cover: '/covers/trio-for-flute-viola-harp-op-18.jpg',                bandcamp: `${BC}/trio-for-flute-viola-harp-op-18` },
-  { title: 'Symphony No. 94 — Chamber version (live)', artist: 'Haydn',                               year: '2023', kind: 'Live',   cover: '/covers/symphony-no-94-chamber-version-live.jpg',            bandcamp: `${BC}/symphony-no-94-chamber-version-live` },
+  { title: 'Symphony No. 94, chamber version (live)', artist: 'Haydn',                               year: '2023', kind: 'Live',   cover: '/covers/symphony-no-94-chamber-version-live.jpg',            bandcamp: `${BC}/symphony-no-94-chamber-version-live` },
   { title: 'Petite Suite for flute, viola & harp (live)', artist: 'Jolivet',                          year: '2023', kind: 'Live',   cover: '/covers/petite-suite-for-flute-viola-harp-live.jpg',         bandcamp: `${BC}/petite-suite-for-flute-viola-harp-live` },
   { title: 'Petroushskates',                          artist: 'Joan Tower',                           year: '2023', kind: 'Live',   cover: '/covers/petroushskates.jpg',                                 bandcamp: `${BC}/petroushskates` },
-  { title: 'Noctum — Concerto for flute & clarinet',  artist: 'Marcos Fernández',                     year: '2023', kind: 'Live',   cover: '/covers/noctum-concerto-for-flute-and-clarinet.jpg',         bandcamp: `${BC}/noctum-concerto-for-flute-and-clarinet` },
+  { title: 'Noctum, concerto for flute & clarinet',  artist: 'Marcos Fernández',                     year: '2023', kind: 'Live',   cover: '/covers/noctum-concerto-for-flute-and-clarinet.jpg',         bandcamp: `${BC}/noctum-concerto-for-flute-and-clarinet` },
   { title: 'AWAVE',                                   artist: 'Guillermo Laporta',                    year: '2020', kind: 'Studio', cover: '/covers/awave.jpg',                                          bandcamp: null, apple: `${AM}/awave/1493272318`,
     description: 'Original compositions for flute, piano, electronics and video.' },
   { title: 'Brandenburg Concerto No. 5 (live)',       artist: 'J.S. Bach',                            year: '2019', kind: 'Live',   cover: '/covers/brandenburg-concerto-no-5-live.jpg',                 bandcamp: `${BC}/brandenburg-concerto-no-5-live` },
   { title: 'Quartet for the End of Time (live)',      artist: 'Messiaen',                             year: '2019', kind: 'Live',   cover: '/covers/quartet-for-the-end-of-time-live.jpg',               bandcamp: `${BC}/quartet-for-the-end-of-time-live` },
   { title: 'Debussy & Respighi Violin Sonatas',       artist: 'Josefina Urraca & Guillermo Laporta',  year: '2019', kind: 'Studio', cover: '/covers/debussy-respighi-violin-sonatas.jpg',                bandcamp: null, apple: `${AM}/debussy-and-respighi-violin-sonatas-transcribed-for/1233943777`,
     description: 'Transcriptions for flute and piano.' },
-  { title: 'Symphony No. 4 — Chamber version (live)', artist: 'Mahler · CreArtBox · Le Train Bleu',   year: '2018', kind: 'Live',   cover: '/covers/symphony-no-4-chamber-version-live.jpg',             bandcamp: `${BC}/symphony-no-4-chamber-version-live` },
+  { title: 'Symphony No. 4, chamber version (live)', artist: 'Mahler · CreArtBox · Le Train Bleu',   year: '2018', kind: 'Live',   cover: '/covers/symphony-no-4-chamber-version-live.jpg',             bandcamp: `${BC}/symphony-no-4-chamber-version-live` },
   { title: 'CreArtProject I (live)',                  artist: 'Debussy · Wilson · Nilson · Higdon',   year: '2008', kind: 'Live',   cover: '/covers/creartproject-i-live.jpg',                           bandcamp: `${BC}/creartproject-i-live` },
 ];
 

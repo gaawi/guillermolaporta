@@ -25,7 +25,7 @@ const catLabels = {
 };
 ---
 <AppLayout
-  title={`${project.title} — Guillermo Laporta`}
+  title={`${project.title} · Guillermo Laporta`}
   description={project.desc[0]}
 >
   <!-- Hero -->
@@ -112,7 +112,7 @@ const catLabels = {
           {project.press.map(q => (
             <blockquote class="proj-quote">
               <p>"{q.quote}"</p>
-              <cite>— {q.source}</cite>
+              <cite>{q.source}</cite>
             </blockquote>
           ))}
         </section>
@@ -140,7 +140,7 @@ const catLabels = {
             <div class="proj-gallery-item" data-index={i}>
               <img
                 src={asset(img)}
-                alt={`${project.title} — image ${i + 1}`}
+                alt={`${project.title}, image ${i + 1}`}
                 loading="lazy"
                 class="proj-gallery-img"
               />
