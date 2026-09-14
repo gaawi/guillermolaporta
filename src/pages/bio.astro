@@ -1,14 +1,117 @@
 ---
+import AppLayout from '../layouts/AppLayout.astro';
+import { bio } from '../data/site.js';
+
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
+
+// Lengths come straight from site.js, which holds his confirmed wording.
+// Do not edit the text here; edit nothing there without his permission.
+const versions = [
+  { key: 'short',  label: 'Short',  paras: [bio.short],  chars: bio.short.length },
+  { key: 'medium', label: 'Medium', paras: bio.medium,   chars: bio.medium.join(' ').length },
+  { key: 'long',   label: 'Long',   paras: bio.long,     chars: bio.long.join(' ').length },
+];
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0; url=${b}`} />
-    <link rel="canonical" href={b} />
-    <title>Redirecting…</title>
-  </head>
-  <body></body>
-</html>
+<AppLayout
+  title="Biography · Guillermo Laporta"
+  description="Biography of Guillermo Laporta, flutist, composer, designer and cultural producer, in three lengths."
+>
+  <div class="subpage-head">
+    <a class="subpage-back" href={b}>← Home</a>
+    <div class="subpage-num">Biography</div>
+    <h1 class="subpage-title">Biography.</h1>
+    <p class="subpage-sub">Three lengths, ready to copy for programmes, listings and press. For the full curriculum vitae see the <a class="inline-link" href={`${b}resume/`}>resume</a>.</p>
+  </div>
+
+  <section class="section bio-sw-section">
+    <div class="bio-sw-head">
+      <div class="bio-sw-tabs" id="bioTabs">
+        {versions.map((v, i) => (
+          <button class={`bio-sw-tab${i === 0 ? ' active' : ''}`} data-bio={v.key}>
+            {v.label}
+            <span class="bio-sw-count">{v.chars}</span>
+          </button>
+        ))}
+      </div>
+      <div class="bio-sw-actions">
+        <button class="btn bio-copy-btn" id="bioCopy">Copy text</button>
+        <a class="btn" href={`${b}bio-short-print/`}>Print short</a>
+        <a class="btn" href={`${b}bio-long-print/`}>Print long</a>
+      </div>
+    </div>
+
+    {versions.map((v, i) => (
+      <div class={`bio-panel${i === 0 ? '' : ' bio-hidden'}`} id={`bio-${v.key}`}>
+        {v.paras.map((para) => <p class="bio-p">{para}</p>)}
+      </div>
+    ))}
+  </section>
+
+  <section class="section bio-kit-section">
+    <div class="cv-label">Press kit</div>
+    <div class="bio-kit">
+      <a class="btn primary" href={`${b}downloads/guillermo-laporta-cv.pdf`} target="_blank">Curriculum vitae (PDF) ↗</a>
+      <a class="btn" href={`${b}downloads/laporta-press-photo-1.jpg`} target="_blank">Press photo 1</a>
+      <a class="btn" href={`${b}downloads/laporta-press-photo-2.jpg`} target="_blank">Press photo 2</a>
+      <a class="btn" href={`${b}resume/`}>Full resume</a>
+      <a class="btn" href="mailto:guillermo@creartbox.nyc">Press enquiries</a>
+    </div>
+  </section>
+
+  <script>
+    const tabs = document.querySelectorAll('.bio-sw-tab');
+    const copyBtn = document.getElementById('bioCopy');
+    let current = 'short';
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('bio-' + current).classList.add('bio-hidden');
+        current = tab.dataset.bio;
+        document.getElementById('bio-' + current).classList.remove('bio-hidden');
+      });
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const text = document.getElementById('bio-' + current).innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => copyBtn.textContent = 'Copy text', 2000);
+      });
+    });
+  </script>
+
+  <style>
+    .inline-link{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+
+    .bio-sw-section{padding-top:0;border-bottom:1px solid var(--line-soft);padding-bottom:56px}
+    .bio-sw-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px}
+    .bio-sw-tabs{display:flex;gap:4px}
+    .bio-sw-tab{display:inline-flex;align-items:baseline;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:8px 18px;border:1px solid var(--line-soft);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;border-radius:999px}
+    .bio-sw-tab:hover{border-color:var(--accent);color:var(--accent)}
+    .bio-sw-tab.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    /* Character count matters here: these are pasted into programmes and
+       listings that come with a length limit. */
+    .bio-sw-count{font-size:9px;opacity:.6;letter-spacing:.08em}
+
+    .bio-sw-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .bio-copy-btn{font-size:13px}
+    .bio-panel{max-width:72ch}
+    .bio-hidden{display:none}
+    .bio-p{font-size:16px;line-height:1.75;color:var(--ink-2);font-weight:400;margin-bottom:18px}
+    .bio-p:last-child{margin-bottom:0}
+
+    .bio-kit-section{padding-bottom:96px}
+    .cv-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--line-soft)}
+    .bio-kit{display:flex;flex-wrap:wrap;gap:10px}
+
+    @media(max-width:600px){
+      .bio-sw-head{flex-direction:column;align-items:flex-start}
+      .bio-p{font-size:15px}
+      .bio-sw-section{padding-bottom:40px}
+      .bio-kit-section{padding-bottom:56px}
+    }
+  </style>
+</AppLayout>
