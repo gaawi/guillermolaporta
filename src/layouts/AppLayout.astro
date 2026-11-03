@@ -43,11 +43,11 @@ function isActive(href) {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FFFFFF" />
     <meta name="description" content={description} />
-    <link rel="canonical" href={`https://gaawi.github.io${path}`} />
+    <link rel="canonical" href={new URL(path, Astro.site).href} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`https://gaawi.github.io${b}images/2023-03-architecture.jpg`} />
+    <meta property="og:image" content={new URL(`${b}images/2023-03-architecture.jpg`, Astro.site).href} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href={`${b}favicon.svg`} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

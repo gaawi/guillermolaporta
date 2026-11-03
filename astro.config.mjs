@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://gaawi.github.io',
-  base: '/guillermolaporta',
+  // Served at the root of the custom domain. There is no base path: adding one
+  // prefixes every asset and link with a directory that does not exist here.
+  site: 'https://guillermolaporta.com',
 });
