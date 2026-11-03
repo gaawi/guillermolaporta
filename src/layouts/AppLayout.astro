@@ -2,6 +2,9 @@
 const {
   title = 'Guillermo Laporta',
   description = 'Guillermo Laporta is a flutist, composer and cultural producer based in New York City and Asturias, Spain. Founder of CreArtBox and Festival ADAR.',
+  // A fullscreen page is exactly one viewport tall, never scrolls and carries no
+  // footer. The cover uses it; everything else is a normal scrolling page.
+  fullscreen = false,
 } = Astro.props;
 
 const _base = import.meta.env.BASE_URL || '/';
@@ -38,7 +41,7 @@ function isActive(href) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#FBF9F3" />
+    <meta name="theme-color" content="#FFFFFF" />
     <meta name="description" content={description} />
     <link rel="canonical" href={`https://gaawi.github.io${path}`} />
     <meta property="og:type" content="website" />
@@ -62,10 +65,13 @@ function isActive(href) {
      yellow #F4E285  1.24  fills only; on the dark footer it is 14:1
    So the three light hues are used as fills/tints, and on the dark
    footer where they invert to 7.7–14:1. */
-:root{--p-green:#8CB369;--p-yellow:#F4E285;--p-orange:#F4A259;--p-teal:#5B8E7D;--p-red:#BC4B51;--bg:#FBF9F3;--paper:#FFFFFF;--bg-warm:#F3EFE4;--ink:#1A1A18;--ink-2:#4A4A45;--muted:#8A8A80;--line:#E4DFD1;--line-soft:#EFEBDF;--accent:#BC4B51;--accent-2:#5B8E7D;--tint:#F2F6EC;--serif:"Saira Condensed",system-ui,sans-serif;--sans:"Saira",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
+:root{--bg:#FFFFFF;--paper:#FFFFFF;--bg-warm:#F4F4F5;--ink:#121212;--ink-2:#4A4A4D;--muted:#8A8A8F;--line:#E4E4E7;--line-soft:#F1F1F3;--accent:#BC4B51;--tint:#F4F4F5;--serif:"Saira Condensed",system-ui,sans-serif;--sans:"Saira",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
 /* ── reset ──────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--ink)}
+body.is-fullscreen{height:100svh;overflow:hidden;display:flex;flex-direction:column}
+body.is-fullscreen>.topbar{flex:0 0 auto}
+body.is-fullscreen>.cover{flex:1 1 auto;min-height:0}
 body{font-family:var(--sans);font-size:15px;line-height:1.55;font-weight:400;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;overscroll-behavior-y:none}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit;text-decoration:none}
@@ -81,7 +87,7 @@ button{font:inherit;cursor:pointer}
 .topnav a.active{color:var(--ink)}
 .topnav a.active::after{content:"";position:absolute;left:50%;bottom:-2px;width:4px;height:4px;border-radius:50%;background:var(--accent);transform:translate(-50%)}
 .topbar-right{display:flex;gap:14px;align-items:center;font-size:13px}
-.tag-now{display:inline-flex;align-items:center;padding:7px 16px;border:1px solid var(--accent-2);font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--paper);color:var(--ink-2);transition:all .18s}
+.tag-now{display:inline-flex;align-items:center;padding:7px 16px;border:1px solid var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--paper);color:var(--ink-2);transition:all .18s}
 .tag-now:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 /* ── pill nav (mobile bottom bar) ───────────────────────── */
 .pill-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;padding:8px 12px env(safe-area-inset-bottom,8px);background:color-mix(in srgb,var(--paper) 95%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--line-soft)}
@@ -111,7 +117,7 @@ button{font:inherit;cursor:pointer}
 .hero-card .meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .hero-card h3{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.05;letter-spacing:-.015em}
 .hero-card .where{font-size:12px;color:var(--muted);margin-top:6px}
-.hero-card .badge{font-family:var(--mono);font-size:10px;padding:6px 10px;border:1px solid var(--accent-2);border-radius:999px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);background:var(--bg-warm);white-space:nowrap}
+.hero-card .badge{font-family:var(--mono);font-size:10px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);background:var(--bg-warm);white-space:nowrap}
 /* ── buttons ─────────────────────────────────────────────── */
 .btn{display:inline-flex;align-items:center;gap:12px;padding:14px 22px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);font-size:14px;font-weight:500;cursor:pointer;transition:all .25s ease}
 .btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateY(-1px)}
@@ -231,7 +237,7 @@ button{font:inherit;cursor:pointer}
 .bio-card.dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .bio-card.dark .lbl{color:color-mix(in srgb,var(--paper) 60%,transparent)}
 .bio-card.dark .desc{color:color-mix(in srgb,var(--paper) 70%,transparent)}
-.bio-card.dark .val{color:var(--p-yellow)}
+.bio-card.dark .val{color:var(--paper)}
 /* ── lightbox ────────────────────────────────────────────── */
 .lightbox{position:fixed;inset:0;background:rgba(15,12,10,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;z-index:200;padding:5vh 5vw;overflow:auto}
 .lightbox.open{display:grid;place-items:center}
@@ -251,12 +257,12 @@ button{font:inherit;cursor:pointer}
 .footer{background:var(--ink);color:var(--paper);padding:80px 40px 32px}
 .footer-inner{max-width:1480px;margin:0 auto}
 .footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:56px;padding-bottom:48px}
-.footer h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--p-green);margin-bottom:18px;font-weight:400}
-.footer p{font-size:14px;line-height:1.6;color:#E8E3D5;max-width:36ch}
-.footer a{color:#E8E3D5;transition:color .2s}
-.footer a:hover{color:var(--p-yellow)}
+.footer h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;font-weight:400}
+.footer p{font-size:14px;line-height:1.6;color:#E4E4E7;max-width:36ch}
+.footer a{color:#E4E4E7;transition:color .2s}
+.footer a:hover{color:#FFFFFF}
 .footer ul{list-style:none;display:grid;gap:8px;font-size:14px}
-.footer-bottom{padding-top:24px;border-top:1px solid #33322C;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8F8C7F}
+.footer-bottom{padding-top:24px;border-top:1px solid #2A2A2D;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8F8C7F}
 /* ── va list (portfolio detail) ──────────────────────────── */
 .va-list-section{margin-top:80px}
 .va-list-heading{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line-soft);margin-bottom:4px;font-weight:500}
@@ -343,7 +349,7 @@ img[loading=lazy]{background:var(--bg-warm)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
   </head>
-  <body>
+  <body class={fullscreen ? 'is-fullscreen' : undefined}>
     <header class="topbar">
       <a href={b} class="brand">
         <span class="brand-name">Guillermo Laporta</span>
@@ -367,6 +373,7 @@ img[loading=lazy]{background:var(--bg-warm)}
 
     <slot />
 
+    {!fullscreen && (
     <footer class="footer" id="contact">
       <div class="footer-inner">
         <div class="footer-grid">
@@ -403,6 +410,7 @@ img[loading=lazy]{background:var(--bg-warm)}
         </div>
       </div>
     </footer>
+    )}
 
     <!-- Mobile bottom pill navigation -->
     <nav class="pill-nav" aria-label="Mobile navigation">
