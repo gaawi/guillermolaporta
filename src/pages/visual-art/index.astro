@@ -10,8 +10,8 @@ const b = _base.endsWith('/') ? _base : _base + '/';
 
 
 // A work only links out when portfolio/[slug] actually builds a page for it.
-// 10 of the 18 have no entry here: every video-art piece and four theater
-// designs. Linking them unconditionally shipped 404s.
+// Only 8 of the 32 have an entry there, so most cards are deliberately dead:
+// linking them unconditionally shipped 404s.
 const detailSlugs = new Set(projectDetails.map(p => p.slug));
 
 // Newest first. Years can be ranges ("2014–16", "2016 / 2018"), so sort on the

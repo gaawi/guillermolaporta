@@ -37,7 +37,7 @@ export const software = [
     year: '2026',
     status: 'Live',
     description:
-      'The web side of the same catalogue. Recordings are browsable by composer, era or playlist, each listed with its performers and the quality it was captured at.',
+      'The browser side of the CreArtBox Digital Concert Hall. Recordings are browsable by composer, era or playlist, each listed with its performers and the quality it was captured at.',
     features: [
       'Filters by era, from the 18th century to the 21st',
       'Composer and search indexes',

@@ -1,0 +1,140 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import { software } from '../data/software.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+// Newest first. Gaawi is dated by when the studio started, not by its last job,
+// so it sits at the bottom even though it is still running.
+const items = [...software].sort((a, c) => Number(c.year) - Number(a.year));
+---
+<AppLayout
+  title="Software · Guillermo Laporta"
+  description="Apps, platforms and tools built by Guillermo Laporta: the CreArtBox app, the Digital Concert Hall and the Gaawi studio."
+>
+  <div class="subpage-head">
+    <a class="subpage-back" href={b}>← Home</a>
+    <div class="subpage-num">Software</div>
+    <h1 class="subpage-title">Things I build.</h1>
+    <p class="subpage-sub">
+      Apps, platforms and tools, built to put the music somewhere people can actually reach it.
+    </p>
+  </div>
+
+  <section class="section-tight">
+    <div class="sw-list">
+      {items.map((s) => (
+        <article class="sw-card">
+          <div class="sw-head">
+            <div class="sw-meta">
+              <span>{s.kind}</span>
+              <span>{s.year}</span>
+              <span class={`sw-status ${s.status === 'Live' ? 'is-live' : ''}`}>{s.status}</span>
+            </div>
+            <h2 class="sw-name">{s.name}</h2>
+            <p class="sw-tagline">{s.tagline}</p>
+          </div>
+
+          <div class="sw-body">
+            <p class="sw-desc">{s.description}</p>
+
+            {s.features.length > 0 && (
+              <ul class="sw-features">
+                {s.features.map((f) => <li>{f}</li>)}
+              </ul>
+            )}
+
+            <div class="sw-foot">
+              <div class="sw-stack">
+                {s.stack.map((t) => <span class="sw-chip">{t}</span>)}
+              </div>
+              {s.url && (
+                <a class="sw-link" href={s.url} target="_blank" rel="noopener">
+                  {s.urlLabel} ↗
+                </a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <style>
+    .section-tight{
+      max-width:1480px;margin:0 auto;
+      padding:0 40px 96px;
+    }
+    @media(max-width:720px){.section-tight{padding:0 20px 56px}}
+
+    .sw-list{display:flex;flex-direction:column;gap:0}
+
+    .sw-card{
+      display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,2.2fr);
+      gap:40px;
+      padding:40px 0;
+      border-top:1px solid var(--line-soft);
+    }
+    .sw-card:first-child{border-top:none;padding-top:8px}
+    @media(max-width:860px){
+      .sw-card{grid-template-columns:1fr;gap:18px;padding:32px 0}
+    }
+
+    .sw-meta{
+      display:flex;flex-wrap:wrap;gap:14px;
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--muted);margin-bottom:12px;
+    }
+    .sw-status.is-live{color:var(--accent-2)}
+
+    .sw-name{
+      font-family:var(--serif);font-weight:500;
+      font-size:clamp(28px,3.2vw,40px);line-height:1.02;
+      letter-spacing:-.02em;color:var(--ink);
+    }
+    .sw-tagline{
+      margin-top:8px;font-size:14px;line-height:1.45;
+      color:var(--muted);max-width:30ch;
+    }
+
+    .sw-desc{
+      font-size:16.5px;line-height:1.6;color:var(--ink-2);
+      max-width:62ch;
+    }
+
+    .sw-features{
+      list-style:none;margin:22px 0 0;padding:0;
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px 28px;max-width:62ch;
+    }
+    @media(max-width:600px){.sw-features{grid-template-columns:1fr}}
+    .sw-features li{
+      position:relative;padding-left:18px;
+      font-size:13.5px;line-height:1.45;color:var(--ink-2);
+    }
+    .sw-features li::before{
+      content:"";position:absolute;left:0;top:.6em;
+      width:6px;height:1px;background:var(--accent);
+    }
+
+    .sw-foot{
+      margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;
+      justify-content:space-between;gap:16px;
+    }
+    .sw-stack{display:flex;flex-wrap:wrap;gap:6px}
+    .sw-chip{
+      display:inline-flex;align-items:center;padding:4px 10px;
+      border:1px solid var(--line);background:var(--paper);
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--muted);
+    }
+    .sw-link{
+      font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--ink-2);
+      border-bottom:1px solid var(--line);padding-bottom:3px;
+      transition:color .18s,border-color .18s;white-space:nowrap;
+    }
+    .sw-link:hover{color:var(--accent);border-color:var(--accent)}
+  </style>
+</AppLayout>
