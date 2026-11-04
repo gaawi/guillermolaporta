@@ -136,3 +136,8 @@
 .ph-ev-check{background:#F7EBD8;color:#8A5A12;border-left:2px solid #C98A1E}
 .ph-ev-wait{background:#E2E8FB;color:#2B3F8C;border-left:2px solid #3B55C4}
 .ph-evrow{grid-column:1 / -1;display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:#FBFAF7;padding:1px 0 3px}
+
+/* Polen is set in a monospace end to end, so the drawing of it should be too. */
+.ph-mono .ph-scr,
+.ph-mono .ph-scr * { font-family: var(--mono) }
+.ph-mono .ph-h1 { letter-spacing: -.01em }

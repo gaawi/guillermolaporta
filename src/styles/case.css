@@ -1,0 +1,202 @@
+/* Layout for the software case studies: a portfolio piece rather than a product
+   page. Full-bleed hero, a spec strip, numbered sections, and the screens shown
+   large with their annotations beside them.
+
+   Each case study sets --cx-ink, --cx-bg and --cx-accent on .cx, so the hero and
+   the accents carry that project's own colours, taken from the running app. */
+
+.cx { --cx-ink: #0B0B0C; --cx-bg: #0E0E0F; --cx-accent: #1848E8; }
+
+/* ── full-bleed hero ───────────────────────────────────────── */
+.cx-hero {
+  position: relative;
+  background: var(--cx-bg);
+  color: #fff;
+  padding: 72px 40px 0;
+  overflow: hidden;
+}
+@media (max-width: 720px) { .cx-hero { padding: 44px 20px 0 } }
+
+.cx-hero-inner { max-width: 1480px; margin: 0 auto }
+
+.cx-eyebrow {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: rgba(255,255,255,.52);
+}
+.cx-eyebrow b { color: var(--cx-accent); font-weight: 400 }
+
+.cx-title {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(56px, 10vw, 148px); line-height: .9; letter-spacing: -.035em;
+  margin: 18px 0 0;
+}
+.cx-lead {
+  margin-top: 20px; max-width: 42ch;
+  font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; color: rgba(255,255,255,.76);
+}
+
+.cx-key { margin-top: 46px; }
+.cx-key img {
+  display: block; width: 100%; height: auto;
+  border-radius: 6px 6px 0 0;
+}
+
+/* ── spec strip ────────────────────────────────────────────── */
+.cx-spec {
+  background: var(--bg-warm);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 26px 40px;
+}
+@media (max-width: 720px) { .cx-spec { padding: 22px 20px } }
+.cx-spec-inner {
+  max-width: 1480px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px 28px;
+}
+@media (max-width: 900px) { .cx-spec-inner { grid-template-columns: repeat(2, 1fr) } }
+.cx-spec dt {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+.cx-spec dd { margin: 0; font-size: 14px; line-height: 1.45; color: var(--ink) }
+
+/* ── sections ──────────────────────────────────────────────── */
+.cx-wrap { max-width: 1480px; margin: 0 auto; padding: 0 40px }
+@media (max-width: 720px) { .cx-wrap { padding: 0 20px } }
+
+.cx-sec { padding: 76px 0; border-bottom: 1px solid var(--line-soft) }
+@media (max-width: 720px) { .cx-sec { padding: 52px 0 } }
+.cx-sec:last-of-type { border-bottom: 0 }
+
+.cx-head { display: flex; gap: 18px; align-items: baseline; margin-bottom: 30px }
+.cx-n {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+  color: var(--cx-accent); flex: 0 0 auto;
+}
+.cx-h2 {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(26px, 3.2vw, 40px); line-height: 1.08; letter-spacing: -.022em;
+  color: var(--ink);
+}
+
+.cx-prose { max-width: 64ch }
+.cx-prose p { font-size: 17px; line-height: 1.68; color: var(--ink-2); margin-bottom: 18px }
+.cx-prose p:last-child { margin-bottom: 0 }
+
+.cx-pull {
+  margin: 36px 0 0; padding-left: 22px; border-left: 2px solid var(--cx-accent);
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(20px, 2.1vw, 27px); line-height: 1.32; letter-spacing: -.015em;
+  color: var(--ink); max-width: 30ch;
+}
+
+.cx-note {
+  margin-top: 30px; max-width: 64ch; padding: 14px 18px;
+  background: var(--bg-warm); border-left: 2px solid var(--muted);
+  font-size: 13.5px; line-height: 1.55; color: var(--ink-2);
+}
+
+/* ── information architecture ──────────────────────────────── */
+.cx-ia { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--line-soft) }
+@media (max-width: 900px) { .cx-ia { grid-template-columns: repeat(2, 1fr) } }
+@media (max-width: 560px) { .cx-ia { grid-template-columns: 1fr } }
+.cx-ia-col { background: var(--paper); padding: 22px 20px }
+.cx-ia-top {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink); padding-bottom: 12px;
+  border-bottom: 2px solid var(--cx-accent); margin-bottom: 14px;
+}
+.cx-ia-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px }
+.cx-ia-col li {
+  position: relative; padding-left: 15px; font-size: 13.5px; line-height: 1.4; color: var(--ink-2);
+}
+.cx-ia-col li::before {
+  content: ""; position: absolute; left: 0; top: .62em;
+  width: 7px; height: 1px; background: var(--line);
+}
+
+/* ── design system ─────────────────────────────────────────── */
+.cx-sys { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px }
+@media (max-width: 1000px) { .cx-sys { grid-template-columns: 1fr; gap: 42px } }
+
+.cx-sub {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+}
+
+.cx-swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px }
+@media (max-width: 560px) { .cx-swatches { grid-template-columns: repeat(2, 1fr) } }
+.cx-sw { padding: 0 }
+.cx-sw-chip { height: 84px; border: 1px solid rgba(0,0,0,.08) }
+.cx-sw-meta { padding: 9px 2px 0 }
+.cx-sw-name { font-size: 12.5px; color: var(--ink); line-height: 1.3 }
+.cx-sw-hex { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 2px }
+
+.cx-type { display: grid; gap: 18px }
+.cx-type-row { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--line-soft); padding-bottom: 14px }
+.cx-type-row:last-child { border-bottom: 0 }
+.cx-type-spec {
+  flex: 0 0 72px; font-family: var(--mono); font-size: 9px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); line-height: 1.4;
+}
+.cx-type-demo { min-width: 0; color: var(--ink) }
+
+/* ── screens, large ────────────────────────────────────────── */
+.cx-shots { display: grid; gap: 64px }
+.cx-shot {
+  display: grid; grid-template-columns: 330px 1fr; gap: 44px; align-items: start;
+}
+@media (max-width: 860px) { .cx-shot { grid-template-columns: 1fr; gap: 26px } }
+.cx-shot .ph { max-width: 330px }
+
+.cx-shot-no {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
+  color: var(--cx-accent); margin-bottom: 10px;
+}
+.cx-shot-h3 {
+  font-family: var(--serif); font-weight: 500; font-size: clamp(21px, 2.1vw, 27px);
+  line-height: 1.15; letter-spacing: -.015em; color: var(--ink); margin-bottom: 12px;
+}
+.cx-shot-p { font-size: 15.5px; line-height: 1.6; color: var(--ink-2); max-width: 54ch }
+.cx-ann { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 13px; max-width: 54ch }
+.cx-ann li { display: flex; gap: 13px; align-items: baseline }
+.cx-ann-k {
+  flex: 0 0 auto; font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+  color: var(--paper); background: var(--cx-accent); border-radius: 2px; padding: 2px 5px;
+}
+.cx-ann-v { font-size: 14px; line-height: 1.5; color: var(--ink-2) }
+
+/* ── decisions ─────────────────────────────────────────────── */
+.cx-dec { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--line-soft) }
+@media (max-width: 760px) { .cx-dec { grid-template-columns: 1fr } }
+.cx-dec-i { background: var(--paper); padding: 28px 26px }
+.cx-dec-n { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--muted); margin-bottom: 11px }
+.cx-dec-i h3 {
+  font-family: var(--serif); font-size: 21px; font-weight: 500;
+  letter-spacing: -.012em; color: var(--ink); margin-bottom: 9px;
+}
+.cx-dec-i p { font-size: 15px; line-height: 1.58; color: var(--ink-2) }
+
+/* ── foot ──────────────────────────────────────────────────── */
+.cx-foot {
+  padding: 46px 0 86px; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 18px;
+}
+.cx-stack { display: flex; flex-wrap: wrap; gap: 6px }
+.cx-chip {
+  display: inline-flex; align-items: center; padding: 5px 11px;
+  border: 1px solid var(--line); background: var(--paper);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.cx-next {
+  display: inline-flex; align-items: baseline; gap: 10px;
+  font-family: var(--serif); font-size: 21px; font-weight: 500; letter-spacing: -.012em;
+  color: var(--ink); border-bottom: 1px solid var(--line); padding-bottom: 4px;
+  transition: color .18s, border-color .18s;
+}
+.cx-next:hover { color: var(--cx-accent); border-color: var(--cx-accent) }
+.cx-next small {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
+}

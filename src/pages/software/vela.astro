@@ -1,7 +1,9 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
+import { asset } from '../../lib/asset.js';
 import { calendar } from '../../data/site.js';
 import '../../styles/phone.css';
+import '../../styles/case.css';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -35,335 +37,488 @@ const TABS = [
   { label: 'Contacts' },
   { label: 'More' },
 ];
+
+// Sampled from the running app, not chosen for this page.
+const palette = [
+  { name: 'Paper',   hex: '#F8F8F8', note: 'Every screen' },
+  { name: 'Ink',     hex: '#181818', note: 'Type, primary button' },
+  { name: 'Action',  hex: '#1848E8', note: 'The one thing to tap' },
+  { name: 'Project', hex: '#D87028', note: 'Thread tags' },
+  { name: 'Line',    hex: '#D0D0D0', note: 'Dividers' },
+  { name: 'Quiet',   hex: '#787880', note: 'Secondary text' },
+];
 ---
 <AppLayout
   title="Vela · Case study · Guillermo Laporta"
-  description="Vela is a CRM built on top of Gmail for an arts producer: bookings, guest lists, door lists and the day's work in one place."
+  description="Designing and building Vela: a CRM for an arts producer that runs on the mail that already exists. Case study with the interface, the system behind it and the decisions."
 >
-  <div class="subpage-head">
-    <a class="subpage-back" href={`${b}software/`}>← Software</a>
-    <div class="subpage-num">Case study</div>
-    <h1 class="subpage-title">Vela.</h1>
-    <p class="subpage-sub">
-      A CRM for an arts producer that runs on the mail that already exists, rather than
-      asking anyone to keep a second copy of it. Built for a phone, because that is where
-      the answer gets written.
-    </p>
+  <div class="cx" style="--cx-bg:#0A1230;--cx-accent:#1848E8">
+
+    <!-- ── hero ──────────────────────────────────────────────── -->
+    <header class="cx-hero">
+      <div class="cx-hero-inner">
+        <div class="cx-eyebrow">
+          <a href={`${b}software/`} style="color:inherit">← Software</a>
+          <span>Case study</span>
+          <b>Product design &amp; build</b>
+          <span>2026</span>
+        </div>
+        <h1 class="cx-title">Vela</h1>
+        <p class="cx-lead">
+          A CRM for an arts producer that runs on the mail that already exists, instead of
+          asking anyone to keep a second copy of it by hand.
+        </p>
+        <div class="cx-key">
+          <img src={asset('images/software/vela-hero.jpg')} width="2400" height="1260"
+               alt="Four screens of Vela: the day's queue, the shared inbox, the season list and a concert" />
+        </div>
+      </div>
+    </header>
+
+    <div class="cx-spec">
+      <dl class="cx-spec-inner">
+        <div><dt>Role</dt><dd>Design and build, solo</dd></div>
+        <div><dt>Type</dt><dd>Internal tool, in daily use</dd></div>
+        <div><dt>Platform</dt><dd>Web, phone first</dd></div>
+        <div><dt>Built with</dt><dd>TypeScript · Gmail API · OAuth</dd></div>
+        <div><dt>Status</dt><dd>Live, behind a password</dd></div>
+      </dl>
+    </div>
+
+    <div class="cx-wrap">
+
+      <!-- ── 01 problem ──────────────────────────────────────── -->
+      <section class="cx-sec">
+        <div class="cx-head"><span class="cx-n">01</span><h2 class="cx-h2">Booking a season is mostly correspondence.</h2></div>
+        <div class="cx-prose">
+          <p>
+            A venue replies in March about a date the following February. The thread goes
+            quiet. Three months later nobody can say whether the ball is in your court or
+            theirs, and the only record is a mailbox that four different addresses feed into.
+          </p>
+          <p>
+            Every CRM on the market solves this by asking you to type it all in again: open
+            the mail, read it, then go and tell the database what you just read. That second
+            copy is the thing that always rots. The first time you are late, you stop
+            updating it, and from then on the tool is lying to you.
+          </p>
+          <p class="cx-pull">So the design question was not how to lay out a contact record. It was how to not ask for one.</p>
+        </div>
+        <div class="cx-note">
+          The screens in this case study are drawn, not photographed. The concerts are real
+          and already public on the <a class="inline-link" href={`${b}calendar/`}>calendar</a>;
+          every name, address and message is invented, because the working app holds other
+          people's correspondence.
+        </div>
+      </section>
+
+      <!-- ── 02 structure ────────────────────────────────────── -->
+      <section class="cx-sec">
+        <div class="cx-head"><span class="cx-n">02</span><h2 class="cx-h2">Five tabs, and one of them is the whole job.</h2></div>
+        <div class="cx-prose" style="margin-bottom:30px">
+          <p>
+            The structure is deliberately flat. Everything that needs doing today is behind
+            the first tab; the rest is there for when you go looking. Nothing is more than
+            two taps deep, because the app is used standing up.
+          </p>
+        </div>
+        <div class="cx-ia">
+          <div class="cx-ia-col">
+            <div class="cx-ia-top">Today</div>
+            <ul>
+              <li>Drafts waiting for approval</li>
+              <li>Suggestions from the assistant</li>
+              <li>Waiting on them</li>
+              <li>Scheduled follow-ups</li>
+            </ul>
+          </div>
+          <div class="cx-ia-col">
+            <div class="cx-ia-top">Mail</div>
+            <ul>
+              <li>Every connected account</li>
+              <li>Threads tagged by project</li>
+              <li>Search across all of it</li>
+            </ul>
+          </div>
+          <div class="cx-ia-col">
+            <div class="cx-ia-top">Contacts</div>
+            <ul>
+              <li>People, found in the mail</li>
+              <li>Merged across addresses</li>
+              <li>Venues and organisations</li>
+            </ul>
+          </div>
+          <div class="cx-ia-col">
+            <div class="cx-ia-top">More → Concerts</div>
+            <ul>
+              <li>The season as a list</li>
+              <li>Tickets sold, by channel</li>
+              <li>Guest list, staff and artists</li>
+              <li>Door list as one PDF</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 03 system ───────────────────────────────────────── -->
+      <section class="cx-sec">
+        <div class="cx-head"><span class="cx-n">03</span><h2 class="cx-h2">A system that gets out of the way.</h2></div>
+        <div class="cx-sys">
+          <div>
+            <div class="cx-sub">Colour · sampled from the running app</div>
+            <div class="cx-swatches">
+              {palette.map((c) => (
+                <div class="cx-sw">
+                  <div class="cx-sw-chip" style={`background:${c.hex}`}></div>
+                  <div class="cx-sw-meta">
+                    <div class="cx-sw-name">{c.name}</div>
+                    <div class="cx-sw-hex">{c.hex}</div>
+                    <div class="cx-sw-hex">{c.note}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="cx-note" style="margin-top:26px">
+              One blue, used once per screen. If two things on a screen are blue, neither is
+              the thing to tap. The orange is reserved for project tags, so a glance down the
+              inbox sorts the season from everything else.
+            </div>
+          </div>
+
+          <div>
+            <div class="cx-sub">Type · the phone's own font</div>
+            <div class="cx-type">
+              <div class="cx-type-row">
+                <div class="cx-type-spec">24px<br />600</div>
+                <div class="cx-type-demo" style="font-size:24px;font-weight:600;letter-spacing:-.02em">Concert list</div>
+              </div>
+              <div class="cx-type-row">
+                <div class="cx-type-spec">16px<br />400</div>
+                <div class="cx-type-demo" style="font-size:16px">Tickets sold, guests and staff</div>
+              </div>
+              <div class="cx-type-row">
+                <div class="cx-type-spec">15px<br />500</div>
+                <div class="cx-type-demo" style="font-size:15px;font-weight:500">Engelbach-Hart Music Festival</div>
+              </div>
+            </div>
+            <div class="cx-note" style="margin-top:26px">
+              Set in <code>ui-sans-serif, system-ui, -apple-system</code> — no webfont at all.
+              The app should look like it came with the phone, and a tool opened forty times
+              a day should not spend a request on type. Corners are 8px throughout.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 04 screens ──────────────────────────────────────── -->
+      <section class="cx-sec">
+        <div class="cx-head"><span class="cx-n">04</span><h2 class="cx-h2">The screens.</h2></div>
+
+        <div class="cx-shots">
+
+          <!-- Today -->
+          <article class="cx-shot">
+            <div class="ph">
+              <div class="ph-scr">
+                <div class="ph-top">
+                  <div class="ph-h1row">
+                    <div>
+                      <div class="ph-h1">Today</div>
+                      <div class="ph-sub">Wednesday, November 4</div>
+                    </div>
+                    <span class="ph-chip">Booking USA 2026/27 ⌄</span>
+                  </div>
+                </div>
+                <div class="ph-body">
+                  <div class="ph-banner">
+                    <div>
+                      <div class="ph-banner-kicker">Recital series · Midwest</div>
+                      <div class="ph-banner-title">15 emails to approve</div>
+                    </div>
+                    <span class="ph-banner-arr">›</span>
+                  </div>
+                  <div class="ph-dim">5 emails waiting for the assistant's new version</div>
+
+                  <div class="ph-label">Suggested by the assistant <b>1</b></div>
+                  <div class="ph-card">
+                    <div class="ph-card-title">Call the Fairhaven Chamber Society to ask who programmes the season</div>
+                    <div class="ph-card-body">The only address is info@ and nobody has replied; a call may open the door.</div>
+                    <div class="ph-card-meta">Fairhaven Chamber Society · R. Alderman</div>
+                    <div class="ph-btnrow">
+                      <span class="ph-btn">Call</span>
+                      <span class="ph-btn">WhatsApp</span>
+                      <span class="ph-btn ph-btn-done">✓ Done</span>
+                    </div>
+                  </div>
+
+                  <div class="ph-label">Waiting on them <b>1</b></div>
+                  <div class="ph-row">
+                    <div class="ph-row-main">
+                      <div class="ph-row-name">P. Vance</div>
+                      <div class="ph-row-sub">Executive Director; programmes a six-concert series</div>
+                    </div>
+                  </div>
+
+                  <div class="ph-label">Scheduled <b>6</b></div>
+                  <div class="ph-row">
+                    <div class="ph-date"><span>Fri</span><b>Nov 6</b></div>
+                    <div class="ph-row-main">
+                      <div class="ph-row-name">M. Delacroix <span class="ph-tag">Booking USA 2026/27</span></div>
+                      <div class="ph-row-sub">Northbrook Matinée: replied 16 Oct, asked about lighting and fee. Answered 17 Oct with the portable setup and the rates.</div>
+                    </div>
+                  </div>
+                </div>
+                <nav class="ph-tabs">
+                  {TABS.map((t, i) => (
+                    <span class={`ph-tab${i === 0 ? ' is-on' : ''}`}>
+                      {t.badge && <i class="ph-badge">{t.badge}</i>}{t.label}
+                    </span>
+                  ))}
+                </nav>
+              </div>
+            </div>
+            <div>
+              <div class="cx-shot-no">Screen 01</div>
+              <h3 class="cx-shot-h3">The day, not the database</h3>
+              <p class="cx-shot-p">
+                The first screen answers one question: what is mine to do before tonight. It
+                is ordered by who is blocked, not by date — things waiting on you first,
+                things waiting on somebody else below, and promises you made for a date last.
+              </p>
+              <ul class="cx-ann">
+                <li><span class="cx-ann-k">A</span><span class="cx-ann-v">The project chip at the top filters everything underneath, so the same screen works for a tour and for a season.</span></li>
+                <li><span class="cx-ann-k">B</span><span class="cx-ann-v">The assistant proposes and explains why. It never sends: the three buttons are the only exits, and one of them is "done, I did it myself".</span></li>
+                <li><span class="cx-ann-k">C</span><span class="cx-ann-v">A scheduled item carries the history that produced it, so you do not have to open the thread to remember where it stood.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Mail -->
+          <article class="cx-shot">
+            <div class="ph">
+              <div class="ph-scr">
+                <div class="ph-top">
+                  <div class="ph-search">Search in mail</div>
+                  <div class="ph-h2row"><span class="ph-h2">All inboxes</span><span class="ph-dots">···</span></div>
+                </div>
+                <div class="ph-body ph-body-tight">
+                  <div class="ph-row ph-row-other">
+                    <div class="ph-row-main"><div class="ph-row-name">Other</div></div>
+                    <span class="ph-pill">209 new</span>
+                  </div>
+                  {inbox.map((m) => (
+                    <div class="ph-mail">
+                      <div class="ph-av" aria-hidden="true">{m.who.replace(/^me, /, '').trim()[0]}</div>
+                      <div class="ph-mail-main">
+                        <div class="ph-mail-head">
+                          <span class="ph-mail-who">{m.who}{m.n ? <i class="ph-n">{m.n}</i> : null}</span>
+                          <span class="ph-mail-time">{m.time}</span>
+                        </div>
+                        <div class="ph-mail-subject">{m.subject}</div>
+                        {m.tag && <span class="ph-tag">{m.tag}</span>}
+                        <div class="ph-mail-prev">{m.preview}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <nav class="ph-tabs">
+                  {TABS.map((t, i) => (
+                    <span class={`ph-tab${i === 1 ? ' is-on' : ''}`}>
+                      {t.badge && <i class="ph-badge">{t.badge}</i>}{t.label}
+                    </span>
+                  ))}
+                </nav>
+              </div>
+            </div>
+            <div>
+              <div class="cx-shot-no">Screen 02</div>
+              <h3 class="cx-shot-h3">Every account, one thread</h3>
+              <p class="cx-shot-p">
+                This is the part that makes the rest possible. Mail from all the connected
+                accounts arrives in one list, and the project tag is applied to the thread
+                rather than to a separate record, so filing happens as a side effect of
+                reading.
+              </p>
+              <ul class="cx-ann">
+                <li><span class="cx-ann-k">A</span><span class="cx-ann-v">"Other" holds everything untagged. It is allowed to have 209 unread: that count is not a failure, it is the point of having a filtered view.</span></li>
+                <li><span class="cx-ann-k">B</span><span class="cx-ann-v">A thread you are in reads "me, Name", the same phrasing the mail client uses, because this list has to be trusted instantly.</span></li>
+                <li><span class="cx-ann-k">C</span><span class="cx-ann-v">One tag, in the project colour, never more than one per thread.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Concert list -->
+          <article class="cx-shot">
+            <div class="ph">
+              <div class="ph-scr">
+                <div class="ph-top">
+                  <div class="ph-h1">Concert list</div>
+                  <div class="ph-sub">Tickets sold, guests and staff of each concert.</div>
+                </div>
+                <div class="ph-body">
+                  <div class="ph-label">Next concert</div>
+                  {next && (
+                    <div class="ph-row ph-row-boxed">
+                      <div class="ph-date"><span>{next.displayDate.split(' ')[0]}</span><b>{next.displayDate.split(' ')[1]}</b></div>
+                      <div class="ph-row-main">
+                        <div class="ph-row-name">{next.title}</div>
+                        <div class="ph-row-sub">{next.location}</div>
+                      </div>
+                      <span class="ph-arr">›</span>
+                    </div>
+                  )}
+                  <div class="ph-label">Later</div>
+                  <div class="ph-group">
+                    {later.map((e) => (
+                      <div class="ph-row">
+                        <div class="ph-date"><span>{e.displayDate.split(' ')[0]}</span><b>{e.displayDate.split(' ')[1]}</b></div>
+                        <div class="ph-row-main">
+                          <div class="ph-row-name">{e.title}</div>
+                          <div class="ph-row-sub">{e.location}</div>
+                        </div>
+                        <span class="ph-arr">›</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <nav class="ph-tabs">
+                  {TABS.map((t, i) => (
+                    <span class={`ph-tab${i === 4 ? ' is-on' : ''}`}>
+                      {t.badge && <i class="ph-badge">{t.badge}</i>}{t.label}
+                    </span>
+                  ))}
+                </nav>
+              </div>
+            </div>
+            <div>
+              <div class="cx-shot-no">Screen 03</div>
+              <h3 class="cx-shot-h3">The season as a list</h3>
+              <p class="cx-shot-p">
+                One concert is singled out and the rest are a group. A season is not a
+                calendar problem for the person running it — it is a sequence of next things,
+                and only the next one needs a decision today.
+              </p>
+              <ul class="cx-ann">
+                <li><span class="cx-ann-k">A</span><span class="cx-ann-v">"Next concert" sits outside the group and gets its own card. Everything after it is inside one bordered block, so the eye stops once.</span></li>
+                <li><span class="cx-ann-k">B</span><span class="cx-ann-v">The date badge carries the month in the accent and the day in full weight: readable at arm's length, in a venue, in bad light.</span></li>
+                <li><span class="cx-ann-k">C</span><span class="cx-ann-v">These are real dates, pulled from the same source as this site's calendar.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Concert detail -->
+          <article class="cx-shot">
+            <div class="ph">
+              <div class="ph-scr">
+                <div class="ph-top">
+                  <div class="ph-back">‹ Concert list</div>
+                  {next && <div class="ph-h1 ph-h1-sm">{next.title}</div>}
+                  {next && <div class="ph-sub">{next.displayDate} {next.year} at 7:30 PM · {next.location}</div>}
+                </div>
+                <div class="ph-body">
+                  <div class="ph-cta">Door list (PDF): everyone, A to Z</div>
+                  <div class="ph-label">Tickets sold</div>
+                  <div class="ph-add">+ Add a channel</div>
+                  <div class="ph-dim">The assistant keeps these up to date; tap one to change it.</div>
+                  <div class="ph-label">People</div>
+                  <div class="ph-group">
+                    <div class="ph-row">
+                      <div class="ph-row-main"><div class="ph-row-name">Guest list</div></div>
+                      <span class="ph-state">Empty</span><span class="ph-arr">›</span>
+                    </div>
+                    <div class="ph-row">
+                      <div class="ph-row-main"><div class="ph-row-name">Staff &amp; artists</div></div>
+                      <span class="ph-state">None yet</span><span class="ph-arr">›</span>
+                    </div>
+                  </div>
+                </div>
+                <nav class="ph-tabs">
+                  {TABS.map((t, i) => (
+                    <span class={`ph-tab${i === 4 ? ' is-on' : ''}`}>
+                      {t.badge && <i class="ph-badge">{t.badge}</i>}{t.label}
+                    </span>
+                  ))}
+                </nav>
+              </div>
+            </div>
+            <div>
+              <div class="cx-shot-no">Screen 04</div>
+              <h3 class="cx-shot-h3">One tap at the door</h3>
+              <p class="cx-shot-p">
+                The screen is designed around the thirty seconds before an audience arrives.
+                The door list is the only blue thing on it, at the top, full width, and it
+                says exactly what the PDF will contain so nobody has to open it to check.
+              </p>
+              <ul class="cx-ann">
+                <li><span class="cx-ann-k">A</span><span class="cx-ann-v">"Everyone, A to Z" is the label because at a door you sort by surname, not by which list someone came from.</span></li>
+                <li><span class="cx-ann-k">B</span><span class="cx-ann-v">Empty states say "Empty" and "None yet" rather than hiding the row. A missing guest list is information.</span></li>
+                <li><span class="cx-ann-k">C</span><span class="cx-ann-v">Ticket channels are added, not configured: a box office, a culture pass and a ticketing site are all just a number with a name.</span></li>
+              </ul>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ── 05 decisions ────────────────────────────────────── -->
+      <section class="cx-sec">
+        <div class="cx-head"><span class="cx-n">05</span><h2 class="cx-h2">Four decisions that shaped it.</h2></div>
+        <div class="cx-dec">
+          <div class="cx-dec-i">
+            <div class="cx-dec-n">01</div>
+            <h3>Read, do not ask</h3>
+            <p>Accounts connect over OAuth. Past mail is imported once and then kept in sync, and every message records which account it arrived through. Nobody types a contact in, so there is no second copy to rot.</p>
+          </div>
+          <div class="cx-dec-i">
+            <div class="cx-dec-n">02</div>
+            <h3>A person, not an address</h3>
+            <p>People are matched on their email address, and one person's history is merged across all of their addresses and all of your accounts. The same programmer writing from a work and a personal address is one thread of history.</p>
+          </div>
+          <div class="cx-dec-i">
+            <div class="cx-dec-n">03</div>
+            <h3>Nothing sends itself</h3>
+            <p>The assistant drafts and proposes; a person approves. A suggestion can be edited, pushed to a date or dismissed, and the approval queue is the only way out of it. An automated apology costs more than it saves.</p>
+          </div>
+          <div class="cx-dec-i">
+            <div class="cx-dec-n">04</div>
+            <h3>Phone first, and that is not a slogan</h3>
+            <p>Bookings get answered between rehearsals, in a corridor, on a train. Every layout decision assumed a thumb and a small screen; the desktop is the same thing wider, not a different product.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 06 where it stands ──────────────────────────────── -->
+      <section class="cx-sec">
+        <div class="cx-head"><span class="cx-n">06</span><h2 class="cx-h2">Where it stands.</h2></div>
+        <div class="cx-prose">
+          <p>
+            Vela is in daily use and behind a password, which is why this case study is drawn
+            rather than photographed. It is one person's tool, built for one organisation's
+            way of working, and it has not been tested with anybody else — so there are no
+            numbers here, and no claims about how much time it saves.
+          </p>
+          <p>
+            What it has changed is smaller and easier to state: the inbox and the record are
+            now the same object, so there is nothing left to forget to update.
+          </p>
+        </div>
+      </section>
+
+      <div class="cx-foot">
+        <div class="cx-stack">
+          <span class="cx-chip">TypeScript</span><span class="cx-chip">Gmail API</span>
+          <span class="cx-chip">OAuth</span><span class="cx-chip">Vercel</span>
+        </div>
+        <a class="cx-next" href={`${b}software/polen/`}>
+          <small>Next case study</small> Polen →
+        </a>
+      </div>
+    </div>
   </div>
 
-  <section class="section-tight">
-
-    <div class="cs-lede">
-      <p>
-        Booking a season is mostly correspondence. A venue replies in March about a date in
-        the following February, the thread goes quiet, and three months later nobody can say
-        whether the ball is in your court or theirs. The usual fix is a CRM that asks you to
-        re-enter, by hand, what the inbox already knows.
-      </p>
-      <p>
-        Vela reads the inbox instead. Several Gmail accounts connect at once; past mail is
-        imported and then kept in sync, so a person's history is one history even when it
-        arrives at four different addresses. On top of that sit the things a concert actually
-        needs: who is coming, who is working, and a door list you can hand to the front of
-        house.
-      </p>
-    </div>
-
-    <div class="cs-note">
-      The screens below are drawn, not photographed. The concerts are real and already
-      public on the <a class="inline-link" href={`${b}calendar/`}>calendar</a>; every name,
-      address and message is invented, because the working app holds other people's
-      correspondence.
-    </div>
-
-    <div class="cs-screens">
-
-      <!-- ── 1 · Today ───────────────────────────────────────── -->
-      <figure class="cs-fig">
-        <div class="ph">
-          <div class="ph-scr">
-            <div class="ph-top">
-              <div class="ph-h1row">
-                <div>
-                  <div class="ph-h1">Today</div>
-                  <div class="ph-sub">Wednesday, November 4</div>
-                </div>
-                <span class="ph-chip">Booking USA 2026/27 ⌄</span>
-              </div>
-            </div>
-
-            <div class="ph-body">
-              <div class="ph-banner">
-                <div class="ph-banner-kicker">Recital series · Midwest</div>
-                <div class="ph-banner-title">15 emails to approve</div>
-                <span class="ph-banner-arr">›</span>
-              </div>
-              <div class="ph-dim">5 emails waiting for the assistant's new version</div>
-
-              <div class="ph-label">Suggested by the assistant <b>1</b></div>
-              <div class="ph-card">
-                <div class="ph-card-title">Call the Fairhaven Chamber Society to ask who programmes the season</div>
-                <div class="ph-card-body">The only address is info@ and nobody has replied; a call may open the door.</div>
-                <div class="ph-card-meta">Fairhaven Chamber Society · R. Alderman</div>
-                <div class="ph-btnrow">
-                  <span class="ph-btn">Call</span>
-                  <span class="ph-btn">WhatsApp</span>
-                  <span class="ph-btn ph-btn-done">✓ Done</span>
-                </div>
-              </div>
-
-              <div class="ph-label">Waiting on them <b>1</b></div>
-              <div class="ph-row">
-                <div class="ph-row-main">
-                  <div class="ph-row-name">P. Vance</div>
-                  <div class="ph-row-sub">Executive Director; programmes a six-concert series</div>
-                </div>
-              </div>
-
-              <div class="ph-label">Scheduled <b>6</b></div>
-              <div class="ph-row">
-                <div class="ph-date"><span>Fri</span><b>Nov 6</b></div>
-                <div class="ph-row-main">
-                  <div class="ph-row-name">M. Delacroix <span class="ph-tag">Booking USA 2026/27</span></div>
-                  <div class="ph-row-sub">Northbrook Matinée: replied 16 Oct, asked about lighting and fee. Answered 17 Oct with the portable setup and the rates. Follow up only if it is still open.</div>
-                </div>
-              </div>
-            </div>
-
-            <nav class="ph-tabs">
-              {TABS.map((t, i) => (
-                <span class={`ph-tab${i === 0 ? ' is-on' : ''}`}>
-                  {t.badge && <i class="ph-badge">{t.badge}</i>}
-                  {t.label}
-                </span>
-              ))}
-            </nav>
-          </div>
-        </div>
-        <figcaption><b>The day, not the database.</b> What needs answering, what is waiting on somebody else, and what was promised for a date. The assistant proposes; nothing leaves without approval.</figcaption>
-      </figure>
-
-      <!-- ── 2 · Mail ────────────────────────────────────────── -->
-      <figure class="cs-fig">
-        <div class="ph">
-          <div class="ph-scr">
-            <div class="ph-top">
-              <div class="ph-search">Search in mail</div>
-              <div class="ph-h2row"><span class="ph-h2">All inboxes</span><span class="ph-dots">···</span></div>
-            </div>
-
-            <div class="ph-body ph-body-tight">
-              <div class="ph-row ph-row-other">
-                <div class="ph-row-main"><div class="ph-row-name">Other</div></div>
-                <span class="ph-pill">209 new</span>
-              </div>
-
-              {inbox.map((m) => (
-                <div class="ph-mail">
-                  <div class="ph-av" aria-hidden="true">{m.who.replace(/^me, /, '').trim()[0]}</div>
-                  <div class="ph-mail-main">
-                    <div class="ph-mail-head">
-                      <span class="ph-mail-who">{m.who}{m.n ? <i class="ph-n">{m.n}</i> : null}</span>
-                      <span class="ph-mail-time">{m.time}</span>
-                    </div>
-                    <div class="ph-mail-subject">{m.subject}</div>
-                    {m.tag && <span class="ph-tag">{m.tag}</span>}
-                    <div class="ph-mail-prev">{m.preview}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <nav class="ph-tabs">
-              {TABS.map((t, i) => (
-                <span class={`ph-tab${i === 1 ? ' is-on' : ''}`}>
-                  {t.badge && <i class="ph-badge">{t.badge}</i>}
-                  {t.label}
-                </span>
-              ))}
-            </nav>
-          </div>
-        </div>
-        <figcaption><b>Every account, one thread.</b> Mail from all the connected accounts in one list, each thread tagged with the project it belongs to, so a reply from eight months ago is where you expect it.</figcaption>
-      </figure>
-
-      <!-- ── 3 · Concert list ────────────────────────────────── -->
-      <figure class="cs-fig">
-        <div class="ph">
-          <div class="ph-scr">
-            <div class="ph-top">
-              <div class="ph-h1">Concert list</div>
-              <div class="ph-sub">Tickets sold, guests and staff of each concert.</div>
-            </div>
-
-            <div class="ph-body">
-              <div class="ph-label">Next concert</div>
-              {next && (
-                <div class="ph-row ph-row-boxed">
-                  <div class="ph-date"><span>{next.displayDate.split(' ')[0]}</span><b>{next.displayDate.split(' ')[1]}</b></div>
-                  <div class="ph-row-main">
-                    <div class="ph-row-name">{next.title}</div>
-                    <div class="ph-row-sub">{next.location}</div>
-                  </div>
-                  <span class="ph-arr">›</span>
-                </div>
-              )}
-
-              <div class="ph-label">Later</div>
-              <div class="ph-group">
-                {later.map((e) => (
-                  <div class="ph-row">
-                    <div class="ph-date"><span>{e.displayDate.split(' ')[0]}</span><b>{e.displayDate.split(' ')[1]}</b></div>
-                    <div class="ph-row-main">
-                      <div class="ph-row-name">{e.title}</div>
-                      <div class="ph-row-sub">{e.location}</div>
-                    </div>
-                    <span class="ph-arr">›</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <nav class="ph-tabs">
-              {TABS.map((t, i) => (
-                <span class={`ph-tab${i === 4 ? ' is-on' : ''}`}>
-                  {t.badge && <i class="ph-badge">{t.badge}</i>}
-                  {t.label}
-                </span>
-              ))}
-            </nav>
-          </div>
-        </div>
-        <figcaption><b>The season as a list.</b> The next date first and the rest behind it. These are the real concerts: the same ones the calendar on this site is showing.</figcaption>
-      </figure>
-
-      <!-- ── 4 · Concert detail ──────────────────────────────── -->
-      <figure class="cs-fig">
-        <div class="ph">
-          <div class="ph-scr">
-            <div class="ph-top">
-              <div class="ph-back">‹ Concert list</div>
-              {next && <div class="ph-h1 ph-h1-sm">{next.title}</div>}
-              {next && <div class="ph-sub">{next.displayDate} {next.year} at 7:30 PM · {next.location}</div>}
-            </div>
-
-            <div class="ph-body">
-              <div class="ph-cta">Door list (PDF): everyone, A to Z</div>
-
-              <div class="ph-label">Tickets sold</div>
-              <div class="ph-add">+ Add a channel</div>
-              <div class="ph-dim">The assistant keeps these up to date; tap one to change it.</div>
-
-              <div class="ph-label">People</div>
-              <div class="ph-group">
-                <div class="ph-row">
-                  <div class="ph-row-main"><div class="ph-row-name">Guest list</div></div>
-                  <span class="ph-state">Empty</span><span class="ph-arr">›</span>
-                </div>
-                <div class="ph-row">
-                  <div class="ph-row-main"><div class="ph-row-name">Staff &amp; artists</div></div>
-                  <span class="ph-state">None yet</span><span class="ph-arr">›</span>
-                </div>
-              </div>
-            </div>
-
-            <nav class="ph-tabs">
-              {TABS.map((t, i) => (
-                <span class={`ph-tab${i === 4 ? ' is-on' : ''}`}>
-                  {t.badge && <i class="ph-badge">{t.badge}</i>}
-                  {t.label}
-                </span>
-              ))}
-            </nav>
-          </div>
-        </div>
-        <figcaption><b>One tap at the door.</b> The thing a concert actually needs on the night: a single PDF, everyone on it, alphabetical. Sold tickets arrive from whichever channel sold them.</figcaption>
-      </figure>
-
-    </div>
-
-    <div class="cs-how">
-      <h2 class="cs-h2">How it holds together</h2>
-      <div class="cs-grid">
-        <div class="cs-item">
-          <div class="cs-item-n">01</div>
-          <h3>Several accounts, one history</h3>
-          <p>Accounts connect over OAuth. Past mail is imported once, then kept in sync. Every message records which account it came in through, so nothing is flattened.</p>
-        </div>
-        <div class="cs-item">
-          <div class="cs-item-n">02</div>
-          <h3>Contacts appear by themselves</h3>
-          <p>People are matched on their email address, and one person's history is merged across all of their addresses and all of your accounts. Nobody types a contact in.</p>
-        </div>
-        <div class="cs-item">
-          <div class="cs-item-n">03</div>
-          <h3>Nothing sends itself</h3>
-          <p>The assistant drafts and proposes; a person approves. A suggestion can be edited, pushed to a date, or dismissed, and the queue is the only way out.</p>
-        </div>
-        <div class="cs-item">
-          <div class="cs-item-n">04</div>
-          <h3>Built for the phone first</h3>
-          <p>Bookings get answered between rehearsals, in a corridor, on a train. The layout assumes a thumb and a small screen, and the desktop is the same thing wider.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="cs-foot">
-      <div class="cs-stack">
-        <span class="sw-chip">TypeScript</span><span class="sw-chip">Gmail API</span>
-        <span class="sw-chip">OAuth</span><span class="sw-chip">Vercel</span>
-      </div>
-      <a class="btn" href={`${b}software/`}>All software <span class="arr">→</span></a>
-    </div>
-  </section>
-
   <style>
-    .section-tight{max-width:1480px;margin:0 auto;padding:0 40px 96px}
-    @media(max-width:720px){.section-tight{padding:0 20px 56px}}
-
-    .cs-lede{max-width:66ch;margin-bottom:34px}
-    .cs-lede p{font-size:17px;line-height:1.64;color:var(--ink-2);margin-bottom:16px}
-
-    .cs-note{
-      max-width:66ch;margin-bottom:56px;padding:14px 18px;
-      border-left:2px solid var(--accent);background:var(--bg-warm);
-      font-size:14px;line-height:1.55;color:var(--ink-2);
-    }
-    .inline-link{color:var(--ink);border-bottom:1px solid var(--line);}
+    .inline-link{color:var(--ink);border-bottom:1px solid var(--line)}
     .inline-link:hover{color:var(--accent);border-color:var(--accent)}
-
-    /* ── screens ── */
-    .cs-screens{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 28px;margin-bottom:88px}
-    @media(max-width:1280px){.cs-screens{grid-template-columns:repeat(2,1fr);gap:48px 32px}}
-    @media(max-width:680px){.cs-screens{grid-template-columns:1fr;gap:52px}}
-
-    .cs-fig{margin:0;display:flex;flex-direction:column;gap:16px;align-items:center}
-    .cs-fig figcaption{font-size:13.5px;line-height:1.5;color:var(--muted);max-width:40ch}
-    .cs-fig figcaption b{color:var(--ink-2);font-weight:500}
-
-    /* ── how ── */
-    .cs-how{border-top:1px solid var(--line-soft);padding-top:52px;margin-bottom:64px}
-    .cs-h2{
-      font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,32px);
-      letter-spacing:-.02em;color:var(--ink);margin-bottom:34px;
-    }
-    .cs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:34px 30px}
-    @media(max-width:1000px){.cs-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:600px){.cs-grid{grid-template-columns:1fr;gap:28px}}
-    .cs-item-n{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);margin-bottom:9px}
-    .cs-item h3{font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.01em;margin-bottom:7px;color:var(--ink)}
-    .cs-item p{font-size:14.5px;line-height:1.55;color:var(--ink-2)}
-
-    .cs-foot{
-      border-top:1px solid var(--line-soft);padding-top:28px;
-      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
-    }
-    .cs-stack{display:flex;flex-wrap:wrap;gap:6px}
-    .sw-chip{
-      display:inline-flex;align-items:center;padding:4px 10px;
-      border:1px solid var(--line);background:var(--paper);
-      font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
-      text-transform:uppercase;color:var(--muted);
-    }
+    code{font-family:var(--mono);font-size:.88em;background:var(--paper);padding:1px 4px;border:1px solid var(--line)}
   </style>
 </AppLayout>
