@@ -1,6 +1,6 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { press } from '../data/site.js';
+import { press, adarPress } from '../data/site.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -10,7 +10,7 @@ const b = _base.endsWith('/') ? _base : _base + '/';
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">06 · Press</div>
     <h1 class="subpage-title">Selected press.</h1>
-    <p class="subpage-sub">Coverage of CreArtBox, Festival ADAR and Guillermo Laporta's productions.</p>
+    <p class="subpage-sub">Coverage of CreArtBox, Festival ADAR and Guillermo Laporta's productions. {adarPress.length} pieces on the festival from the Asturian and Spanish press.</p>
   </div>
 
   <section class="section section-tight">
@@ -21,6 +21,29 @@ const b = _base.endsWith('/') ? _base : _base + '/';
           <div class="press-source">{item.source}</div>
         </div>
       ))}
+    </div>
+
+    <div style="margin-top:72px;padding-top:40px;border-top:1px solid var(--line-soft)">
+      <div class="disco-section-label">Festival ADAR in the press</div>
+      <p class="ap-note">
+        Asturian and national coverage of the festival, newest first. Each one opens the
+        clipping in the festival's own press archive.
+      </p>
+      <ol class="ap-list">
+        {adarPress.map((item) => (
+          <li class="ap-item">
+            <a class="ap-link" href={item.url} target="_blank" rel="noopener">
+              <div class="ap-meta">
+                <span class="ap-outlet">{item.outlet}</span>
+                <span class="ap-date">{item.displayDate}</span>
+                {item.byline && <span class="ap-byline">{item.byline}</span>}
+              </div>
+              <h3 class="ap-title">{item.title}</h3>
+              <p class="ap-lede">{item.lede}</p>
+            </a>
+          </li>
+        ))}
+      </ol>
     </div>
 
     <div style="margin-top:72px;padding-top:40px;border-top:1px solid var(--line-soft)">
@@ -38,5 +61,32 @@ const b = _base.endsWith('/') ? _base : _base + '/';
   <style>
     .section-tight{padding-top:0;max-width:1480px;margin:0 auto;padding-left:40px;padding-right:40px;padding-bottom:96px}
     @media(max-width:720px){.section-tight{padding-left:20px;padding-right:20px;padding-bottom:56px}}
+
+    .ap-note{font-size:15px;line-height:1.6;color:var(--ink-2);max-width:62ch;margin-bottom:28px}
+
+    .ap-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-soft);max-width:1100px}
+    .ap-item{border-bottom:1px solid var(--line-soft)}
+    .ap-link{display:block;padding:18px 2px;transition:background .18s,padding .18s}
+    .ap-link:hover{background:var(--bg-warm);padding-left:12px;padding-right:12px}
+
+    .ap-meta{
+      display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:7px;
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--muted);
+    }
+    .ap-outlet{color:var(--ink-2)}
+    .ap-byline{font-style:normal}
+
+    .ap-title{
+      font-family:var(--serif);font-weight:500;font-size:19px;line-height:1.22;
+      letter-spacing:-.01em;color:var(--ink);margin-bottom:5px;
+    }
+    .ap-link:hover .ap-title{color:var(--accent)}
+    .ap-lede{font-size:14px;line-height:1.5;color:var(--ink-2);max-width:78ch}
+
+    @media(max-width:720px){
+      .ap-title{font-size:17px}
+      .ap-lede{font-size:13.5px}
+    }
   </style>
 </AppLayout>

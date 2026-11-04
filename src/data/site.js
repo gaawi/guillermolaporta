@@ -498,3 +498,136 @@ export const imageIndex = [
   { title: 'Festival ADAR', category: 'rural arts', note: 'Asturias, landscape, heritage and community projects' },
   { title: 'Archive', category: 'historical work', note: 'Early projects, production stills and press material' }
 ];
+
+// Festival ADAR in the Asturian and Spanish press, newest first. Taken from the
+// festival's own press archive, which carries each clipping in full.
+//
+// Every item links to festivaladar.com rather than to the newspaper. The
+// originals are there in the archive, but lne.es answers an automated request
+// with 406 and nortes.me with 403, so those links cannot be checked from here
+// and some sit behind a paywall. The festival's own page always resolves: all
+// 15 were verified 200.
+export const adarPress = [
+  {
+    outlet: 'La Nueva España',
+    date: '2025-05-20',
+    displayDate: 'May 20, 2025',
+    title: 'El Festival Adar busca los mejores hórreos para música de cámara',
+    lede: 'El festival convoca un concurso para seleccionar tres hórreos o paneras de Asturias que se convertirán en escenarios únicos de música de cámara durante la quinta edición.',
+    url: 'https://festivaladar.com/es/prensa/lne-horreos-2025/',
+  },
+  {
+    outlet: 'La Nueva España',
+    date: '2024-08-12',
+    displayDate: 'August 12, 2024',
+    title: 'El Festival Adar despliega desde Belmonte otra edición de arte y música en entornos rurales',
+    lede: 'La cuarta edición arranca esta semana con un recorrido por monasterios, palacios y hórreos del occidente y centro asturiano.',
+    url: 'https://festivaladar.com/es/prensa/lne-despliega-belmonte-2024/',
+  },
+  {
+    outlet: 'Nortes',
+    date: '2024-08-11',
+    displayDate: 'August 11, 2024',
+    title: 'ADAR: Un festival para disfrutar del patrimonio asturiano',
+    lede: 'Cobertura de Nortes sobre la cuarta edición del festival y la fusión del patrimonio rural asturiano con la expresión artística contemporánea.',
+    url: 'https://festivaladar.com/es/prensa/nortes-patrimonio-2024/',
+  },
+  {
+    outlet: 'Ayuntamiento de Llanes',
+    date: '2024-08-08',
+    displayDate: 'August 8, 2024',
+    title: 'El Festival ADAR comenzará en Llanes con un concierto en el Monasterio de San Antolín',
+    lede: 'La cuarta edición del Festival ADAR arranca su itinerancia con un concierto en el Monasterio de San Antolín de Bedón, en Llanes.',
+    url: 'https://festivaladar.com/es/prensa/ayto-llanes-bedon-2024/',
+  },
+  {
+    outlet: 'El Comercio',
+    byline: 'Pablo Antón Marín Estrada',
+    date: '2024-08-07',
+    displayDate: 'August 7, 2024',
+    title: 'Adar, un festival distinto para revitalizar el mundo rural',
+    lede: 'La IV edición del evento veraniego llevará música, instalaciones, danza y arte visual a pueblos de Belmonte, Salas, Somiedo, Grado y Llanes del 8 al 18 de agosto.',
+    url: 'https://festivaladar.com/es/prensa/elcomercio-revitalizar-2024/',
+  },
+  {
+    outlet: 'La Voz del Trubia',
+    date: '2024-08-01',
+    displayDate: 'August 1, 2024',
+    title: 'Paseos sonoros y conciertos en Grado, Salas, Somiedo y Belmonte',
+    lede: 'Cobertura previa de la cuarta edición del festival, que del 8 al 18 de agosto recorrió cuatro concejos del occidente con paseos sonoros, residencia artística y conciertos.',
+    url: 'https://festivaladar.com/es/prensa/lavoztrubia-paseos-2024/',
+  },
+  {
+    outlet: 'El Comercio',
+    date: '2023-08-10',
+    displayDate: 'August 10, 2023',
+    title: 'Un ‘paseo sonoro’ por La Caridad para acercar la música y el arte al pueblo',
+    lede: 'El parque María Cristina y el auditorio As Quintas acogen el festival itinerante ADAR, que pretende «revitalizar las zonas rurales».',
+    url: 'https://festivaladar.com/es/prensa/elcomercio-paseo-caridad-2023/',
+  },
+  {
+    outlet: 'El Comercio',
+    byline: 'Miguel Rojo',
+    date: '2023-08-10',
+    displayDate: 'August 10, 2023',
+    title: 'Paseos por la naturaleza en busca del arte y la música clásica',
+    lede: 'El festival Adar acerca la creación artística a la zona rural de Asturias en colaboración con la Escuela de Música Reina Sofía.',
+    url: 'https://festivaladar.com/es/prensa/elcomercio-paseos-naturaleza-2023/',
+  },
+  {
+    outlet: 'RTPA',
+    date: '2023-08-09',
+    displayDate: 'August 9, 2023',
+    title: '‘Paseos sonoros’ lleva música clásica a El Franco y después visitará Grado, Colunga y Belmonte de Miranda',
+    lede: 'Es la tercera edición de conciertos que aspiran a llegar a más concejos en próximos veranos.',
+    url: 'https://festivaladar.com/es/prensa/rtpa-paseos-sonoros-2023/',
+  },
+  {
+    outlet: 'RNE · El Ojo Crítico',
+    date: '2023-08-08',
+    displayDate: 'August 8, 2023',
+    title: 'El Festival Adar con Josefina Urraca',
+    lede: 'Movidos por el deseo de reivindicar las zonas rurales a través de las artes vivas, el festival celebra su nueva edición con conciertos, charlas y paseos sonoros.',
+    url: 'https://festivaladar.com/es/prensa/rne-ojo-critico-2023/',
+  },
+  {
+    outlet: 'La Voz del Trubia',
+    date: '2023-07-28',
+    displayDate: 'July 28, 2023',
+    title: 'El Festival ADAR se amplía desde Belmonte a Grado, Colunga y El Franco',
+    lede: 'El Festival ADAR amplía su recorrido por concejos asturianos, llevando música clásica y arte visual a Grado, El Franco y Colunga junto a la sede en Belmonte de Miranda.',
+    url: 'https://festivaladar.com/es/prensa/lavoztrubia-amplia-2023/',
+  },
+  {
+    outlet: 'La Nueva España',
+    date: '2022-07-30',
+    displayDate: 'July 30, 2022',
+    title: 'Josefina y Guillermo: un día tocan en Nueva York y otro en una panera de Leiguarda',
+    lede: 'Una pareja de músicos españoles se afinca en Belmonte de Miranda, desde donde continúa con sus proyectos internacionales y donde ha puesto en marcha un festival para llevar las artes al medio rural.',
+    url: 'https://festivaladar.com/es/prensa/lne-tocan-newyork-leiguarda/',
+  },
+  {
+    outlet: 'Compromiso Caja Rural de Asturias',
+    date: '2021-09-01',
+    displayDate: 'September 1, 2021',
+    title: 'Festival de Música Clásica de Leiguarda',
+    lede: 'Caja Rural de Asturias recoge el origen del proyecto: dos músicos que llegan a Leiguarda durante la pandemia y crean una asociación y un festival para revitalizar el medio rural a través de la cultura.',
+    url: 'https://festivaladar.com/es/prensa/cajarural-leiguarda/',
+  },
+  {
+    outlet: 'RTPA',
+    date: '2021-08-09',
+    displayDate: 'August 9, 2021',
+    title: 'I Festival de Música Clásica de Lleiguarda',
+    lede: 'Un certamen impulsado por dos músicos españoles que dejaron Nueva York por Belmonte.',
+    url: 'https://festivaladar.com/es/prensa/rtpa-i-festival-2021/',
+  },
+  {
+    outlet: 'La Voz del Trubia',
+    date: '2021-08-05',
+    displayDate: 'August 5, 2021',
+    title: 'El festival de Música Clásica de Leiguarda agota entradas el día de su presentación',
+    lede: 'Todo agotado el día de la presentación. La acogida del I Festival de Música Clásica de Leiguarda es prueba de la necesidad de impulsar iniciativas culturales en los pueblos.',
+    url: 'https://festivaladar.com/es/prensa/lavoztrubia-presentacion-2021/',
+  },
+];
