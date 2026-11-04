@@ -1,0 +1,370 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import '../../styles/phone.css';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+// Everything below is invented. The real tracker holds which funders have been
+// asked for how much and which said no, which is a negotiating position, not a
+// portfolio piece. The states, the fields and the two-currency totals are real
+// features of the app; the funders and the figures are not real.
+const rows = [
+  { d: 'Nov 6',  yr: "'26", left: '2d', funder: 'Laurel Media Lab',
+    program: 'Media Art Residencies 2027', state: 'apply', n: 1, amount: '€10k' },
+  { d: 'Nov 6',  yr: "'26", left: '2d', funder: 'Ministry for Rural Affairs',
+    program: 'Projects against depopulation 2026 · local bodies', state: 'check', n: 1 },
+  { d: 'Nov 10', yr: "'26", left: '6d', funder: 'Harbour Arts Council',
+    program: '2027 Global Grant and Fellowship', state: 'apply', n: 1, amount: '$35k' },
+  { d: 'Nov 12', yr: "'26", left: '8d', funder: 'Northfield Centre',
+    program: 'Fuse Music Residency 2027', state: 'check', n: 1 },
+];
+
+// A month of deadlines. `span` is how many day columns the bar covers.
+const weeks = [
+  { days: [2,3,4,5,6,7,8], today: 4, bars: [
+      { start: 2, span: 2, kind: 'wait',  label: 'Vanmeer Foundation' },
+      { start: 5, span: 2, kind: 'apply', label: 'Laurel Media Lab' },
+      { start: 2, span: 2, kind: 'wait',  label: 'Festivals Association' },
+      { start: 5, span: 2, kind: 'check', label: 'Ministry for Rural Affairs' },
+  ]},
+  { days: [9,10,11,12,13,14,15], bars: [
+      { start: 2, span: 3, kind: 'apply', label: 'Harbour Arts Council' },
+      { start: 4, span: 2, kind: 'check', label: 'Northfield Centre' },
+  ]},
+  { days: [16,17,18,19,20,21,22], bars: [
+      { start: 2, span: 3, kind: 'apply', label: 'Queensbridge Arts Fund' },
+      { start: 2, span: 3, kind: 'apply', label: 'Queensbridge Arts Fund' },
+  ]},
+  { days: [23,24,25,26,27,28,29], bars: [] },
+];
+
+const TABS = ['List', 'Calendar', 'Tasks', 'Add'];
+---
+<AppLayout
+  title="Polen · Case study · Guillermo Laporta"
+  description="Polen is a grant tracker: deadlines, applications and outcomes in two currencies, with a public form anyone can use to suggest a call."
+>
+  <div class="subpage-head">
+    <a class="subpage-back" href={`${b}software/`}>← Software</a>
+    <div class="subpage-num">Case study</div>
+    <h1 class="subpage-title">Polen.</h1>
+    <p class="subpage-sub">
+      A grant tracker for an arts organisation that raises money in two currencies on two
+      continents. Deadlines, what was asked, what came back, and the paperwork attached to
+      each one.
+    </p>
+  </div>
+
+  <section class="section-tight">
+
+    <div class="cs-lede">
+      <p>
+        Grant work is a calendar problem wearing a filing problem's clothes. A call opens in
+        May for money that arrives the following spring; the form wants a budget, a letter
+        and three documents you wrote for somebody else eighteen months ago; and the deadline
+        is a date nobody told you, because it was "around the same time as last year".
+      </p>
+      <p>
+        Polen keeps the whole pipeline in one list: the call, the deadline and whether it is
+        a real date or an estimate, the amount asked in its own currency, the documents, the
+        small tasks each application drags behind it, and the answer when it comes. The part
+        that is easy to miss is the suggestion form: anyone can send in a call they have
+        spotted without having an account at all.
+      </p>
+    </div>
+
+    <div class="cs-note">
+      The screens below are drawn, not photographed, and every funder, programme and figure
+      on them is invented. The states, the fields and the two-currency totals are the real
+      ones; which bodies have been asked for how much, and which of them said no, is not a
+      portfolio piece.
+    </div>
+
+    <div class="cs-screens cs-screens-3">
+
+      <!-- ── 1 · The list ────────────────────────────────────── -->
+      <figure class="cs-fig">
+        <div class="ph">
+          <div class="ph-scr">
+            <div class="ph-top">
+              <div class="ph-h2row">
+                <span class="pl-brand">✺ POLEN</span>
+                <span class="pl-add">+ Add</span>
+              </div>
+              <div class="ph-search" style="margin-top:9px">Search foundation, grant program, notes…</div>
+            </div>
+
+            <div class="ph-body ph-body-tight">
+              <div class="pl-chips">
+                <span class="pl-chip is-on">All</span>
+                <span class="pl-chip">Apply 18</span>
+                <span class="pl-chip">Waiting 7 €32k · $74k</span>
+                <span class="pl-chip">Awarded 24</span>
+              </div>
+              <div class="pl-stats">96 programs · 154 grants &nbsp;|&nbsp; req €310k · $520k · won <b>€61k</b> · <b>$190k</b></div>
+
+              {rows.map((r) => (
+                <div class="pl-card">
+                  <div class="pl-card-top">
+                    <div class={`pl-date pl-date-${r.state}`}>
+                      <span>{r.d.split(' ')[0]}</span><b>{r.d.split(' ')[1]}</b><i>{r.yr}</i>
+                    </div>
+                    <div class="pl-card-main">
+                      <div class="pl-funder">{r.funder}</div>
+                      <div class="pl-program">{r.program}</div>
+                    </div>
+                  </div>
+                  <div class="pl-card-foot">
+                    <span class={`pl-state pl-state-${r.state}`}>• {r.state === 'apply' ? 'Apply' : 'Check'}</span>
+                    <span class="pl-n">{r.n}{r.amount ? ` ${r.amount}` : ''}</span>
+                    <span class="pl-left">{r.left}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <nav class="ph-tabs">
+              {TABS.map((t, i) => <span class={`ph-tab${i === 0 ? ' is-on' : ''}`}>{t}</span>)}
+            </nav>
+          </div>
+        </div>
+        <figcaption><b>Everything, with the clock showing.</b> Days left on the left, the state of each one underneath, and two running totals: what has been asked for and what has actually been won, each in its own currency.</figcaption>
+      </figure>
+
+      <!-- ── 2 · Deadlines ───────────────────────────────────── -->
+      <figure class="cs-fig">
+        <div class="ph">
+          <div class="ph-scr">
+            <div class="ph-top">
+              <div class="ph-h1">Deadlines</div>
+              <div class="ph-sub">November 2026</div>
+            </div>
+
+            <div class="ph-body">
+              <div class="ph-cal-head">
+                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span>
+                <span>Fri</span><span>Sat</span><span>Sun</span>
+              </div>
+              <div class="ph-cal">
+                {weeks.map((w) => (
+                  <>
+                    {w.days.map((d) => (
+                      <div class={`ph-cal-d${w.today === d ? ' is-today' : ''}`}>
+                        <div class="ph-cal-n">{d}</div>
+                      </div>
+                    ))}
+                    {w.bars.length > 0 && (
+                      <div class="ph-evrow">
+                        {w.bars.map((bar) => (
+                          <div class={`ph-ev ph-ev-${bar.kind}`}
+                               style={`grid-column:${bar.start} / span ${bar.span}`}>{bar.label}</div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ))}
+                <div class="ph-cal-month">December</div>
+                <div class="ph-evrow">
+                  <div class="ph-ev ph-ev-apply" style="grid-column:1 / span 2">Regional Culture Office</div>
+                  <div class="ph-ev ph-ev-apply" style="grid-column:2 / span 3">Queensbridge Arts Fund</div>
+                  <div class="ph-ev ph-ev-check" style="grid-column:2 / span 2">Wavefield Residency</div>
+                </div>
+              </div>
+            </div>
+
+            <nav class="ph-tabs">
+              {TABS.map((t, i) => <span class={`ph-tab${i === 1 ? ' is-on' : ''}`}>{t}</span>)}
+            </nav>
+          </div>
+        </div>
+        <figcaption><b>The year as a shape.</b> The same pipeline on a calendar, colour-coded by state, so a month with four deadlines in one week is visible in advance rather than on the day.</figcaption>
+      </figure>
+
+      <!-- ── 3 · One grant ───────────────────────────────────── -->
+      <figure class="cs-fig">
+        <div class="ph">
+          <div class="ph-scr">
+            <div class="ph-top">
+              <div class="ph-h2row">
+                <span class="pl-badge">Waiting</span>
+                <span class="pl-edit">Edit</span>
+              </div>
+              <div class="pl-year">2026</div>
+              <div class="ph-h1 ph-h1-sm" style="margin-top:0">Vanmeer Foundation</div>
+              <div class="ph-sub">Art to Come (Citizen Art strand) — to confirm</div>
+            </div>
+
+            <div class="ph-body">
+              <div class="pl-money">
+                <div><span>Requested</span><b>€20k</b></div>
+                <div><span>Awarded</span><b>—</b></div>
+              </div>
+
+              <div class="pl-field">
+                <span class="pl-k">Deadline</span>
+                <span class="pl-v">Nov 3, 2026 <i class="pl-est">Estimated</i></span>
+              </div>
+              <div class="pl-field"><span class="pl-k">Grant period</span><span class="pl-v">—</span></div>
+              <div class="pl-field"><span class="pl-k">Links</span><span class="pl-v"><i class="pl-link">Web</i></span></div>
+              <div class="pl-field pl-field-col">
+                <span class="pl-k">Notes</span>
+                <span class="pl-v pl-notes">[Reviewed 2026-10 — unconfirmed] Likely strand: "Art to Come" (Citizen Art) of the Vanmeer Foundation. Last year's call opened in…</span>
+              </div>
+              <div class="pl-field pl-field-col">
+                <span class="pl-k">Docs</span>
+                <span class="pl-v"><i class="pl-doc">What_we_listen_to.pdf ✕</i> <i class="pl-sel">Application ⌄</i></span>
+              </div>
+              <div class="pl-field pl-field-col">
+                <span class="pl-k">Tasks</span>
+                <span class="pl-v"><i class="pl-input">New task, e.g. fix the budget annex</i> <i class="pl-addbtn">+ Add</i></span>
+              </div>
+            </div>
+
+            <nav class="ph-tabs">
+              {TABS.map((t, i) => <span class={`ph-tab${i === 0 ? ' is-on' : ''}`}>{t}</span>)}
+            </nav>
+          </div>
+        </div>
+        <figcaption><b>One call, everything it needs.</b> An estimated deadline is marked as estimated. The notes keep the reasoning, the documents keep their type, and the small jobs live with the application instead of in a separate list.</figcaption>
+      </figure>
+
+    </div>
+
+    <div class="cs-how">
+      <h2 class="cs-h2">How it holds together</h2>
+      <div class="cs-grid">
+        <div class="cs-item">
+          <div class="cs-item-n">01</div>
+          <h3>Anyone can suggest a call</h3>
+          <p>A public form takes a foundation, a programme, a deadline and a note, with no account needed. Suggestions arrive as pending and wait to be accepted or rejected.</p>
+        </div>
+        <div class="cs-item">
+          <div class="cs-item-n">02</div>
+          <h3>The database says no, not the page</h3>
+          <p>That open form is safe because row-level security grants the public insert and nothing else. Reading, changing and deleting are restricted to the authenticated owner in Postgres itself.</p>
+        </div>
+        <div class="cs-item">
+          <div class="cs-item-n">03</div>
+          <h3>Two currencies, kept apart</h3>
+          <p>Euros and dollars are totalled separately rather than converted at some rate that will be wrong by the time the answer arrives. Asked and won are two different numbers.</p>
+        </div>
+        <div class="cs-item">
+          <div class="cs-item-n">04</div>
+          <h3>A guess is labelled a guess</h3>
+          <p>Half of grant work runs on deadlines nobody has published yet. An estimated date is marked estimated, so it can be planned around without being mistaken for a fact.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-foot">
+      <div class="cs-stack">
+        <span class="sw-chip">HTML</span><span class="sw-chip">Supabase</span>
+        <span class="sw-chip">PostgreSQL</span><span class="sw-chip">Row-level security</span>
+      </div>
+      <a class="btn" href={`${b}software/`}>All software <span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <style>
+    .section-tight{max-width:1480px;margin:0 auto;padding:0 40px 96px}
+    @media(max-width:720px){.section-tight{padding:0 20px 56px}}
+
+    .cs-lede{max-width:66ch;margin-bottom:34px}
+    .cs-lede p{font-size:17px;line-height:1.64;color:var(--ink-2);margin-bottom:16px}
+
+    .cs-note{
+      max-width:66ch;margin-bottom:56px;padding:14px 18px;
+      border-left:2px solid var(--accent);background:var(--bg-warm);
+      font-size:14px;line-height:1.55;color:var(--ink-2);
+    }
+
+    .cs-screens{display:grid;gap:40px 28px;margin-bottom:88px}
+    .cs-screens-3{grid-template-columns:repeat(3,1fr)}
+    @media(max-width:1100px){.cs-screens-3{grid-template-columns:repeat(2,1fr);gap:48px 32px}}
+    @media(max-width:680px){.cs-screens-3{grid-template-columns:1fr;gap:52px}}
+
+    .cs-fig{margin:0;display:flex;flex-direction:column;gap:16px;align-items:center}
+    .cs-fig figcaption{font-size:13.5px;line-height:1.5;color:var(--muted);max-width:42ch}
+    .cs-fig figcaption b{color:var(--ink-2);font-weight:500}
+
+    .cs-how{border-top:1px solid var(--line-soft);padding-top:52px;margin-bottom:64px}
+    .cs-h2{
+      font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,32px);
+      letter-spacing:-.02em;color:var(--ink);margin-bottom:34px;
+    }
+    .cs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:34px 30px}
+    @media(max-width:1000px){.cs-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.cs-grid{grid-template-columns:1fr;gap:28px}}
+    .cs-item-n{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);margin-bottom:9px}
+    .cs-item h3{font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.01em;margin-bottom:7px;color:var(--ink)}
+    .cs-item p{font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+
+    .cs-foot{
+      border-top:1px solid var(--line-soft);padding-top:28px;
+      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .cs-stack{display:flex;flex-wrap:wrap;gap:6px}
+    .sw-chip{
+      display:inline-flex;align-items:center;padding:4px 10px;
+      border:1px solid var(--line);background:var(--paper);
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--muted);
+    }
+
+    /* ── Polen's own screen parts ── */
+    .pl-brand{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;color:#C98A1E}
+    .pl-add{background:#D9A017;color:#2A2008;border-radius:6px;padding:4px 9px;font-size:8.5px;font-weight:600}
+    .pl-chips{display:flex;gap:4px;overflow:hidden;margin-bottom:6px}
+    .pl-chip{
+      border-radius:999px;padding:3px 8px;font-size:7px;background:#F0EFEB;color:#6B6B70;white-space:nowrap;
+    }
+    .pl-chip.is-on{background:#D9A017;color:#2A2008;font-weight:600}
+    .pl-stats{font-size:6.5px;color:#9A9AA0;margin-bottom:8px;line-height:1.4}
+    .pl-stats b{color:#2E7D4F}
+
+    .pl-card{background:#FBFAF7;border:1px solid #EAE7DE;border-radius:9px;padding:7px;margin-bottom:6px}
+    .pl-card-top{display:flex;gap:7px}
+    .pl-date{
+      flex:0 0 auto;width:28px;text-align:center;border-radius:6px;padding:3px 1px;border:1px solid;
+    }
+    .pl-date span{display:block;font-size:5.5px;letter-spacing:.06em;text-transform:uppercase}
+    .pl-date b{display:block;font-size:11px;font-weight:700;line-height:1.05}
+    .pl-date i{display:block;font-style:normal;font-size:5.5px;opacity:.7}
+    .pl-date-apply{border-color:#E8B3B3;background:#FDF0F0;color:#9B2C2C}
+    .pl-date-check{border-color:#E4C892;background:#FBF4E6;color:#8A5A12}
+    .pl-card-main{min-width:0;flex:1}
+    .pl-funder{font-size:9.5px;font-weight:700;line-height:1.2}
+    .pl-program{font-size:7.5px;color:#7A7A80;margin-top:2px;line-height:1.35}
+    .pl-card-foot{display:flex;align-items:center;gap:7px;margin-top:6px;padding-top:5px;border-top:1px solid #EFEDE6}
+    .pl-state{border-radius:999px;padding:2px 7px;font-size:6.5px;font-weight:600}
+    .pl-state-apply{background:#FDE8E8;color:#9B2C2C}
+    .pl-state-check{background:#FAF0DC;color:#8A5A12}
+    .pl-n{font-size:7px;color:#6B6B70}
+    .pl-left{margin-left:auto;font-size:6.5px;color:#A8A8AE}
+
+    .pl-badge{background:#E2E8FB;color:#2B3F8C;border-radius:4px;padding:3px 8px;font-size:7px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+    .pl-edit{border:1px solid #E1E1E4;border-radius:6px;padding:3px 9px;font-size:8px}
+    .pl-year{font-family:var(--mono);font-size:12px;font-weight:700;color:#C98A1E;margin-top:7px}
+
+    .pl-money{display:flex;gap:18px;padding-bottom:8px;border-bottom:1px solid #EFEDE6;margin-bottom:4px}
+    .pl-money span{display:block;font-size:6.5px;color:#9A9AA0;letter-spacing:.06em;text-transform:uppercase}
+    .pl-money b{display:block;font-size:13px;font-weight:700;margin-top:1px}
+
+    .pl-field{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid #F2F0EA;font-size:8px}
+    .pl-field-col{flex-direction:column;gap:3px}
+    .pl-k{flex:0 0 46px;color:#9A9AA0}
+    /* In a column field the basis would become a height, which left a gap
+       between the label and its value. */
+    .pl-field-col .pl-k{flex:0 0 auto}
+    .pl-v{flex:1;min-width:0;color:#2A2A2E;line-height:1.4}
+    .pl-est{font-style:normal;background:#FAE6DC;color:#9A4A1E;border-radius:3px;padding:1px 4px;font-size:6px;text-transform:uppercase;letter-spacing:.06em}
+    .pl-link,.pl-doc,.pl-sel,.pl-addbtn,.pl-input{
+      display:inline-block;font-style:normal;border:1px solid #E4E1D8;border-radius:5px;
+      padding:3px 7px;font-size:7px;margin:2px 3px 0 0;background:#fff;
+    }
+    .pl-input{color:#B0ADA4;width:100%;}
+    .pl-addbtn{background:#D9A017;color:#2A2008;border-color:#D9A017;font-weight:600}
+    .pl-notes{color:#5A5A5F;font-size:7.5px}
+  </style>
+</AppLayout>

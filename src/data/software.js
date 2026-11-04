@@ -88,6 +88,7 @@ export const software = [
       'Sign in by password or emailed link',
     ],
     stack: ['HTML', 'Supabase', 'PostgreSQL'],
+    caseStudy: 'software/polen/',
     image: 'images/software/polen.jpg',
     url: 'https://gaawi.github.io/polen/',
     urlLabel: 'Open',

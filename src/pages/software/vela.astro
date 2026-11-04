@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
 import { calendar } from '../../data/site.js';
+import '../../styles/phone.css';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -339,116 +340,6 @@ const TABS = [
     .cs-fig{margin:0;display:flex;flex-direction:column;gap:16px;align-items:center}
     .cs-fig figcaption{font-size:13.5px;line-height:1.5;color:var(--muted);max-width:40ch}
     .cs-fig figcaption b{color:var(--ink-2);font-weight:500}
-
-    .ph{
-      width:100%;max-width:310px;aspect-ratio:310/660;
-      background:#fff;border:1px solid var(--line);border-radius:26px;
-      padding:7px;box-shadow:0 24px 48px -32px rgba(0,0,0,.4);
-    }
-    .ph-scr{
-      height:100%;border-radius:20px;overflow:hidden;background:#F7F7F8;
-      display:flex;flex-direction:column;font-size:9px;line-height:1.3;color:#111;
-    }
-
-    .ph-top{padding:14px 13px 10px;background:#fff;border-bottom:1px solid #EDEDEF}
-    .ph-h1row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-    .ph-h1{font-family:var(--sans);font-size:19px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
-    .ph-h1-sm{font-size:14.5px;margin-top:7px}
-    .ph-sub{margin-top:4px;font-size:9px;color:#86868B;line-height:1.35}
-    .ph-back{font-size:10px;color:#1F1F22}
-    .ph-chip{background:#121214;color:#fff;border-radius:999px;padding:5px 9px;font-size:8px;white-space:nowrap}
-    .ph-search{background:#EFEFF1;border-radius:999px;padding:6px 10px;font-size:9px;color:#86868B}
-    .ph-h2row{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
-    .ph-h2{font-size:11px;font-weight:600}
-    .ph-dots{color:#86868B}
-
-    .ph-body{flex:1;overflow:hidden;padding:11px 11px 0}
-    .ph-body-tight{padding-top:7px}
-
-    .ph-label{
-      font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;color:#8A8A8F;
-      margin:12px 2px 6px;font-weight:500;
-    }
-    .ph-label b{color:#B0B0B5;font-weight:500}
-    .ph-dim{font-size:8px;color:#9A9AA0;margin:6px 2px 0;line-height:1.4}
-
-    .ph-banner{
-      background:#1C49E6;color:#fff;border-radius:11px;padding:10px 11px;
-      display:flex;align-items:center;gap:8px;
-    }
-    .ph-banner-kicker{font-size:6.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.72}
-    .ph-banner-title{font-size:12px;font-weight:600;margin-top:2px}
-    .ph-banner-arr{margin-left:auto;opacity:.8}
-
-    .ph-cta{
-      background:#1C49E6;color:#fff;border-radius:11px;padding:11px 10px;
-      text-align:center;font-size:10.5px;font-weight:600;
-    }
-
-    .ph-card{background:#fff;border:1px solid #E9E9EC;border-radius:11px;padding:10px}
-    .ph-card-title{font-size:9.5px;font-weight:600;line-height:1.32}
-    .ph-card-body{font-size:8.5px;color:#6B6B70;margin-top:4px;line-height:1.4}
-    .ph-card-meta{font-size:7.5px;color:#9A9AA0;margin-top:5px}
-    .ph-btnrow{display:flex;gap:5px;margin-top:8px}
-    .ph-btn{border:1px solid #E1E1E4;border-radius:7px;padding:4px 8px;font-size:8px}
-    .ph-btn-done{margin-left:auto}
-
-    .ph-group{background:#fff;border:1px solid #E9E9EC;border-radius:11px;overflow:hidden}
-    .ph-group .ph-row{border:0;border-top:1px solid #F0F0F2;border-radius:0}
-    .ph-group .ph-row:first-child{border-top:0}
-
-    .ph-row{
-      display:flex;align-items:center;gap:8px;background:#fff;
-      border:1px solid #E9E9EC;border-radius:11px;padding:8px 10px;margin-bottom:5px;
-    }
-    .ph-row-boxed{margin-bottom:0}
-    .ph-row-other{background:transparent;border:0;padding:4px 2px}
-    .ph-row-main{min-width:0;flex:1}
-    .ph-row-name{font-size:9.5px;font-weight:600;line-height:1.25}
-    .ph-row-sub{font-size:8px;color:#86868B;margin-top:2px;line-height:1.38}
-    .ph-state{font-size:8.5px;color:#9A9AA0}
-    .ph-arr{color:#C2C2C7;font-size:11px}
-    .ph-pill{background:#EFEFF1;border-radius:999px;padding:3px 7px;font-size:7.5px;color:#6B6B70}
-
-    .ph-date{
-      flex:0 0 auto;width:30px;text-align:center;background:#F2F2F4;border-radius:7px;padding:4px 2px;
-    }
-    .ph-date span{display:block;font-size:6.5px;letter-spacing:.07em;text-transform:uppercase;color:#C0392B}
-    .ph-date b{display:block;font-size:11px;font-weight:600;line-height:1.1}
-
-    .ph-tag{
-      display:inline-block;background:#FDF2E3;color:#8A5A12;border-radius:5px;
-      padding:2px 5px;font-size:7px;margin-top:3px;white-space:nowrap;
-    }
-
-    .ph-add{
-      background:#fff;border:1px dashed #D5D5DA;border-radius:11px;
-      padding:11px;text-align:center;font-size:9.5px;color:#1C49E6;
-    }
-
-    .ph-mail{display:flex;gap:8px;padding:8px 2px;border-bottom:1px solid #EDEDEF}
-    .ph-av{
-      flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:#C8CBD2;color:#fff;
-      display:grid;place-items:center;font-size:9px;font-weight:600;
-    }
-    .ph-mail-main{min-width:0;flex:1}
-    .ph-mail-head{display:flex;justify-content:space-between;gap:6px}
-    .ph-mail-who{font-size:9px;font-weight:600}
-    .ph-n{font-style:normal;color:#9A9AA0;font-weight:400;margin-left:3px}
-    .ph-mail-time{font-size:7.5px;color:#9A9AA0;white-space:nowrap}
-    .ph-mail-subject{font-size:8.5px;font-weight:600;margin-top:1px}
-    .ph-mail-prev{font-size:8px;color:#86868B;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-    .ph-tabs{
-      margin-top:auto;display:flex;justify-content:space-around;align-items:center;
-      background:#fff;border-top:1px solid #EDEDEF;padding:7px 4px 9px;
-    }
-    .ph-tab{position:relative;font-size:7px;color:#9A9AA0;letter-spacing:.02em}
-    .ph-tab.is-on{color:#121214;font-weight:600}
-    .ph-badge{
-      position:absolute;top:-9px;right:-9px;background:#C0392B;color:#fff;font-style:normal;
-      border-radius:999px;padding:1px 4px;font-size:6px;
-    }
 
     /* ── how ── */
     .cs-how{border-top:1px solid var(--line-soft);padding-top:52px;margin-bottom:64px}
