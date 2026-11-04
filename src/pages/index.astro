@@ -41,8 +41,8 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
         <h1 class="cover-name">Guillermo Laporta</h1>
         <p class="cover-statement">
           I play the flute, write music, and run two organisations: CreArtBox in New York
-          and Festival ADAR in rural Asturias. Projects tend to start with something
-          practical: a venue, a programme, a deadline. The music follows from there.
+          and Festival ADAR in rural Asturias. I also do video art, installations,
+          fundraising, design, software.
         </p>
         <div class="cover-meta">
           <span>New York · Asturias, Spain</span>
@@ -104,6 +104,9 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
     .cover-statement{
       margin-top:26px;max-width:46ch;
       font-size:clamp(15px,1.1vw,17px);line-height:1.62;color:rgba(255,255,255,.78);
+      /* Keeps a one-letter word off the end of a line. Ignored where it is not
+         supported, which only brings back the ragged break. */
+      text-wrap:pretty;
     }
     .cover-meta{
       margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;
@@ -155,9 +158,25 @@ const heroImg = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20
       .ix-arr{display:none}
     }
 
-    /* Short phones: the statement goes before the index does. */
-    @media(max-width:720px) and (max-height:720px){
+    /* Short viewports, which in practice means a phone held sideways. The cover
+       has to stay one screen, so the statement goes and the rows tighten. Keyed
+       on height, not width: the old rule only covered widths up to 720px, and a
+       landscape phone is wider than that while being half as tall. */
+    @media(max-height:580px){
+      .cover-inner{padding:18px 28px;gap:24px;align-content:center}
+      .cover-eyebrow{margin-bottom:8px;font-size:9.5px}
+      .cover-name{font-size:clamp(28px,4.6vw,44px)}
       .cover-statement{display:none}
+      .cover-meta{margin-top:12px;font-size:9px}
+      .cover-index a{padding:6px 2px}
+      .ix-label{font-size:15px}
+      .ix-note{display:none}
+      .ix-arr{display:none}
+    }
+    /* Wide enough to put the index beside the name instead of under it. */
+    @media(max-height:580px) and (min-width:640px){
+      .cover-inner{grid-template-columns:minmax(0,1fr) minmax(280px,44%)}
+      .cover-index ul{grid-template-columns:repeat(2,1fr);column-gap:24px}
     }
   </style>
 </AppLayout>
