@@ -68,6 +68,7 @@ export const software = [
       'One history per person across every account',
     ],
     stack: ['TypeScript', 'Gmail API', 'OAuth', 'Vercel'],
+    caseStudy: 'software/vela/',
     image: 'images/software/vela.jpg',
     url: 'https://crm-vert-chi.vercel.app/',
     urlLabel: 'Open',

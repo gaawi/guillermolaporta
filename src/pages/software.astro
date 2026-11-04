@@ -56,11 +56,16 @@ const items = [...software].sort((a, c) => Number(c.year) - Number(a.year));
               <div class="sw-stack">
                 {s.stack.map((t) => <span class="sw-chip">{t}</span>)}
               </div>
-              {s.url && (
-                <a class="sw-link" href={s.url} target="_blank" rel="noopener">
-                  {s.urlLabel} ↗
-                </a>
-              )}
+              <div class="sw-links">
+                {s.caseStudy && (
+                  <a class="sw-link sw-link-case" href={`${b}${s.caseStudy}`}>Case study →</a>
+                )}
+                {s.url && (
+                  <a class="sw-link" href={s.url} target="_blank" rel="noopener">
+                    {s.urlLabel} ↗
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </article>
@@ -145,6 +150,8 @@ const items = [...software].sort((a, c) => Number(c.year) - Number(a.year));
       font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
       text-transform:uppercase;color:var(--muted);
     }
+    .sw-links{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+    .sw-link-case{color:var(--accent);border-color:var(--accent)}
     .sw-link{
       font-family:var(--mono);font-size:10px;letter-spacing:.14em;
       text-transform:uppercase;color:var(--ink-2);

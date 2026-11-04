@@ -1,0 +1,478 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { calendar } from '../../data/site.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+// The concert screens read the real calendar, because those dates are already
+// public on /calendar/. Everything to do with correspondence below is invented:
+// the real app holds other people's names, addresses and phone numbers, and
+// none of that belongs on a public page.
+const today = new Date().toISOString().split('T')[0];
+const upcoming = calendar.filter(e => e.date >= today).slice(0, 5);
+const next = upcoming[0];
+const later = upcoming.slice(1);
+
+const inbox = [
+  { who: 'me, R. Alderman', n: 2, subject: 'Winterlight, December 11 · culture pass',
+    preview: 'Thanks for making this available, I will list it under…', time: '11:45' },
+  { who: 'A. Navarro', n: 0, subject: 'Reception catering, delivery window',
+    preview: 'Hello Guillermo, I am the community lead at…', time: '11:31' },
+  { who: 'P. Vance', n: 0, subject: 'Season programming, 2027–28',
+    preview: 'We are building the series now and your name came up…', time: '11:19' },
+  { who: 'me, M. Delacroix', n: 3, subject: 'Re: arrival times', tag: 'Booking USA 2026/27',
+    preview: 'Thank you for this. We can collect the quartet at…', time: '09:13' },
+  { who: 'me, T. Okonkwo', n: 2, subject: 'Answer about October 30th',
+    preview: 'We are good. Much more relaxed than the last one…', time: '07:56' },
+];
+
+const TABS = [
+  { label: 'Today', badge: '15' },
+  { label: 'Mail', badge: '99+' },
+  { label: 'Campaigns' },
+  { label: 'Contacts' },
+  { label: 'More' },
+];
+---
+<AppLayout
+  title="Vela · Case study · Guillermo Laporta"
+  description="Vela is a CRM built on top of Gmail for an arts producer: bookings, guest lists, door lists and the day's work in one place."
+>
+  <div class="subpage-head">
+    <a class="subpage-back" href={`${b}software/`}>← Software</a>
+    <div class="subpage-num">Case study</div>
+    <h1 class="subpage-title">Vela.</h1>
+    <p class="subpage-sub">
+      A CRM for an arts producer that runs on the mail that already exists, rather than
+      asking anyone to keep a second copy of it. Built for a phone, because that is where
+      the answer gets written.
+    </p>
+  </div>
+
+  <section class="section-tight">
+
+    <div class="cs-lede">
+      <p>
+        Booking a season is mostly correspondence. A venue replies in March about a date in
+        the following February, the thread goes quiet, and three months later nobody can say
+        whether the ball is in your court or theirs. The usual fix is a CRM that asks you to
+        re-enter, by hand, what the inbox already knows.
+      </p>
+      <p>
+        Vela reads the inbox instead. Several Gmail accounts connect at once; past mail is
+        imported and then kept in sync, so a person's history is one history even when it
+        arrives at four different addresses. On top of that sit the things a concert actually
+        needs: who is coming, who is working, and a door list you can hand to the front of
+        house.
+      </p>
+    </div>
+
+    <div class="cs-note">
+      The screens below are drawn, not photographed. The concerts are real and already
+      public on the <a class="inline-link" href={`${b}calendar/`}>calendar</a>; every name,
+      address and message is invented, because the working app holds other people's
+      correspondence.
+    </div>
+
+    <div class="cs-screens">
+
+      <!-- ── 1 · Today ───────────────────────────────────────── -->
+      <figure class="cs-fig">
+        <div class="ph">
+          <div class="ph-scr">
+            <div class="ph-top">
+              <div class="ph-h1row">
+                <div>
+                  <div class="ph-h1">Today</div>
+                  <div class="ph-sub">Wednesday, November 4</div>
+                </div>
+                <span class="ph-chip">Booking USA 2026/27 ⌄</span>
+              </div>
+            </div>
+
+            <div class="ph-body">
+              <div class="ph-banner">
+                <div class="ph-banner-kicker">Recital series · Midwest</div>
+                <div class="ph-banner-title">15 emails to approve</div>
+                <span class="ph-banner-arr">›</span>
+              </div>
+              <div class="ph-dim">5 emails waiting for the assistant's new version</div>
+
+              <div class="ph-label">Suggested by the assistant <b>1</b></div>
+              <div class="ph-card">
+                <div class="ph-card-title">Call the Fairhaven Chamber Society to ask who programmes the season</div>
+                <div class="ph-card-body">The only address is info@ and nobody has replied; a call may open the door.</div>
+                <div class="ph-card-meta">Fairhaven Chamber Society · R. Alderman</div>
+                <div class="ph-btnrow">
+                  <span class="ph-btn">Call</span>
+                  <span class="ph-btn">WhatsApp</span>
+                  <span class="ph-btn ph-btn-done">✓ Done</span>
+                </div>
+              </div>
+
+              <div class="ph-label">Waiting on them <b>1</b></div>
+              <div class="ph-row">
+                <div class="ph-row-main">
+                  <div class="ph-row-name">P. Vance</div>
+                  <div class="ph-row-sub">Executive Director; programmes a six-concert series</div>
+                </div>
+              </div>
+
+              <div class="ph-label">Scheduled <b>6</b></div>
+              <div class="ph-row">
+                <div class="ph-date"><span>Fri</span><b>Nov 6</b></div>
+                <div class="ph-row-main">
+                  <div class="ph-row-name">M. Delacroix <span class="ph-tag">Booking USA 2026/27</span></div>
+                  <div class="ph-row-sub">Northbrook Matinée: replied 16 Oct, asked about lighting and fee. Answered 17 Oct with the portable setup and the rates. Follow up only if it is still open.</div>
+                </div>
+              </div>
+            </div>
+
+            <nav class="ph-tabs">
+              {TABS.map((t, i) => (
+                <span class={`ph-tab${i === 0 ? ' is-on' : ''}`}>
+                  {t.badge && <i class="ph-badge">{t.badge}</i>}
+                  {t.label}
+                </span>
+              ))}
+            </nav>
+          </div>
+        </div>
+        <figcaption><b>The day, not the database.</b> What needs answering, what is waiting on somebody else, and what was promised for a date. The assistant proposes; nothing leaves without approval.</figcaption>
+      </figure>
+
+      <!-- ── 2 · Mail ────────────────────────────────────────── -->
+      <figure class="cs-fig">
+        <div class="ph">
+          <div class="ph-scr">
+            <div class="ph-top">
+              <div class="ph-search">Search in mail</div>
+              <div class="ph-h2row"><span class="ph-h2">All inboxes</span><span class="ph-dots">···</span></div>
+            </div>
+
+            <div class="ph-body ph-body-tight">
+              <div class="ph-row ph-row-other">
+                <div class="ph-row-main"><div class="ph-row-name">Other</div></div>
+                <span class="ph-pill">209 new</span>
+              </div>
+
+              {inbox.map((m) => (
+                <div class="ph-mail">
+                  <div class="ph-av" aria-hidden="true">{m.who.replace(/^me, /, '').trim()[0]}</div>
+                  <div class="ph-mail-main">
+                    <div class="ph-mail-head">
+                      <span class="ph-mail-who">{m.who}{m.n ? <i class="ph-n">{m.n}</i> : null}</span>
+                      <span class="ph-mail-time">{m.time}</span>
+                    </div>
+                    <div class="ph-mail-subject">{m.subject}</div>
+                    {m.tag && <span class="ph-tag">{m.tag}</span>}
+                    <div class="ph-mail-prev">{m.preview}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <nav class="ph-tabs">
+              {TABS.map((t, i) => (
+                <span class={`ph-tab${i === 1 ? ' is-on' : ''}`}>
+                  {t.badge && <i class="ph-badge">{t.badge}</i>}
+                  {t.label}
+                </span>
+              ))}
+            </nav>
+          </div>
+        </div>
+        <figcaption><b>Every account, one thread.</b> Mail from all the connected accounts in one list, each thread tagged with the project it belongs to, so a reply from eight months ago is where you expect it.</figcaption>
+      </figure>
+
+      <!-- ── 3 · Concert list ────────────────────────────────── -->
+      <figure class="cs-fig">
+        <div class="ph">
+          <div class="ph-scr">
+            <div class="ph-top">
+              <div class="ph-h1">Concert list</div>
+              <div class="ph-sub">Tickets sold, guests and staff of each concert.</div>
+            </div>
+
+            <div class="ph-body">
+              <div class="ph-label">Next concert</div>
+              {next && (
+                <div class="ph-row ph-row-boxed">
+                  <div class="ph-date"><span>{next.displayDate.split(' ')[0]}</span><b>{next.displayDate.split(' ')[1]}</b></div>
+                  <div class="ph-row-main">
+                    <div class="ph-row-name">{next.title}</div>
+                    <div class="ph-row-sub">{next.location}</div>
+                  </div>
+                  <span class="ph-arr">›</span>
+                </div>
+              )}
+
+              <div class="ph-label">Later</div>
+              <div class="ph-group">
+                {later.map((e) => (
+                  <div class="ph-row">
+                    <div class="ph-date"><span>{e.displayDate.split(' ')[0]}</span><b>{e.displayDate.split(' ')[1]}</b></div>
+                    <div class="ph-row-main">
+                      <div class="ph-row-name">{e.title}</div>
+                      <div class="ph-row-sub">{e.location}</div>
+                    </div>
+                    <span class="ph-arr">›</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <nav class="ph-tabs">
+              {TABS.map((t, i) => (
+                <span class={`ph-tab${i === 4 ? ' is-on' : ''}`}>
+                  {t.badge && <i class="ph-badge">{t.badge}</i>}
+                  {t.label}
+                </span>
+              ))}
+            </nav>
+          </div>
+        </div>
+        <figcaption><b>The season as a list.</b> The next date first and the rest behind it. These are the real concerts: the same ones the calendar on this site is showing.</figcaption>
+      </figure>
+
+      <!-- ── 4 · Concert detail ──────────────────────────────── -->
+      <figure class="cs-fig">
+        <div class="ph">
+          <div class="ph-scr">
+            <div class="ph-top">
+              <div class="ph-back">‹ Concert list</div>
+              {next && <div class="ph-h1 ph-h1-sm">{next.title}</div>}
+              {next && <div class="ph-sub">{next.displayDate} {next.year} at 7:30 PM · {next.location}</div>}
+            </div>
+
+            <div class="ph-body">
+              <div class="ph-cta">Door list (PDF): everyone, A to Z</div>
+
+              <div class="ph-label">Tickets sold</div>
+              <div class="ph-add">+ Add a channel</div>
+              <div class="ph-dim">The assistant keeps these up to date; tap one to change it.</div>
+
+              <div class="ph-label">People</div>
+              <div class="ph-group">
+                <div class="ph-row">
+                  <div class="ph-row-main"><div class="ph-row-name">Guest list</div></div>
+                  <span class="ph-state">Empty</span><span class="ph-arr">›</span>
+                </div>
+                <div class="ph-row">
+                  <div class="ph-row-main"><div class="ph-row-name">Staff &amp; artists</div></div>
+                  <span class="ph-state">None yet</span><span class="ph-arr">›</span>
+                </div>
+              </div>
+            </div>
+
+            <nav class="ph-tabs">
+              {TABS.map((t, i) => (
+                <span class={`ph-tab${i === 4 ? ' is-on' : ''}`}>
+                  {t.badge && <i class="ph-badge">{t.badge}</i>}
+                  {t.label}
+                </span>
+              ))}
+            </nav>
+          </div>
+        </div>
+        <figcaption><b>One tap at the door.</b> The thing a concert actually needs on the night: a single PDF, everyone on it, alphabetical. Sold tickets arrive from whichever channel sold them.</figcaption>
+      </figure>
+
+    </div>
+
+    <div class="cs-how">
+      <h2 class="cs-h2">How it holds together</h2>
+      <div class="cs-grid">
+        <div class="cs-item">
+          <div class="cs-item-n">01</div>
+          <h3>Several accounts, one history</h3>
+          <p>Accounts connect over OAuth. Past mail is imported once, then kept in sync. Every message records which account it came in through, so nothing is flattened.</p>
+        </div>
+        <div class="cs-item">
+          <div class="cs-item-n">02</div>
+          <h3>Contacts appear by themselves</h3>
+          <p>People are matched on their email address, and one person's history is merged across all of their addresses and all of your accounts. Nobody types a contact in.</p>
+        </div>
+        <div class="cs-item">
+          <div class="cs-item-n">03</div>
+          <h3>Nothing sends itself</h3>
+          <p>The assistant drafts and proposes; a person approves. A suggestion can be edited, pushed to a date, or dismissed, and the queue is the only way out.</p>
+        </div>
+        <div class="cs-item">
+          <div class="cs-item-n">04</div>
+          <h3>Built for the phone first</h3>
+          <p>Bookings get answered between rehearsals, in a corridor, on a train. The layout assumes a thumb and a small screen, and the desktop is the same thing wider.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-foot">
+      <div class="cs-stack">
+        <span class="sw-chip">TypeScript</span><span class="sw-chip">Gmail API</span>
+        <span class="sw-chip">OAuth</span><span class="sw-chip">Vercel</span>
+      </div>
+      <a class="btn" href={`${b}software/`}>All software <span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <style>
+    .section-tight{max-width:1480px;margin:0 auto;padding:0 40px 96px}
+    @media(max-width:720px){.section-tight{padding:0 20px 56px}}
+
+    .cs-lede{max-width:66ch;margin-bottom:34px}
+    .cs-lede p{font-size:17px;line-height:1.64;color:var(--ink-2);margin-bottom:16px}
+
+    .cs-note{
+      max-width:66ch;margin-bottom:56px;padding:14px 18px;
+      border-left:2px solid var(--accent);background:var(--bg-warm);
+      font-size:14px;line-height:1.55;color:var(--ink-2);
+    }
+    .inline-link{color:var(--ink);border-bottom:1px solid var(--line);}
+    .inline-link:hover{color:var(--accent);border-color:var(--accent)}
+
+    /* ── screens ── */
+    .cs-screens{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 28px;margin-bottom:88px}
+    @media(max-width:1280px){.cs-screens{grid-template-columns:repeat(2,1fr);gap:48px 32px}}
+    @media(max-width:680px){.cs-screens{grid-template-columns:1fr;gap:52px}}
+
+    .cs-fig{margin:0;display:flex;flex-direction:column;gap:16px;align-items:center}
+    .cs-fig figcaption{font-size:13.5px;line-height:1.5;color:var(--muted);max-width:40ch}
+    .cs-fig figcaption b{color:var(--ink-2);font-weight:500}
+
+    .ph{
+      width:100%;max-width:310px;aspect-ratio:310/660;
+      background:#fff;border:1px solid var(--line);border-radius:26px;
+      padding:7px;box-shadow:0 24px 48px -32px rgba(0,0,0,.4);
+    }
+    .ph-scr{
+      height:100%;border-radius:20px;overflow:hidden;background:#F7F7F8;
+      display:flex;flex-direction:column;font-size:9px;line-height:1.3;color:#111;
+    }
+
+    .ph-top{padding:14px 13px 10px;background:#fff;border-bottom:1px solid #EDEDEF}
+    .ph-h1row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .ph-h1{font-family:var(--sans);font-size:19px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+    .ph-h1-sm{font-size:14.5px;margin-top:7px}
+    .ph-sub{margin-top:4px;font-size:9px;color:#86868B;line-height:1.35}
+    .ph-back{font-size:10px;color:#1F1F22}
+    .ph-chip{background:#121214;color:#fff;border-radius:999px;padding:5px 9px;font-size:8px;white-space:nowrap}
+    .ph-search{background:#EFEFF1;border-radius:999px;padding:6px 10px;font-size:9px;color:#86868B}
+    .ph-h2row{display:flex;align-items:center;justify-content:space-between;margin-top:9px}
+    .ph-h2{font-size:11px;font-weight:600}
+    .ph-dots{color:#86868B}
+
+    .ph-body{flex:1;overflow:hidden;padding:11px 11px 0}
+    .ph-body-tight{padding-top:7px}
+
+    .ph-label{
+      font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;color:#8A8A8F;
+      margin:12px 2px 6px;font-weight:500;
+    }
+    .ph-label b{color:#B0B0B5;font-weight:500}
+    .ph-dim{font-size:8px;color:#9A9AA0;margin:6px 2px 0;line-height:1.4}
+
+    .ph-banner{
+      background:#1C49E6;color:#fff;border-radius:11px;padding:10px 11px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .ph-banner-kicker{font-size:6.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.72}
+    .ph-banner-title{font-size:12px;font-weight:600;margin-top:2px}
+    .ph-banner-arr{margin-left:auto;opacity:.8}
+
+    .ph-cta{
+      background:#1C49E6;color:#fff;border-radius:11px;padding:11px 10px;
+      text-align:center;font-size:10.5px;font-weight:600;
+    }
+
+    .ph-card{background:#fff;border:1px solid #E9E9EC;border-radius:11px;padding:10px}
+    .ph-card-title{font-size:9.5px;font-weight:600;line-height:1.32}
+    .ph-card-body{font-size:8.5px;color:#6B6B70;margin-top:4px;line-height:1.4}
+    .ph-card-meta{font-size:7.5px;color:#9A9AA0;margin-top:5px}
+    .ph-btnrow{display:flex;gap:5px;margin-top:8px}
+    .ph-btn{border:1px solid #E1E1E4;border-radius:7px;padding:4px 8px;font-size:8px}
+    .ph-btn-done{margin-left:auto}
+
+    .ph-group{background:#fff;border:1px solid #E9E9EC;border-radius:11px;overflow:hidden}
+    .ph-group .ph-row{border:0;border-top:1px solid #F0F0F2;border-radius:0}
+    .ph-group .ph-row:first-child{border-top:0}
+
+    .ph-row{
+      display:flex;align-items:center;gap:8px;background:#fff;
+      border:1px solid #E9E9EC;border-radius:11px;padding:8px 10px;margin-bottom:5px;
+    }
+    .ph-row-boxed{margin-bottom:0}
+    .ph-row-other{background:transparent;border:0;padding:4px 2px}
+    .ph-row-main{min-width:0;flex:1}
+    .ph-row-name{font-size:9.5px;font-weight:600;line-height:1.25}
+    .ph-row-sub{font-size:8px;color:#86868B;margin-top:2px;line-height:1.38}
+    .ph-state{font-size:8.5px;color:#9A9AA0}
+    .ph-arr{color:#C2C2C7;font-size:11px}
+    .ph-pill{background:#EFEFF1;border-radius:999px;padding:3px 7px;font-size:7.5px;color:#6B6B70}
+
+    .ph-date{
+      flex:0 0 auto;width:30px;text-align:center;background:#F2F2F4;border-radius:7px;padding:4px 2px;
+    }
+    .ph-date span{display:block;font-size:6.5px;letter-spacing:.07em;text-transform:uppercase;color:#C0392B}
+    .ph-date b{display:block;font-size:11px;font-weight:600;line-height:1.1}
+
+    .ph-tag{
+      display:inline-block;background:#FDF2E3;color:#8A5A12;border-radius:5px;
+      padding:2px 5px;font-size:7px;margin-top:3px;white-space:nowrap;
+    }
+
+    .ph-add{
+      background:#fff;border:1px dashed #D5D5DA;border-radius:11px;
+      padding:11px;text-align:center;font-size:9.5px;color:#1C49E6;
+    }
+
+    .ph-mail{display:flex;gap:8px;padding:8px 2px;border-bottom:1px solid #EDEDEF}
+    .ph-av{
+      flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:#C8CBD2;color:#fff;
+      display:grid;place-items:center;font-size:9px;font-weight:600;
+    }
+    .ph-mail-main{min-width:0;flex:1}
+    .ph-mail-head{display:flex;justify-content:space-between;gap:6px}
+    .ph-mail-who{font-size:9px;font-weight:600}
+    .ph-n{font-style:normal;color:#9A9AA0;font-weight:400;margin-left:3px}
+    .ph-mail-time{font-size:7.5px;color:#9A9AA0;white-space:nowrap}
+    .ph-mail-subject{font-size:8.5px;font-weight:600;margin-top:1px}
+    .ph-mail-prev{font-size:8px;color:#86868B;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+    .ph-tabs{
+      margin-top:auto;display:flex;justify-content:space-around;align-items:center;
+      background:#fff;border-top:1px solid #EDEDEF;padding:7px 4px 9px;
+    }
+    .ph-tab{position:relative;font-size:7px;color:#9A9AA0;letter-spacing:.02em}
+    .ph-tab.is-on{color:#121214;font-weight:600}
+    .ph-badge{
+      position:absolute;top:-9px;right:-9px;background:#C0392B;color:#fff;font-style:normal;
+      border-radius:999px;padding:1px 4px;font-size:6px;
+    }
+
+    /* ── how ── */
+    .cs-how{border-top:1px solid var(--line-soft);padding-top:52px;margin-bottom:64px}
+    .cs-h2{
+      font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,32px);
+      letter-spacing:-.02em;color:var(--ink);margin-bottom:34px;
+    }
+    .cs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:34px 30px}
+    @media(max-width:1000px){.cs-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.cs-grid{grid-template-columns:1fr;gap:28px}}
+    .cs-item-n{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);margin-bottom:9px}
+    .cs-item h3{font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.01em;margin-bottom:7px;color:var(--ink)}
+    .cs-item p{font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+
+    .cs-foot{
+      border-top:1px solid var(--line-soft);padding-top:28px;
+      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .cs-stack{display:flex;flex-wrap:wrap;gap:6px}
+    .sw-chip{
+      display:inline-flex;align-items:center;padding:4px 10px;
+      border:1px solid var(--line);background:var(--paper);
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  </style>
+</AppLayout>
