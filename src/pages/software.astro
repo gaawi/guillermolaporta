@@ -39,7 +39,9 @@ const items = [...software].sort((a, c) => Number(c.year) - Number(a.year));
           <span class="sw-kind">{s.kind}</span>
           <span class="sw-year">{s.year}</span>
           <span class="sw-go">
-            {s.caseStudy && <a class="sw-a sw-a-case" href={`${b}${s.caseStudy}`}>Case study</a>}
+            {/* The case studies are not listed: they are not finished either.
+                The data still carries `caseStudy`, so re-adding the link here
+                is one line. */}
             {s.url && <a class="sw-a" href={s.url} target="_blank" rel="noopener">{s.urlLabel}&nbsp;↗</a>}
           </span>
         </li>
