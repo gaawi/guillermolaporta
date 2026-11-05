@@ -1,163 +1,99 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { asset } from '../lib/asset.js';
 import { software } from '../data/software.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
 
-// Newest first. Gaawi is dated by when the studio started, not by its last job,
-// so it sits at the bottom even though it is still running.
+// Deliberately an index and nothing more: no screenshots, no descriptions, no
+// feature lists, no stack. The section is not finished, and a thin list reads
+// as a list, while a thin card reads as a page that is missing something.
+//
+// None of that content is gone. It is all still in src/data/software.js, and
+// the images are still in public/images/software/, so putting the detail back
+// is a change to this template alone.
+//
+// Newest first. Gaawi is dated by when the studio started, not by its last job.
 const items = [...software].sort((a, c) => Number(c.year) - Number(a.year));
 ---
 <AppLayout
   title="Software · Guillermo Laporta"
-  description="Apps, platforms and tools built by Guillermo Laporta: the CreArtBox app, the Digital Concert Hall and the Gaawi studio."
+  description="Apps, platforms and tools built by Guillermo Laporta, from the CreArtBox app to the tools that run the day's work."
 >
   <div class="subpage-head">
     <a class="subpage-back" href={b}>← Home</a>
     <div class="subpage-num">Software</div>
     <h1 class="subpage-title">Things I build.</h1>
     <p class="subpage-sub">
-      Apps, platforms and tools. Some of it carries the music; the rest runs the work around it.
+      Apps, platforms and tools. Some of it carries the music; the rest runs the work
+      around it.
     </p>
   </div>
 
   <section class="section-tight">
-    <div class="sw-list">
-      {items.map((s) => (
-        <article class="sw-card">
-          <div class="sw-head">
-            <div class="sw-meta">
-              <span>{s.kind}</span>
-              <span>{s.year}</span>
-              <span class={`sw-status ${s.status === 'Live' ? 'is-live' : ''}`}>{s.status}</span>
-            </div>
-            <h2 class="sw-name">{s.name}</h2>
-            <p class="sw-tagline">{s.tagline}</p>
-          </div>
-
-          <div class="sw-body">
-            {s.image && (
-              <a class="sw-shot" href={s.url ?? undefined} target={s.url ? '_blank' : undefined} rel={s.url ? 'noopener' : undefined}>
-                <img src={asset(s.image)} alt={`${s.name} on screen`} loading="lazy" width="1200" height="750" />
-              </a>
-            )}
-
-            <p class="sw-desc">{s.description}</p>
-
-            {s.features.length > 0 && (
-              <ul class="sw-features">
-                {s.features.map((f) => <li>{f}</li>)}
-              </ul>
-            )}
-
-            <div class="sw-foot">
-              <div class="sw-stack">
-                {s.stack.map((t) => <span class="sw-chip">{t}</span>)}
-              </div>
-              <div class="sw-links">
-                {s.caseStudy && (
-                  <a class="sw-link sw-link-case" href={`${b}${s.caseStudy}`}>Case study →</a>
-                )}
-                {s.url && (
-                  <a class="sw-link" href={s.url} target="_blank" rel="noopener">
-                    {s.urlLabel} ↗
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </article>
+    <ol class="sw-index">
+      {items.map((s, i) => (
+        <li class="sw-row">
+          <span class="sw-i">{String(i + 1).padStart(2, '0')}</span>
+          <span class="sw-name">{s.name}</span>
+          <span class="sw-kind">{s.kind}</span>
+          <span class="sw-year">{s.year}</span>
+          <span class="sw-go">
+            {s.caseStudy && <a class="sw-a sw-a-case" href={`${b}${s.caseStudy}`}>Case study</a>}
+            {s.url && <a class="sw-a" href={s.url} target="_blank" rel="noopener">{s.urlLabel}&nbsp;↗</a>}
+          </span>
+        </li>
       ))}
-    </div>
+    </ol>
   </section>
 
   <style>
-    .section-tight{
-      max-width:1480px;margin:0 auto;
-      padding:0 40px 96px;
-    }
-    @media(max-width:720px){.section-tight{padding:0 20px 56px}}
+    .section-tight{max-width:1100px;margin:0 auto;padding:0 40px 110px}
+    @media(max-width:720px){.section-tight{padding:0 20px 64px}}
 
-    .sw-list{display:flex;flex-direction:column;gap:0}
+    .sw-index{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 
-    .sw-card{
-      display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,2.2fr);
-      gap:40px;
-      padding:40px 0;
-      border-top:1px solid var(--line-soft);
-    }
-    .sw-card:first-child{border-top:none;padding-top:8px}
-    @media(max-width:860px){
-      .sw-card{grid-template-columns:1fr;gap:18px;padding:32px 0}
+    .sw-row{
+      display:grid;
+      /* The last column is fixed, not auto: with auto it grew or shrank with
+         the number of links in each row and dragged the kind and year columns
+         out of line. */
+      grid-template-columns:34px minmax(0,1fr) 110px 52px 200px;
+      align-items:baseline;gap:18px;
+      padding:20px 2px;
+      border-bottom:1px solid var(--line-soft);
     }
 
-    .sw-meta{
-      display:flex;flex-wrap:wrap;gap:14px;
-      font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
-      text-transform:uppercase;color:var(--muted);margin-bottom:12px;
+    .sw-i{
+      font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted);
     }
-    .sw-status.is-live{color:var(--accent)}
-
     .sw-name{
-      font-family:var(--serif);font-weight:500;
-      font-size:clamp(28px,3.2vw,40px);line-height:1.02;
-      letter-spacing:-.02em;color:var(--ink);
+      font-family:var(--serif);font-weight:500;font-size:22px;
+      letter-spacing:-.015em;line-height:1.15;color:var(--ink);
     }
-    .sw-tagline{
-      margin-top:8px;font-size:14px;line-height:1.45;
-      color:var(--muted);max-width:30ch;
-    }
-
-    .sw-shot{
-      display:block;margin-bottom:24px;max-width:720px;
-      border:1px solid var(--line);background:var(--bg-warm);
-      overflow:hidden;border-radius:3px;
-      transition:border-color .2s,transform .2s;
-    }
-    .sw-shot img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
-    a.sw-shot:hover{border-color:var(--ink-2);transform:translateY(-2px)}
-
-    .sw-desc{
-      font-size:16.5px;line-height:1.6;color:var(--ink-2);
-      max-width:62ch;
-    }
-
-    .sw-features{
-      list-style:none;margin:22px 0 0;padding:0;
-      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:8px 28px;max-width:62ch;
-    }
-    @media(max-width:600px){.sw-features{grid-template-columns:1fr}}
-    .sw-features li{
-      position:relative;padding-left:18px;
-      font-size:13.5px;line-height:1.45;color:var(--ink-2);
-    }
-    .sw-features li::before{
-      content:"";position:absolute;left:0;top:.6em;
-      width:6px;height:1px;background:var(--accent);
-    }
-
-    .sw-foot{
-      margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;
-      justify-content:space-between;gap:16px;
-    }
-    .sw-stack{display:flex;flex-wrap:wrap;gap:6px}
-    .sw-chip{
-      display:inline-flex;align-items:center;padding:4px 10px;
-      border:1px solid var(--line);background:var(--paper);
-      font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+    .sw-kind,.sw-year{
+      font-family:var(--mono);font-size:10px;letter-spacing:.12em;
       text-transform:uppercase;color:var(--muted);
     }
-    .sw-links{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
-    .sw-link-case{color:var(--accent);border-color:var(--accent)}
-    .sw-link{
-      font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-      text-transform:uppercase;color:var(--ink-2);
-      border-bottom:1px solid var(--line);padding-bottom:3px;
-      transition:color .18s,border-color .18s;white-space:nowrap;
+    .sw-go{display:flex;flex-wrap:wrap;gap:16px;justify-content:flex-end}
+    .sw-a{
+      font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--ink-2);border-bottom:1px solid var(--line);padding-bottom:3px;
+      white-space:nowrap;transition:color .18s,border-color .18s;
     }
-    .sw-link:hover{color:var(--accent);border-color:var(--accent)}
+    .sw-a:hover{color:var(--accent);border-color:var(--accent)}
+    .sw-a-case{color:var(--accent);border-color:var(--accent)}
+
+    /* On a phone the row folds: name across the top, then the rest under it. */
+    @media(max-width:720px){
+      .sw-row{
+        grid-template-columns:28px minmax(0,1fr);
+        gap:4px 14px;padding:16px 2px;
+      }
+      .sw-name{grid-column:2;font-size:19px}
+      .sw-kind{grid-column:2;grid-row:2}
+      .sw-year{grid-column:2;grid-row:2;justify-self:start;margin-left:92px}
+      .sw-go{grid-column:2;grid-row:3;justify-content:flex-start;margin-top:8px}
+    }
   </style>
 </AppLayout>
