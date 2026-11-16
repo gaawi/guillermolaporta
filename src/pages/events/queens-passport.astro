@@ -41,6 +41,9 @@ const mapHref =
     <div class="subpage-num">Event · Evento</div>
     <h1 class="subpage-title">{event.title}</h1>
     <p class="subpage-sub">{event.subtitle}</p>
+    <p class="subpage-sub" style="margin-top:6px">
+      A project by Guillermo Laporta · Un proyecto de Guillermo Laporta
+    </p>
   </div>
 
   <section class="ev">
@@ -108,18 +111,43 @@ const mapHref =
       </figure>
     </div>
 
-    <!-- ── credits ─────────────────────────────────────────── -->
+    <!-- ── credits ─────────────────────────────────────────────
+         The wording below is Flushing Town Hall's own required credit line for
+         the Art Grants for Queens Grant, copied verbatim from their grantee
+         materials page, in both languages they publish. Do not paraphrase it:
+         they ask for this text, with their logo, on every promotional
+         material, print, digital and web. They will review a credit line on
+         request at mvelasquez@flushingtownhall.org
+    ────────────────────────────────────────────────────────── -->
     <div class="ev-credits">
-      <div class="ev-label">With the support of · Con el apoyo de</div>
-      <div class="ev-logos">
+      <div class="ev-label">Supported by · Con el apoyo de</div>
+      <div class="ev-support">
         <a class="ev-logo" href="https://www.flushingtownhall.org/" target="_blank" rel="noopener">
-          <img src={asset('images/logos/flushing-town-hall.png')} width="260" height="300"
+          <img src={asset('images/logos/flushing-town-hall.png')} width="316" height="360"
                loading="lazy" alt="Flushing Town Hall" />
         </a>
-        <a class="ev-logo ev-logo-text" href={event.infoHref} target="_blank" rel="noopener">
-          Queens Public Library
-        </a>
+        <div class="ev-credit-text">
+          <p lang="en">
+            This project is supported by funds from the New York State Council on the Arts,
+            Statewide Community Regrants Program (formerly the Decentralization program) with
+            the support of Governor Kathy Hochul and the New York State Legislature, and
+            administered by Flushing Town Hall.
+          </p>
+          <p lang="es">
+            Este proyecto es financiado con fondos del New York State Council on the Arts,
+            Statewide Community Regrants Program (antiguo programa de Descentralización), con
+            el apoyo de la Gobernadora Kathy Hochul y del New York State Legislature, y
+            administrado por Flushing Town Hall.
+          </p>
+        </div>
       </div>
+
+      <div class="ev-label" style="margin-top:40px">Presented at · Presentado en</div>
+      <p class="ev-host">
+        <a class="ev-link" href={event.infoHref} target="_blank" rel="noopener">
+          {event.venue}, Queens Public Library ↗
+        </a>
+      </p>
     </div>
   </section>
 
@@ -190,14 +218,17 @@ const mapHref =
 
     /* ── credits ── */
     .ev-credits{margin-top:72px;padding-top:32px;border-top:1px solid var(--line-soft)}
-    .ev-logos{display:flex;flex-wrap:wrap;align-items:center;gap:28px}
-    .ev-logo img{display:block;height:68px;width:auto}
-    .ev-logo{opacity:.92;transition:opacity .18s}
+
+    .ev-support{display:grid;grid-template-columns:auto minmax(0,1fr);gap:30px;align-items:start}
+    @media(max-width:720px){.ev-support{grid-template-columns:1fr;gap:20px}}
+    .ev-logo{opacity:.95;transition:opacity .18s}
     .ev-logo:hover{opacity:1}
-    .ev-logo-text{
-      font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.012em;
-      color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:3px;
-    }
-    .ev-logo-text:hover{color:var(--accent);border-color:var(--accent)}
+    .ev-logo img{display:block;height:96px;width:auto}
+
+    .ev-credit-text{max-width:64ch}
+    .ev-credit-text p{font-size:14px;line-height:1.6;color:var(--ink-2)}
+    .ev-credit-text p + p{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
+
+    .ev-host{font-size:16px;color:var(--ink)}
   </style>
 </AppLayout>
