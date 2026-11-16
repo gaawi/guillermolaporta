@@ -1,0 +1,203 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { asset } from '../../lib/asset.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+// Every fact on this page is taken from the event's own boarding-pass poster.
+// Nothing about the programme, the performers or the partners is added to it.
+const event = {
+  title: 'The Queens Passport',
+  subtitle: 'For kids and families, with the Ivalas Quartet',
+  date: '2026-11-19',
+  displayDate: 'Thursday, November 19, 2026',
+  boarding: '6:00 PM',
+  arrival: '7:00 PM',
+  fare: 'Free · Gratis',
+  venue: 'Hunters Point Library',
+  address: '47-40 Center Boulevard, Long Island City, NY 11109',
+  onBoard: [
+    'Kids conduct the musicians',
+    'New music inspired by the neighbourhood',
+    'Passport stamp and bilingual activity book',
+  ],
+  phone: '(718) 707-9944',
+  phoneHref: 'tel:+17187079944',
+  info: 'queenslibrary.org',
+  infoHref: 'https://www.queenslibrary.org/',
+};
+
+const mapHref =
+  'https://www.google.com/maps/search/?api=1&query=' +
+  encodeURIComponent(`${event.venue}, ${event.address}`);
+---
+<AppLayout
+  title={`${event.title} · Guillermo Laporta`}
+  description={`${event.title}: a free bilingual concert for kids and families with the Ivalas Quartet at Hunters Point Library, Long Island City, on Thursday 19 November 2026.`}
+>
+  <div class="subpage-head">
+    <a class="subpage-back" href={`${b}calendar/`}>← Calendar</a>
+    <div class="subpage-num">Event · Evento</div>
+    <h1 class="subpage-title">{event.title}</h1>
+    <p class="subpage-sub">{event.subtitle}</p>
+  </div>
+
+  <section class="ev">
+
+    <div class="ev-grid">
+
+      <!-- ── the facts ─────────────────────────────────────── -->
+      <div class="ev-main">
+        <dl class="ev-facts">
+          <div class="ev-fact ev-fact-wide">
+            <dt>Date · Fecha</dt>
+            <dd class="is-big">{event.displayDate}</dd>
+          </div>
+          <div class="ev-fact">
+            <dt>Boarding · Embarque</dt>
+            <dd class="is-big">{event.boarding}</dd>
+          </div>
+          <div class="ev-fact">
+            <dt>Arrival · Llegada</dt>
+            <dd class="is-big">{event.arrival}</dd>
+          </div>
+          <div class="ev-fact">
+            <dt>Fare · Tarifa</dt>
+            <dd class="is-big">{event.fare}</dd>
+          </div>
+          <div class="ev-fact ev-fact-wide">
+            <dt>Gate · Puerta</dt>
+            <dd class="is-big">{event.venue}</dd>
+            <dd class="is-sub">
+              <a class="ev-link" href={mapHref} target="_blank" rel="noopener">{event.address} ↗</a>
+            </dd>
+          </div>
+        </dl>
+
+        <div class="ev-board">
+          <div class="ev-label">On board · A bordo</div>
+          <ul class="ev-list">
+            {event.onBoard.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+
+        <p class="ev-about">
+          An hour for children and whoever brings them. The quartet plays, the children take
+          a turn conducting, and the new music on the programme was written about the
+          neighbourhood the library sits in. Admission is free and no ticket is needed, and
+          the activity book is in English and Spanish.
+        </p>
+
+        <div class="ev-contact">
+          <div class="ev-label">Information · Información</div>
+          <p>
+            <a class="ev-link" href={event.phoneHref}>{event.phone}</a>
+            <span class="ev-sep">·</span>
+            <a class="ev-link" href={event.infoHref} target="_blank" rel="noopener">{event.info} ↗</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- ── the poster ────────────────────────────────────── -->
+      <figure class="ev-poster">
+        <img src={asset('images/events/queens-passport-poster.jpg')}
+             width="1056" height="1632" loading="eager"
+             alt={`Boarding-pass poster for ${event.title}: ${event.displayDate}, ${event.venue}, free admission`} />
+        <figcaption>The boarding pass · La tarjeta de embarque</figcaption>
+      </figure>
+    </div>
+
+    <!-- ── credits ─────────────────────────────────────────── -->
+    <div class="ev-credits">
+      <div class="ev-label">With the support of · Con el apoyo de</div>
+      <div class="ev-logos">
+        <a class="ev-logo" href="https://www.flushingtownhall.org/" target="_blank" rel="noopener">
+          <img src={asset('images/logos/flushing-town-hall.png')} width="260" height="300"
+               loading="lazy" alt="Flushing Town Hall" />
+        </a>
+        <a class="ev-logo ev-logo-text" href={event.infoHref} target="_blank" rel="noopener">
+          Queens Public Library
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .ev{max-width:1480px;margin:0 auto;padding:0 40px 96px}
+    @media(max-width:720px){.ev{padding:0 20px 56px}}
+
+    .ev-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,420px);gap:56px;align-items:start}
+    @media(max-width:900px){.ev-grid{grid-template-columns:1fr;gap:40px}}
+
+    /* ── facts ── */
+    .ev-facts{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:0 0 36px;
+      border-top:1px solid var(--line);
+    }
+    @media(max-width:600px){.ev-facts{grid-template-columns:repeat(2,1fr)}}
+    .ev-fact{padding:16px 0 18px;border-bottom:1px solid var(--line-soft)}
+    .ev-fact-wide{grid-column:1 / -1}
+    .ev-facts dt{
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--muted);margin-bottom:7px;
+    }
+    .ev-facts dd{margin:0}
+    .ev-facts .is-big{
+      font-family:var(--serif);font-weight:500;font-size:clamp(20px,2.3vw,28px);
+      line-height:1.15;letter-spacing:-.018em;color:var(--ink);
+    }
+    .ev-facts .is-sub{margin-top:5px;font-size:14px;line-height:1.45;color:var(--ink-2)}
+
+    .ev-label{
+      font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--muted);margin-bottom:12px;
+    }
+
+    .ev-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;max-width:46ch}
+    .ev-list li{
+      position:relative;padding-left:26px;
+      font-size:16px;line-height:1.45;color:var(--ink);
+    }
+    /* A tick box, like the one printed on the pass. */
+    .ev-list li::before{
+      content:"";position:absolute;left:0;top:.2em;
+      width:13px;height:13px;border:1.5px solid var(--accent);border-radius:2px;
+    }
+
+    .ev-about{
+      margin-top:34px;max-width:58ch;
+      font-size:16.5px;line-height:1.62;color:var(--ink-2);
+    }
+
+    .ev-contact{margin-top:34px;padding-top:24px;border-top:1px solid var(--line-soft)}
+    .ev-contact p{font-size:16px;color:var(--ink)}
+    .ev-sep{color:var(--muted);margin:0 10px}
+    .ev-link{color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .18s,border-color .18s}
+    .ev-link:hover{color:var(--accent);border-color:var(--accent)}
+
+    /* ── poster ── */
+    .ev-poster{margin:0}
+    .ev-poster img{
+      display:block;width:100%;height:auto;
+      border:1px solid var(--line);border-radius:3px;
+      box-shadow:0 24px 48px -34px rgba(0,0,0,.45);
+    }
+    .ev-poster figcaption{
+      margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--muted);
+    }
+
+    /* ── credits ── */
+    .ev-credits{margin-top:72px;padding-top:32px;border-top:1px solid var(--line-soft)}
+    .ev-logos{display:flex;flex-wrap:wrap;align-items:center;gap:28px}
+    .ev-logo img{display:block;height:68px;width:auto}
+    .ev-logo{opacity:.92;transition:opacity .18s}
+    .ev-logo:hover{opacity:1}
+    .ev-logo-text{
+      font-family:var(--serif);font-size:19px;font-weight:500;letter-spacing:-.012em;
+      color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:3px;
+    }
+    .ev-logo-text:hover{color:var(--accent);border-color:var(--accent)}
+  </style>
+</AppLayout>

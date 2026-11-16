@@ -40,6 +40,11 @@ export const bio = {
 
 // Source: https://creartbox.nyc/concerts.html, kept in sync with the CreArtBox season listing.
 const CB = 'https://creartbox.nyc/concerts';
+// Event pages on this site. Built from BASE_URL rather than hardcoded: the base
+// changed once already when the site moved to its own domain, and every
+// hardcoded path broke with it.
+const _evBase = import.meta.env.BASE_URL || '/';
+const EV = `${_evBase.endsWith('/') ? _evBase : _evBase + '/'}events`;
 const CBIMG = 'https://creartbox-media-cdn.b-cdn.net/webimg/projects_photos/20251212/comp/_MG_0154.jpg';
 
 export const calendar = [
@@ -91,6 +96,13 @@ export const calendar = [
       { composer: 'Sergei Rachmaninoff',  work: 'Trio élégiaque in G minor, No. 1', dur: "15'" },
       { composer: 'Dmitri Shostakovich',  work: 'Piano Trio No. 1 in C minor, Op. 8', dur: "14'" },
     ],
+  },
+  {
+    date: '2026-11-19', displayDate: 'Nov 19', year: '2026',
+    title: 'The Queens Passport', subtitle: 'Family · Queens Public Library',
+    location: 'Hunters Point Library · 47-40 Center Boulevard, Long Island City, NY',
+    url: `${EV}/queens-passport/`, image: CBIMG, status: 'Announced',
+    note: 'For kids and families, with the Ivalas Quartet. Free, no ticket needed. Doors 6:00 PM. Supported by Flushing Town Hall.',
   },
   {
     date: '2026-12-11', displayDate: 'Dec 11', year: '2026',
