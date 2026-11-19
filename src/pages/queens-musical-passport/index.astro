@@ -1,0 +1,253 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { asset } from '../../lib/asset.js';
+import { grant } from '../../data/grant.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+// The project page for The Queens Musical Passport, written to be linked from
+// the grant's Final Report.
+//
+// The "About" text is Guillermo's own, word for word, from page 2 of the
+// printed Passport booklet, in both languages, so the page and the booklet say
+// the same thing. The pilot's facts come from the booklet and the poster. The
+// scope described here is the pilot as approved by Flushing Town Hall: this
+// page deliberately does not restate the original multi-branch plan.
+//
+// Nothing personal from the application or contract appears here.
+const pilot = {
+  date: 'Thursday, November 19, 2026',
+  time: '6:00 – 7:00 PM',
+  venue: 'Hunters Point Library',
+  address: '47-40 Center Boulevard, Long Island City, NY 11109',
+  ensemble: 'Ivalas Quartet',
+  program: [
+    { composer: 'Wolfgang Amadeus Mozart', work: 'String Quartet No. 19 in C major, K. 465, “Dissonance”', parts: 'I. Adagio – Allegro · IV. Allegro' },
+    { composer: 'Maurice Ravel', work: 'String Quartet in F major', parts: 'I. Allegro moderato. Très doux · II. Assez vif. Très rythmé' },
+    { composer: 'Florence Price', work: 'Five Folksongs in Counterpoint', parts: 'II. Clementine · IV. Shortnin’ Bread' },
+  ],
+};
+---
+<AppLayout
+  title={`${grant.project} · Guillermo Laporta`}
+  description="The Queens Musical Passport is a participatory music project created by Queens composer and flutist Guillermo Laporta, inviting children and families to travel across Queens neighborhoods with live chamber music as their guide. The 2026 edition is a pilot program."
+>
+  <div class="subpage-head">
+    <a class="subpage-back" href={`${b}calendar/`}>← Calendar</a>
+    <div class="subpage-num">Project · Proyecto · 2026</div>
+    <h1 class="subpage-title">{grant.project}</h1>
+    <p class="subpage-sub"><i>El Pasaporte Musical de Queens</i> · Created by {grant.grantee}</p>
+  </div>
+
+  <section class="pj">
+
+    <!-- ── about: Guillermo's own text, both languages ───────── -->
+    <div class="pj-about">
+      <div class="pj-col" lang="en">
+        <div class="pj-k">English</div>
+        <p>
+          The Queens Musical Passport is a participatory music project created by Queens
+          composer and flutist Guillermo Laporta. It invites children and families to travel
+          across Queens neighborhoods, with live chamber music as their guide.
+        </p>
+        <p>
+          Each concert, held at a Queens Public Library branch, pairs classical repertoire
+          with new music inspired by the sounds and traditions of the neighborhood. Children
+          help shape the music: they conduct the musicians with simple hand gestures, and
+          their drawings become ideas for live improvisation.
+        </p>
+        <p class="pj-strong">
+          This 2026 edition is a pilot program, made possible by Flushing Town Hall's
+          Artists in Queens Grant.
+        </p>
+      </div>
+      <div class="pj-col" lang="es">
+        <div class="pj-k">Español</div>
+        <p>
+          El Pasaporte Musical de Queens es un proyecto musical participativo creado por
+          Guillermo Laporta, compositor y flautista de Queens. Invita a niños y familias a
+          recorrer los barrios de Queens con la música de cámara en vivo como guía.
+        </p>
+        <p>
+          Cada concierto, en una biblioteca de Queens Public Library, combina repertorio
+          clásico con música nueva inspirada en los sonidos y tradiciones del barrio. Los
+          niños ayudan a crear la música: dirigen a los músicos con gestos sencillos y sus
+          dibujos se convierten en ideas para improvisar en vivo.
+        </p>
+        <p class="pj-strong">
+          Esta edición de 2026 es un programa piloto, posible gracias a la beca Artists in
+          Queens de Flushing Town Hall.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── the pilot ─────────────────────────────────────────── -->
+    <div class="pj-block">
+      <h2 class="pj-h2">The pilot <span>El piloto</span></h2>
+      <div class="pj-pilot">
+        <figure class="pj-poster">
+          <img src={asset('images/events/queens-passport-poster.jpg')} width="1056" height="1632"
+               loading="lazy" alt="Boarding-pass poster for The Queens Passport, the pilot concert" />
+        </figure>
+        <div>
+          <dl class="pj-facts">
+            <div><dt>Date · Fecha</dt><dd>{pilot.date}</dd></div>
+            <div><dt>Time · Hora</dt><dd>{pilot.time}</dd></div>
+            <div><dt>Venue · Lugar</dt><dd>{pilot.venue}<small>{pilot.address}</small></dd></div>
+            <div><dt>Performers · Intérpretes</dt><dd>{pilot.ensemble}</dd></div>
+            <div><dt>Admission · Entrada</dt><dd>Free · Gratis</dd></div>
+            <div><dt>Audience · Público</dt><dd>Children and families · Niños y familias</dd></div>
+          </dl>
+
+          <div class="pj-k" style="margin-top:26px">Program · Programa</div>
+          <ul class="pj-program">
+            {pilot.program.map((p) => (
+              <li><b>{p.composer}</b><span>{p.work}</span><small>{p.parts}</small></li>
+            ))}
+          </ul>
+
+          <p class="pj-note">
+            <a class="pj-link" href={`${b}events/queens-passport/`}>Concert page · Página del concierto →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── how children take part ────────────────────────────── -->
+    <div class="pj-block">
+      <h2 class="pj-h2">How children take part <span>Cómo participan los niños</span></h2>
+      <div class="pj-grid">
+        <div class="pj-item">
+          <div class="pj-n">01</div>
+          <h3>They conduct</h3>
+          <p>Children lead the quartet with simple hand gestures: loud, soft, fast, stop.</p>
+          <p lang="es"><i>Dirigen al cuarteto con gestos sencillos: fuerte, suave, rápido, ¡alto!</i></p>
+        </div>
+        <div class="pj-item">
+          <div class="pj-n">02</div>
+          <h3>They collect stamps</h3>
+          <p>Each child visits every musician and asks for a stamp in that instrument's box, so they meet the violin, viola and cello up close.</p>
+          <p lang="es"><i>Cada niño visita a cada músico y le pide un sello en la casilla de su instrumento.</i></p>
+        </div>
+        <div class="pj-item">
+          <div class="pj-n">03</div>
+          <h3>They keep a Passport</h3>
+          <p>A printed, bilingual activity book: the program, listening pages for each composer, the sounds of their neighborhood, and a page to compose their own music.</p>
+          <p lang="es"><i>Un cuadernillo bilingüe impreso con el programa, páginas para escuchar, los sonidos del barrio y una página para componer.</i></p>
+        </div>
+        <div class="pj-item">
+          <div class="pj-n">04</div>
+          <h3>They keep playing at home</h3>
+          <p>An online companion to the booklet, made for a phone, where children conduct, listen, compose and draw, and can send what they make.</p>
+          <p lang="es"><i>Un acompañante en línea para el móvil, donde dirigen, escuchan, componen y dibujan, y pueden enviar lo que hacen.</i></p>
+          <a class="pj-link" href={`${b}queens-musical-passport/play/`}>Play · A jugar →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── from children's ideas to a new piece ───────────────── -->
+    <div class="pj-block pj-new">
+      <h2 class="pj-h2">From children’s ideas to a new piece <span>De las ideas de los niños a una obra nueva</span></h2>
+      <p>
+        What children make during the pilot is the raw material for new music. Their drawings
+        in the Passport and the pieces they compose and send online are collected, and
+        Guillermo Laporta will write a new work from them.
+      </p>
+      <p lang="es">
+        <i>Lo que los niños crean durante el piloto es el material de una música nueva. Sus
+        dibujos en el Pasaporte y las piezas que componen y envían en línea se recogen, y
+        Guillermo Laporta escribirá con ellos una obra nueva.</i>
+      </p>
+    </div>
+
+    <!-- ── people ────────────────────────────────────────────── -->
+    <div class="pj-block">
+      <h2 class="pj-h2">Who <span>Quién</span></h2>
+      <dl class="pj-people">
+        <div><dt>Created by · Creado por</dt><dd><a class="pj-link" href={`${b}bio/`}>Guillermo Laporta</a>, composer and flutist · compositor y flautista</dd></div>
+        <div><dt>Performed by · Interpretado por</dt><dd>{pilot.ensemble}</dd></div>
+        <div><dt>Hosted by · Acogido por</dt><dd>{pilot.venue}, Queens Public Library</dd></div>
+        <div><dt>Supported by · Con el apoyo de</dt><dd>{grant.administrator}, {grant.program} {grant.year}</dd></div>
+      </dl>
+    </div>
+
+    <p class="pj-later">
+      Photographs and a report on the pilot will be added here after the concert.
+      <i lang="es">Las fotografías y un informe del piloto se añadirán aquí después del concierto.</i>
+    </p>
+
+    <!-- ── credit: clause 5.J of the contract, from grant.js ───── -->
+    <div class="pj-credit">
+      <a href={grant.administratorUrl} target="_blank" rel="noopener">
+        <img src={asset(grant.logo)} width={grant.logoWidth} height={grant.logoHeight}
+             loading="lazy" alt={grant.administrator} />
+      </a>
+      <p>{grant.credit}</p>
+    </div>
+  </section>
+
+  <style>
+    .pj{max-width:1180px;margin:0 auto;padding:0 40px 100px}
+    @media(max-width:720px){.pj{padding:0 20px 64px}}
+
+    .pj-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+    .pj-about{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:6px 0 10px}
+    @media(max-width:820px){.pj-about{grid-template-columns:1fr;gap:30px}}
+    .pj-col p{font-size:17px;line-height:1.65;color:var(--ink-2);margin-bottom:14px}
+    .pj-col p.pj-strong{color:var(--ink);font-weight:600}
+
+    .pj-block{margin-top:64px;padding-top:34px;border-top:1px solid var(--line-soft)}
+    .pj-h2{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3vw,36px);line-height:1.1;letter-spacing:-.02em;color:var(--ink);margin-bottom:24px}
+    .pj-h2 span{display:block;font-family:var(--sans);font-size:16px;font-style:italic;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:6px}
+
+    .pj-pilot{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:44px;align-items:start}
+    @media(max-width:820px){.pj-pilot{grid-template-columns:1fr;gap:28px}}
+    .pj-poster{margin:0}
+    .pj-poster img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:3px;box-shadow:0 20px 40px -30px rgba(0,0,0,.45)}
+
+    .pj-facts{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin:0;border-top:1px solid var(--line)}
+    @media(max-width:520px){.pj-facts{grid-template-columns:1fr}}
+    .pj-facts > div{padding:13px 0;border-bottom:1px solid var(--line-soft)}
+    .pj-facts dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+    .pj-facts dd{margin:0;font-size:16px;color:var(--ink)}
+    .pj-facts dd small{display:block;font-size:13.5px;color:var(--ink-2);margin-top:3px}
+
+    .pj-program{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+    .pj-program li{display:grid;gap:2px}
+    .pj-program b{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--ink)}
+    .pj-program span{font-size:15px;color:var(--ink-2)}
+    .pj-program small{font-size:13.5px;color:var(--muted)}
+
+    .pj-note{margin-top:22px}
+    .pj-link{color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .18s,border-color .18s}
+    .pj-link:hover{color:var(--accent);border-color:var(--accent)}
+
+    .pj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--line-soft)}
+    @media(max-width:720px){.pj-grid{grid-template-columns:1fr}}
+    .pj-item{background:var(--paper);padding:24px 22px}
+    .pj-n{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--accent);margin-bottom:9px}
+    .pj-item h3{font-family:var(--serif);font-size:21px;font-weight:500;letter-spacing:-.012em;color:var(--ink);margin-bottom:8px}
+    .pj-item p{font-size:15px;line-height:1.55;color:var(--ink-2)}
+    .pj-item p[lang=es]{font-size:14px;color:var(--muted);margin-top:6px}
+    .pj-item .pj-link{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+
+    .pj-new p{max-width:66ch;font-size:17px;line-height:1.65;color:var(--ink-2);margin-bottom:12px}
+    .pj-new p[lang=es]{font-size:15.5px;color:var(--muted)}
+
+    .pj-people{margin:0;display:grid;border-top:1px solid var(--line)}
+    .pj-people > div{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+    @media(max-width:620px){.pj-people > div{grid-template-columns:1fr;gap:4px}}
+    .pj-people dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+    .pj-people dd{margin:0;font-size:16px;color:var(--ink)}
+
+    .pj-later{margin-top:56px;font-size:14.5px;color:var(--ink-2);max-width:66ch}
+    .pj-later i{display:block;color:var(--muted);margin-top:4px}
+
+    .pj-credit{margin-top:56px;padding-top:28px;border-top:1px solid var(--line-soft);display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+    @media(max-width:620px){.pj-credit{grid-template-columns:1fr;gap:14px}}
+    .pj-credit img{display:block;height:88px;width:auto}
+    .pj-credit p{font-size:14px;line-height:1.6;color:var(--ink-2);max-width:70ch}
+  </style>
+</AppLayout>

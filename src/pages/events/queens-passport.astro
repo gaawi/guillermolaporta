@@ -43,7 +43,8 @@ const mapHref =
     <h1 class="subpage-title">{event.title}</h1>
     <p class="subpage-sub">{event.subtitle}</p>
     <p class="subpage-sub" style="margin-top:6px">
-      Part of <em>{grant.project}</em>, a project by {grant.grantee}
+      The pilot of <a class="ev-link" href={`${b}queens-musical-passport/`}><em>{grant.project}</em></a>,
+      a project by {grant.grantee}
     </p>
   </div>
 
@@ -94,6 +95,10 @@ const mapHref =
         </p>
 
         <div class="ev-contact">
+          <div class="ev-label">Activities · Actividades</div>
+          <p style="margin-bottom:22px">
+            <a class="ev-link" href={`${b}queens-musical-passport/play/`}>Keep playing at home · Sigue jugando en casa →</a>
+          </p>
           <div class="ev-label">Information · Información</div>
           <p>
             <a class="ev-link" href={event.phoneHref}>{event.phone}</a>
