@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
 import { asset } from '../../lib/asset.js';
+import { grant } from '../../data/grant.js';
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -42,7 +43,7 @@ const mapHref =
     <h1 class="subpage-title">{event.title}</h1>
     <p class="subpage-sub">{event.subtitle}</p>
     <p class="subpage-sub" style="margin-top:6px">
-      A project by Guillermo Laporta · Un proyecto de Guillermo Laporta
+      Part of <em>{grant.project}</em>, a project by {grant.grantee}
     </p>
   </div>
 
@@ -112,33 +113,18 @@ const mapHref =
     </div>
 
     <!-- ── credits ─────────────────────────────────────────────
-         The wording below is Flushing Town Hall's own required credit line for
-         the Art Grants for Queens Grant, copied verbatim from their grantee
-         materials page, in both languages they publish. Do not paraphrase it:
-         they ask for this text, with their logo, on every promotional
-         material, print, digital and web. They will review a credit line on
-         request at mvelasquez@flushingtownhall.org
+         The sentence comes from src/data/grant.js, which holds it verbatim
+         from clause 5.J of the signed contract. Change it there, never here.
     ────────────────────────────────────────────────────────── -->
     <div class="ev-credits">
       <div class="ev-label">Supported by · Con el apoyo de</div>
       <div class="ev-support">
-        <a class="ev-logo" href="https://www.flushingtownhall.org/" target="_blank" rel="noopener">
-          <img src={asset('images/logos/flushing-town-hall.png')} width="316" height="360"
-               loading="lazy" alt="Flushing Town Hall" />
+        <a class="ev-logo" href={grant.administratorUrl} target="_blank" rel="noopener">
+          <img src={asset(grant.logo)} width={grant.logoWidth} height={grant.logoHeight}
+               loading="lazy" alt={grant.administrator} />
         </a>
         <div class="ev-credit-text">
-          <p lang="en">
-            This project is supported by funds from the New York State Council on the Arts,
-            Statewide Community Regrants Program (formerly the Decentralization program) with
-            the support of Governor Kathy Hochul and the New York State Legislature, and
-            administered by Flushing Town Hall.
-          </p>
-          <p lang="es">
-            Este proyecto es financiado con fondos del New York State Council on the Arts,
-            Statewide Community Regrants Program (antiguo programa de Descentralización), con
-            el apoyo de la Gobernadora Kathy Hochul y del New York State Legislature, y
-            administrado por Flushing Town Hall.
-          </p>
+          <p lang="en">{grant.credit}</p>
         </div>
       </div>
 
