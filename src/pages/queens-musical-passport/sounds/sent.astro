@@ -1,0 +1,9 @@
+---
+// Where FormSubmit sends the hidden iframe after it has delivered a sound.
+// The Sound Hunt reads this page's address from the iframe: landing here, on
+// our own domain, is the proof that the email went out. Nobody visits it.
+import AppLayout from '../../../layouts/AppLayout.astro';
+---
+<AppLayout bare noindex title="Sent" description="Sound received.">
+  <p style="font:600 16px system-ui;padding:24px">Sent · Enviado</p>
+</AppLayout>

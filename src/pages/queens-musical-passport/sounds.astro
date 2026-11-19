@@ -10,14 +10,26 @@ const b = _base.endsWith('/') ? _base : _base + '/';
 // sounds of their neighbourhood and send them to Guillermo, who writes new
 // music from them. This is the field-recording part of the original project.
 //
-// Recordings never touch a server. They stay on the phone (in IndexedDB, so
-// closing the page does not lose them) until a grown-up sends them with the
-// phone's own share sheet. The site receives nothing and stores nothing.
+// A grown-up accepts the terms first (the gate below). They are versioned:
+// bump TERMS_VERSION when the wording changes and everyone is asked again.
+// They were drafted for Guillermo, not by a lawyer.
+//
+// Recordings stay on the phone (IndexedDB, so closing the page loses nothing)
+// until the grown-up presses Send. Each one is then posted as an ordinary form
+// to FormSubmit, which emails it to Guillermo as an attachment, one email per
+// sound, with the neighborhood, the sound and the terms acceptance. This
+// website itself stores nothing. FormSubmit needs a one-time activation: the
+// first send triggers an email to CONTACT with an "Activate" button.
+//
+// If the microphone cannot be used, the page says why (Brave on iPhone refuses
+// websites the microphone without asking) and offers Guillermo's fallback:
+// record with the phone's own app and email it to him.
 //
 // The icons are drawn here, in the poster's colours, in a flat style. They are
 // not Flaticon's: those need a licence or a visible attribution.
-const contact = 'guillermo@creartbox.nyc';
+const contact = 'guillermolaporta@gmail.com';
 const MAX_SECONDS = 15;
+const TERMS_VERSION = '2';
 
 const N = '#1F2A3C', Y = '#F2C230', R = '#E2563E', B = '#3866D6', G = '#2E9E6B';
 const LB = '#BFD3FF', OR = '#F28C38', CR = '#FFF6DD', TAN = '#F2B880', PU = '#A98BEA';
@@ -98,7 +110,37 @@ const hoods = [
   'Elmhurst', 'Corona', 'Flushing', 'Jamaica', 'Other · Otro',
 ];
 
+// The terms. English first, Spanish second, same numbering.
+const terms = [
+  ['Stay together, stay safe.',
+   'A grown-up stays with the child the whole time. Record only in safe public places; watch for traffic, trains and crowds, and never go somewhere unsafe to get a sound.',
+   'Quédense juntos, con seguridad.',
+   'Un adulto acompaña al niño en todo momento. Graben solo en lugares públicos seguros; atención al tráfico, los trenes y las multitudes, y nunca vayan a un sitio peligroso para conseguir un sonido.'],
+  ['Record sounds, not people.',
+   'Do not record anyone’s private conversation, do not say anyone’s name, and do not record inside homes, shops or other private places without permission. Follow the rules of wherever you are.',
+   'Graben sonidos, no personas.',
+   'No graben conversaciones privadas, no digan el nombre de nadie y no graben dentro de casas, tiendas u otros lugares privados sin permiso. Respeten las normas de cada lugar.'],
+  ['What happens to your recordings.',
+   `Recordings stay on your phone until you press Send. Then each one is emailed to Guillermo Laporta (${contact}) through FormSubmit, a form-delivery service, together with the neighborhood and the kind of sound you chose. This website does not keep any copy, and no name, email address or other personal information is asked for or sent.`,
+   'Qué pasa con sus grabaciones.',
+   `Las grabaciones se quedan en su teléfono hasta que pulsen Enviar. Entonces cada una se envía por correo a Guillermo Laporta (${contact}) a través de FormSubmit, un servicio de envío de formularios, junto con el barrio y el tipo de sonido elegidos. Esta web no guarda ninguna copia, y no se pide ni se envía ningún nombre, correo ni otro dato personal.`],
+  ['Permission to use what you send.',
+   `By sending recordings you confirm that you or your child made them, and you give Guillermo Laporta free, non-exclusive, worldwide and permanent permission to use, edit and include them, in whole or in part, in musical works and in the performances, recordings and promotion of ${grant.project}, without payment or credit. To have a sound deleted before it is used, write to ${contact}.`,
+   'Permiso para usar lo que envíen.',
+   `Al enviar grabaciones confirman que las hicieron ustedes o su hijo o hija, y dan a Guillermo Laporta permiso gratuito, no exclusivo, mundial y permanente para usarlas, editarlas e incluirlas, enteras o en parte, en obras musicales y en las actuaciones, grabaciones y promoción de El Pasaporte Musical de Queens, sin pago ni mención. Para que se borre un sonido antes de usarlo, escriban a ${contact}.`],
+  ['The microphone.',
+   'The page uses your phone’s microphone only while the record button is on. You can turn that permission off at any time in your phone’s settings.',
+   'El micrófono.',
+   'La página usa el micrófono solo mientras el botón de grabar está encendido. Pueden retirar ese permiso cuando quieran en los ajustes del teléfono.'],
+  ['At your own risk.',
+   'You use this page and take part in the Sound Hunt at your own risk. To the extent permitted by law, Guillermo Laporta and the organizations that support the project are not responsible for any injury, loss or damage connected with it.',
+   'Bajo su responsabilidad.',
+   'Usan esta página y participan en la Caza de Sonidos bajo su propia responsabilidad. En la medida en que lo permita la ley, ni Guillermo Laporta ni las organizaciones que apoyan el proyecto son responsables de lesiones, pérdidas o daños relacionados con ella.'],
+];
+
 const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" width="18" height="31" rx="9" fill="#fff"/><path d="M15 30 C15 44 49 44 49 30" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/><path d="M32 43 V53 M23 55 H41" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/></svg>`;
+const VIOLIN = `<svg viewBox="0 0 56 56" aria-hidden="true"><path d="M28 5 V24" stroke="${N}" stroke-width="3.5" stroke-linecap="round"/><circle cx="28" cy="6" r="3.4" fill="${N}"/><path d="M28 23 C19 23 17 29 20.5 33 C16 35.5 15 43 21 47.5 C24.5 50 31.5 50 35 47.5 C41 43 40 35.5 35.5 33 C39 29 37 23 28 23 Z" fill="#C8742C" stroke="${N}" stroke-width="3" stroke-linejoin="round"/><path d="M23.5 36 v5 M32.5 36 v5" stroke="${N}" stroke-width="2.4" stroke-linecap="round"/><path d="M25 46 h6" stroke="${N}" stroke-width="3" stroke-linecap="round"/></svg>`;
+const PLANE = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 L21 3 L14 21 L11 13 Z"/></svg>`;
 ---
 <AppLayout
   bare
@@ -109,21 +151,24 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,500;0,700;0,800;0,900;1,500&display=swap" />
 
-  <main class="sh" id="sh" data-contact={contact} data-max={MAX_SECONDS}
-        data-icons={JSON.stringify(ICONS)} data-sounds={JSON.stringify(sounds)}>
+  <main class="sh" id="sh" data-contact={contact} data-max={MAX_SECONDS} data-terms={TERMS_VERSION}
+        data-project={grant.project} data-icons={JSON.stringify(ICONS)} data-sounds={JSON.stringify(sounds)}>
 
     <!-- ── the ticket ──────────────────────────────────────── -->
     <header class="sh-ticket">
-      <div class="sh-ticket-bar">
-        <span>♪ Sound hunt</span><span>Caza de sonidos</span>
+      <div class="sh-ticket-bar"><span>♪ Sound hunt</span><span>Caza de sonidos</span></div>
+      <div class="sh-art">
+        <img src={asset('images/events/sound-hunt-7-train.webp')} width="1100" height="978"
+             alt="Mozart playing the violin in the window of a 7 train, between Queens buildings, with music notes and a plane overhead" />
       </div>
       <div class="sh-ticket-body">
-        <div class="sh-kicker">{grant.project}</div>
+        <h1 class="sh-project">{grant.project}</h1>
+        <p class="sh-project-es">El Pasaporte Musical de Queens</p>
         <div class="sh-stickers">
           <div class="sh-sticker sh-sticker-red">For kids<i>Para niños</i></div>
           <div class="sh-sticker sh-sticker-blue">With a grown-up<i>Con un adulto</i></div>
         </div>
-        <h1 class="sh-title">Record your neighborhood!</h1>
+        <h2 class="sh-title">Record your neighborhood!</h2>
         <p class="sh-title-es">¡Graba tu barrio!</p>
         <p class="sh-lead">
           Go outside and find the sounds where you live. Record them and send them to
@@ -134,7 +179,7 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
           ¡los convertirá en <b>música nueva</b>!
         </p>
         <div class="sh-rule">
-          <div class="sh-rule-i"><span class="sh-rule-ico"><svg viewBox="0 0 56 56" aria-hidden="true"><path d="M28 5 V24" stroke="#1F2A3C" stroke-width="3.5" stroke-linecap="round"/><circle cx="28" cy="6" r="3.4" fill="#1F2A3C"/><path d="M28 23 C19 23 17 29 20.5 33 C16 35.5 15 43 21 47.5 C24.5 50 31.5 50 35 47.5 C41 43 40 35.5 35.5 33 C39 29 37 23 28 23 Z" fill="#C8742C" stroke="#1F2A3C" stroke-width="3" stroke-linejoin="round"/><path d="M23.5 36 v5 M32.5 36 v5" stroke="#1F2A3C" stroke-width="2.4" stroke-linecap="round"/><path d="M25 46 h6" stroke="#1F2A3C" stroke-width="3" stroke-linecap="round"/></svg></span>
+          <div class="sh-rule-i"><span class="sh-rule-ico" set:html={VIOLIN}></span>
             <div><b>At the concert: listen</b><i>En el concierto: escucha</i></div></div>
           <div class="sh-rule-i"><span class="sh-rule-ico sh-rule-mic" set:html={MIC}></span>
             <div><b>After: record!</b><i>Después: ¡graba!</i></div></div>
@@ -176,35 +221,28 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
     <!-- ── 4 · send ────────────────────────────────────────── -->
     <section class="sh-card sh-send" id="send">
       <div class="sh-step"><span>4</span> Send them to Guillermo <i>Envíaselos a Guillermo</i></div>
-      <button type="button" class="sh-big sh-big-blue" id="send-btn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#fff"/></svg>
-        Send my sounds · Enviar mis sonidos
-      </button>
       <p class="sh-to">
-        Choose Mail or WhatsApp and send them to · Elige Correo o WhatsApp y envíalos a
-        <span class="sh-addr"><b id="addr">{contact}</b><button type="button" id="copy">Copy · Copiar</button></span>
+        One tap and your sounds go straight to Guillermo.
+        <i>Un toque y tus sonidos le llegan directamente a Guillermo.</i>
       </p>
+      <button type="button" class="sh-big sh-big-blue" id="send-btn">
+        <span set:html={PLANE}></span><span id="send-label">Send my sounds · Enviar mis sonidos</span>
+      </button>
+      <div class="sh-progress" id="progress" hidden><span id="progress-bar"></span></div>
       <div class="sh-thanks" id="thanks" hidden>
-        <b>Thank you!</b> Your sounds are on their way to becoming music.
-        <i>¡Gracias! Tus sonidos van camino de convertirse en música.</i>
+        <b>Sent! Thank you!</b> Your sounds are on their way to becoming music.
+        <i>¡Enviado! ¡Gracias! Tus sonidos van camino de convertirse en música.</i>
       </div>
-
-      <div class="sh-grown">
-        <b>For grown-ups · Para adultos</b>
-        <p>
-          Recordings stay on this phone until you send them; this website never receives or
-          stores them. Please record sounds, not people: avoid recording anyone talking up
-          close, and don’t say names. By sending sounds to Guillermo Laporta, you agree that he
-          may use them, or parts of them, in a new piece of music for {grant.project}.
-        </p>
-        <p lang="es">
-          Las grabaciones se quedan en este teléfono hasta que usted las envíe; esta web nunca
-          las recibe ni las guarda. Por favor, grabe sonidos, no personas: evite grabar a
-          alguien hablando de cerca y no diga nombres. Al enviar sonidos a Guillermo Laporta,
-          acepta que pueda usarlos, enteros o en parte, en una nueva obra musical para
-          El Pasaporte Musical de Queens.
-        </p>
+      <div class="sh-fail" id="fail" hidden>
+        <b>It didn’t go through. · No se pudo enviar.</b>
+        <p>Check your connection and try again in a minute. Or save the sounds and email them to
+          <i>Revisa la conexión y prueba otra vez. O guarda los sonidos y envíalos por correo a</i></p>
+        <div class="sh-addr"><b>{contact}</b><button type="button" class="sh-copy">Copy · Copiar</button></div>
+        <button type="button" class="sh-big sh-big-white" id="save-all">Save my sounds · Guardar mis sonidos</button>
       </div>
+      <p class="sh-small">
+        <button type="button" class="sh-linkbtn" id="reopen-terms">Terms for grown-ups · Condiciones para adultos</button>
+      </p>
     </section>
 
     <footer class="sh-credit">
@@ -227,6 +265,10 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
 
         <div id="stage-rec">
           <p class="sh-sheet-hint">Hold the phone near the sound. Up to {MAX_SECONDS} seconds.<i>Acerca el teléfono al sonido. Hasta {MAX_SECONDS} segundos.</i></p>
+          <p class="sh-askmic" id="askmic">
+            When you tap, your phone will ask to use the microphone: tap <b>Allow</b>.
+            <i>Al tocar, el teléfono pedirá usar el micrófono: toca <b>Permitir</b>.</i>
+          </p>
           <div class="sh-meter" id="meter" aria-hidden="true">
             {Array.from({ length: 14 }, (_, i) => <span class={`m${i % 4}`}></span>)}
           </div>
@@ -240,7 +282,6 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
             </button>
           </div>
           <div class="sh-timer" id="timer">Tap to record · Toca para grabar</div>
-          <p class="sh-err" id="err" hidden></p>
         </div>
 
         <div id="stage-review" hidden>
@@ -250,60 +291,118 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
             <button type="button" class="sh-big sh-big-white" id="redo">↺ Try again · Otra vez</button>
           </div>
         </div>
+
+        <!-- When the microphone cannot be used: why, how to fix it, and the email fallback. -->
+        <div id="stage-nomic" class="sh-nomic" hidden>
+          <p class="sh-nomic-why" id="nomic-why"></p>
+          <p class="sh-nomic-fix" id="nomic-fix"></p>
+          <button type="button" class="sh-big sh-big-white" id="copy-link">Copy this page’s link · Copiar el enlace</button>
+          <div class="sh-plan-b">
+            <b>Or send it by email · O envíalo por correo</b>
+            <ol>
+              <li>Record the sound with your phone’s own app (Voice Memos, Recorder or the camera). <i>Graba el sonido con la app del teléfono (Notas de voz, Grabadora o la cámara).</i></li>
+              <li>Email it to Guillermo. <i>Envíaselo a Guillermo por correo.</i></li>
+            </ol>
+            <div class="sh-addr"><b>{contact}</b><button type="button" class="sh-copy">Copy · Copiar</button></div>
+            <a class="sh-big sh-big-blue" id="mail-fallback" href="#">Write the email · Escribir el correo</a>
+          </div>
+          <button type="button" class="sh-big sh-big-white" id="retry-mic">↺ Try the microphone again · Probar otra vez</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── the gate: terms for grown-ups, first ────────────── -->
+    <div class="sh-gate" id="gate" hidden>
+      <div class="sh-gate-card" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+        <div class="sh-ticket-bar"><span>♪ For grown-ups</span><span>Para adultos</span></div>
+        <div class="sh-gate-body">
+          <div class="sh-gate-project">{grant.project}</div>
+          <h2 class="sh-gate-title" id="gate-title">Before you start</h2>
+          <p class="sh-gate-es">Antes de empezar</p>
+          <p class="sh-gate-lead">
+            Please read this as the grown-up in charge. It takes a minute.
+            <i>Léalo, por favor, como adulto responsable. Es un minuto.</i>
+          </p>
+
+          <ol class="sh-terms">
+            {terms.map(([h, t, hEs, tEs]) => (
+              <li>
+                <b>{h}</b> {t}
+                <span lang="es"><b>{hEs}</b> {tEs}</span>
+              </li>
+            ))}
+          </ol>
+
+          <label class="sh-check">
+            <input type="checkbox" id="chk-adult" />
+            <span>I am 18 or older and the parent or legal guardian of the child using this page.
+              <i>Tengo 18 años o más y soy madre, padre o tutor legal del niño o niña que usa esta página.</i></span>
+          </label>
+          <label class="sh-check">
+            <input type="checkbox" id="chk-agree" />
+            <span>I have read and agree to these terms.
+              <i>He leído y acepto estas condiciones.</i></span>
+          </label>
+
+          <button type="button" class="sh-big sh-big-red" id="agree" disabled>I agree, let’s start · Acepto, empezamos</button>
+          <a class="sh-gate-no" href={`${b}queens-musical-passport/`}>Not now · Ahora no</a>
+          <p class="sh-gate-ver">Terms version {TERMS_VERSION} · November 2026</p>
+        </div>
       </div>
     </div>
   </main>
 
   <style is:global>
-    /* Global on purpose: most of these elements are created by the script,
-       and Astro's scoped styles never reach nodes inserted at runtime. Every
-       selector is namespaced .sh. */
+    /* Global on purpose: most of these elements are created or toggled by the
+       script, and Astro's scoped styles never reach nodes inserted at runtime.
+       Every selector is namespaced .sh, and [hidden] always wins. */
     body.is-bare{background:#F2C230}
     .sh{
       --n:#1F2A3C;--y:#F2C230;--r:#E2563E;--b:#3866D6;--g:#2E9E6B;--cr:#FFFDF5;--mut:#5A6474;
       font-family:'Rubik',system-ui,sans-serif;color:var(--n);
       max-width:620px;margin:0 auto;padding:18px 16px 60px;
     }
+    .sh [hidden]{display:none!important}
     .sh i{font-style:italic;font-weight:500}
     .sh button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
-    /* ticket */
     .sh-ticket{background:var(--cr);border:3px solid var(--n);border-radius:24px;overflow:hidden;box-shadow:6px 6px 0 var(--n)}
-    .sh-ticket-bar{display:flex;justify-content:space-between;background:var(--n);color:var(--y);
+    .sh-ticket-bar{display:flex;justify-content:space-between;gap:10px;background:var(--n);color:var(--y);
       padding:13px 18px;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase}
-    .sh-ticket-body{position:relative;padding:22px 18px 20px}
-    .sh-kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--b)}
-    .sh-title{font-weight:900;font-size:clamp(36px,10.5vw,54px);line-height:.95;letter-spacing:-.02em;margin-top:16px}
-    .sh-title-es{font-style:italic;font-weight:500;font-size:20px;color:var(--mut);margin-top:6px}
+    .sh-art{background:#FFFDF5;border-bottom:3px solid var(--n)}
+    .sh-art img{display:block;width:100%;height:auto;mix-blend-mode:multiply}
+    .sh-ticket-body{padding:20px 18px 20px}
+    .sh-project{font-weight:900;font-size:clamp(40px,11.5vw,62px);line-height:.95;letter-spacing:-.025em}
+    .sh-project-es{font-style:italic;font-weight:500;font-size:19px;color:var(--b);margin-top:8px}
+    .sh-title{font-weight:900;font-size:clamp(26px,7.4vw,36px);line-height:1;letter-spacing:-.015em;margin-top:20px}
+    .sh-title-es{font-style:italic;font-weight:500;font-size:18px;color:var(--mut);margin-top:5px}
     .sh-lead{font-size:17px;line-height:1.45;margin-top:14px;font-weight:500}
     .sh-lead.sh-es{font-style:italic;color:var(--mut);font-size:15.5px;margin-top:6px}
     .sh-lead b{background:var(--y);padding:0 4px;border-radius:4px}
 
-    .sh-stickers{display:flex;gap:12px;align-items:center;margin-top:14px}
+    .sh-stickers{display:flex;gap:12px;align-items:center;margin-top:16px}
     .sh-sticker{display:grid;place-items:center;align-content:center;text-align:center;font-weight:900;font-size:14px;line-height:1.1;
       color:#fff;border:3px solid #fff;box-shadow:0 0 0 3px var(--n)}
     .sh-sticker i{display:block;font-size:11.5px;font-weight:700;margin-top:2px}
-    .sh-sticker-red{width:96px;height:96px;border-radius:50%;background:var(--r);transform:rotate(-8deg)}
-    .sh-sticker-blue{min-height:64px;padding:8px 14px;border-radius:16px;background:var(--b);transform:rotate(5deg)}
+    .sh-sticker-red{width:92px;height:92px;border-radius:50%;background:var(--r);transform:rotate(-8deg)}
+    .sh-sticker-blue{min-height:62px;padding:8px 14px;border-radius:16px;background:var(--b);transform:rotate(5deg)}
 
     .sh-rule{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
     @media(max-width:440px){.sh-rule{grid-template-columns:1fr}}
     .sh-rule-i{display:flex;gap:10px;align-items:center;background:#fff;border:2.5px solid var(--n);border-radius:16px;padding:10px}
     .sh-rule-i b{display:block;font-size:14px;line-height:1.15}
     .sh-rule-i i{display:block;font-size:12.5px;color:var(--mut)}
-    .sh-rule-ico{flex:0 0 40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:var(--y);border:2.5px solid var(--n)}
+    .sh-rule-ico{flex:0 0 40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--y);border:2.5px solid var(--n)}
+    .sh-rule-ico svg{width:30px;height:30px}
     .sh-rule-mic{background:var(--r)}
     .sh-rule-mic svg{width:24px;height:24px}
-    .sh-rule-ico svg{width:30px;height:30px}
 
-    /* cards */
     .sh-card{background:var(--cr);border:3px solid var(--n);border-radius:24px;padding:18px 16px 20px;margin-top:22px;box-shadow:6px 6px 0 var(--n);scroll-margin-top:16px}
     .sh-step{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-weight:800;font-size:21px;line-height:1.15}
     .sh-step span{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--n);color:var(--y);font-size:17px}
     .sh-step i{flex-basis:100%;padding-left:44px;font-size:15px;color:var(--mut)}
     .sh-hint{font-size:14px;font-weight:600;color:var(--mut);margin-top:8px;padding-left:44px}
 
-    /* neighbourhoods */
     .sh-hoods{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
     .sh-hood{border:2.5px solid var(--n);border-radius:999px;background:#fff;padding:9px 14px;font-weight:700;font-size:15px}
     .sh-hood[aria-checked=true].c0{background:var(--r);color:#fff}
@@ -312,19 +411,17 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
     .sh-hood[aria-checked=true].c3{background:var(--y)}
     .sh-hood[aria-checked=true]{box-shadow:3px 3px 0 var(--n);transform:translate(-1px,-1px)}
 
-    /* sound cards */
     .sh-sounds{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-    .sh-snd{display:grid;justify-items:center;gap:2px;background:#fff;border:2.5px solid var(--n);border-radius:18px;padding:12px 4px 10px;
+    .sh-snd{position:relative;display:grid;justify-items:center;gap:2px;background:#fff;border:2.5px solid var(--n);border-radius:18px;padding:12px 4px 10px;
       box-shadow:3px 3px 0 var(--n);transition:transform .08s}
     .sh-snd:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--n)}
     .sh-snd svg{width:58px;height:58px}
     .sh-snd b{font-size:14px;font-weight:800;line-height:1.1;margin-top:4px;text-align:center}
     .sh-snd i{font-size:12px;color:var(--mut);text-align:center;line-height:1.1}
-    .sh-snd{position:relative}
     .sh-snd.has{background:#FFF3C4}
-    .sh-snd.has::after{content:"✓";position:absolute;top:-9px;right:-9px;width:28px;height:28px;border-radius:50%;background:var(--g);color:#fff;border:2.5px solid var(--n);display:grid;place-items:center;font-weight:900;font-size:14px}
+    .sh-snd.has::after{content:"✓";position:absolute;top:-9px;right:-9px;width:28px;height:28px;border-radius:50%;
+      background:var(--g);color:#fff;border:2.5px solid var(--n);display:grid;place-items:center;font-weight:900;font-size:14px}
 
-    /* stamps */
     .sh-empty{margin-top:12px;font-weight:600;font-size:15px}
     .sh-empty i{display:block;color:var(--mut);font-size:14px}
     .sh-stamps{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
@@ -334,36 +431,42 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
     .sh-stamp svg{width:54px;height:54px}
     .sh-stamp b{font-size:14px;font-weight:800;line-height:1.1}
     .sh-stamp small{font-size:12px;color:var(--mut);font-weight:600}
+    .sh-stamp.sent{border-style:solid;border-color:var(--g);background:#EAF7F0}
+    .sh-sent{position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-4deg);background:var(--g);color:#fff;
+      border:2.5px solid var(--n);border-radius:999px;padding:2px 9px;font-weight:900;font-size:11px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
     .sh-stamp-btns{display:flex;gap:6px;margin-top:6px}
     .sh-stamp-btns button{width:42px;height:38px;border-radius:12px;border:2.5px solid var(--n);background:var(--y);font-weight:900;font-size:15px}
     .sh-stamp-btns .del{background:#fff;font-size:13px}
 
-    /* big buttons */
     .sh-big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;border-radius:18px;border:3px solid var(--n);
-      font-weight:800;font-size:17px;padding:12px 14px;box-shadow:4px 4px 0 var(--n);transition:transform .08s}
+      font-weight:800;font-size:17px;padding:12px 14px;box-shadow:4px 4px 0 var(--n);transition:transform .08s;text-align:center;text-decoration:none}
     .sh-big:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--n)}
-    .sh-big svg{width:22px;height:22px;flex:0 0 22px}
-    .sh-big-blue svg path{fill:#fff}
+    .sh-big:disabled{opacity:.55;box-shadow:none;cursor:default}
+    .sh-big svg{width:22px;height:22px;flex:0 0 22px;display:block}
     .sh-big-blue{background:var(--b);color:#fff!important;margin-top:14px}
+    .sh-big-blue svg path{fill:#fff}
     .sh-big-green{background:var(--g);color:#fff!important}
     .sh-big-red{background:var(--r);color:#fff!important}
     .sh-big-white{background:#fff}
-    .sh-to{font-size:14px;font-weight:600;margin-top:14px;line-height:1.5}
-    .sh-addr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}
-    .sh-addr b{font-size:16px;background:#fff;border:2px solid var(--n);border-radius:10px;padding:5px 9px}
+    .sh-to{font-size:15px;font-weight:700;margin-top:12px;line-height:1.45}
+    .sh-to i{display:block;color:var(--mut);font-size:14px}
+    .sh-progress{margin-top:12px;height:14px;border:2.5px solid var(--n);border-radius:999px;background:#fff;overflow:hidden}
+    .sh-progress span{display:block;height:100%;width:0;background:var(--g);transition:width .3s}
+    .sh-addr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+    .sh-addr b{font-size:16px;background:#fff;border:2px solid var(--n);border-radius:10px;padding:5px 9px;word-break:break-all}
     .sh-addr button{border:2px solid var(--n);border-radius:10px;background:var(--y);font-weight:700;padding:6px 10px;font-size:13px}
-    .sh-thanks{margin-top:14px;background:var(--g);color:#fff;border-radius:16px;padding:12px 14px;font-weight:700;font-size:16px}
+    .sh-thanks{margin-top:14px;background:var(--g);color:#fff;border:2.5px solid var(--n);border-radius:16px;padding:12px 14px;font-weight:700;font-size:16px}
     .sh-thanks i{display:block;font-size:14px;margin-top:3px}
-    .sh-grown{margin-top:20px;padding-top:14px;border-top:2.5px dashed #CBBF95;font-size:13px;line-height:1.5;font-weight:500}
-    .sh-grown p{margin-top:6px}.sh-grown p[lang=es]{color:var(--mut)}
+    .sh-fail{margin-top:14px;background:#FDE3DE;border:2.5px solid var(--r);border-radius:16px;padding:12px 14px;font-size:14px;font-weight:600;display:grid;gap:8px}
+    .sh-fail i{display:block;color:var(--mut)}
+    .sh-small{margin-top:18px;font-size:13.5px}
+    .sh-linkbtn{background:none;border:0;padding:0;font-weight:700;text-decoration:underline}
 
     .sh-credit{margin-top:30px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:var(--cr);border:3px solid var(--n);border-radius:20px;padding:14px}
     .sh-credit img{display:block;height:62px;width:auto}
     .sh-credit p{font-size:12px;line-height:1.45;font-weight:500}
     .sh-about{grid-column:1/-1;font-weight:700;font-size:14px;text-decoration:underline}
 
-    /* recorder sheet */
-    .sh-sheet-wrap[hidden]{display:none}
     .sh-sheet-wrap{position:fixed;inset:0;z-index:100}
     .sh-backdrop{position:absolute;inset:0;background:rgba(31,42,60,.55)}
     .sh-sheet{position:absolute;left:0;right:0;bottom:0;max-width:620px;margin:0 auto;background:var(--cr);border:3px solid var(--n);border-bottom:0;
@@ -375,7 +478,8 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
     .sh-sheet-title{font-weight:900;font-size:28px;line-height:1.05;margin-top:6px}
     .sh-sheet-es{font-style:italic;font-weight:500;color:var(--mut);font-size:17px}
     .sh-sheet-hint{font-weight:600;font-size:14.5px;margin-top:12px}
-    .sh-sheet-hint i{display:block;color:var(--mut);font-size:13.5px}
+    .sh-sheet-hint i,.sh-askmic i{display:block;color:var(--mut);font-size:13.5px}
+    .sh-askmic{margin:12px auto 0;max-width:34ch;background:#FFF3C4;border:2px solid var(--n);border-radius:14px;padding:9px 12px;font-size:14px;font-weight:600}
 
     .sh-meter{display:flex;justify-content:center;align-items:flex-end;gap:5px;height:56px;margin-top:14px}
     .sh-meter span{width:12px;height:6px;border-radius:6px;border:2px solid var(--n);transition:height .06s}
@@ -391,93 +495,185 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
     .sh-rec .stop{width:40px;height:40px;border-radius:8px;background:#fff;display:block}
     @keyframes pulse{50%{transform:scale(1.06)}}
     .sh-timer{font-weight:800;font-size:18px;margin-top:12px}
-    .sh-err{margin-top:12px;background:#FDE3DE;border:2px solid var(--r);border-radius:12px;padding:10px;font-weight:600;font-size:14px}
 
     #stage-review{margin-top:20px;display:grid;gap:12px}
-    #stage-review[hidden]{display:none}
     .sh-review-btns{display:grid;gap:10px}
+
+    .sh-nomic{margin-top:16px;text-align:left;display:grid;gap:12px}
+    .sh-nomic-why{background:#FDE3DE;border:2.5px solid var(--r);border-radius:14px;padding:11px 13px;font-weight:700;font-size:15px;line-height:1.4}
+    .sh-nomic-why i,.sh-nomic-fix i{display:block;font-weight:500;color:var(--mut);margin-top:3px}
+    .sh-nomic-fix{font-size:14px;font-weight:600;line-height:1.45}
+    .sh-plan-b{background:#fff;border:2.5px solid var(--n);border-radius:16px;padding:13px}
+    .sh-plan-b > b{display:block;font-size:16px;font-weight:800}
+    .sh-plan-b ol{margin:10px 0 0 20px;padding:0;display:grid;gap:7px;font-size:14px;font-weight:600}
+    .sh-plan-b li i{display:block;color:var(--mut)}
+
+    .sh-gate{position:fixed;inset:0;z-index:200;background:#F2C230;overflow:auto;-webkit-overflow-scrolling:touch;padding:18px 16px 40px}
+    .sh-gate-card{max-width:620px;margin:0 auto;background:var(--cr);border:3px solid var(--n);border-radius:24px;overflow:hidden;box-shadow:6px 6px 0 var(--n)}
+    .sh-gate-body{padding:20px 18px 22px}
+    .sh-gate-project{font-weight:900;font-size:clamp(30px,8.6vw,44px);line-height:.98;letter-spacing:-.02em}
+    .sh-gate-title{font-weight:900;font-size:26px;margin-top:16px}
+    .sh-gate-es{font-style:italic;font-weight:500;color:var(--mut);font-size:17px}
+    .sh-gate-lead{font-weight:600;font-size:15px;margin-top:10px;line-height:1.45}
+    .sh-gate-lead i{display:block;color:var(--mut)}
+    .sh-terms{margin:16px 0 0 22px;padding:0;display:grid;gap:12px;font-size:14px;line-height:1.5}
+    .sh-terms b{font-weight:800}
+    .sh-terms span{display:block;margin-top:4px;color:var(--mut)}
+    .sh-check{display:flex;gap:12px;align-items:flex-start;margin-top:16px;background:#fff;border:2.5px solid var(--n);border-radius:14px;padding:12px;font-size:14.5px;font-weight:700;line-height:1.4;cursor:pointer}
+    .sh-check input{flex:0 0 26px;width:26px;height:26px;margin:0;accent-color:var(--r)}
+    .sh-check i{display:block;font-weight:500;color:var(--mut);margin-top:3px}
+    #agree{margin-top:18px}
+    .sh-gate-no{display:block;text-align:center;margin-top:14px;font-weight:700;text-decoration:underline}
+    .sh-gate-ver{text-align:center;font-size:12px;color:var(--mut);margin-top:12px}
   </style>
 
   <script>
     const root = document.getElementById('sh');
     const CONTACT = root.dataset.contact;
     const MAX = Number(root.dataset.max);
+    const TERMS = root.dataset.terms;
+    const PROJECT = root.dataset.project;
     const ICONS = JSON.parse(root.dataset.icons);
     const SOUNDS = Object.fromEntries(JSON.parse(root.dataset.sounds).map(([k, en, es]) => [k, { en, es }]));
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    };
 
-    // ── storage: IndexedDB on this phone, nowhere else ──────
-    const DB = 'qmp-sound-hunt', STORE = 'recs';
-    let memory = [];                  // fallback if IndexedDB is unavailable
+    // ── the gate: nothing works until a grown-up has agreed ─
+    const gate = $('#gate');
+    function openGate() { gate.hidden = false; document.body.style.overflow = 'hidden'; gate.scrollTop = 0; }
+    function closeGate() { gate.hidden = true; document.body.style.overflow = ''; }
+    const agreeBtn = $('#agree');
+    const syncAgree = () => { agreeBtn.disabled = !($('#chk-adult').checked && $('#chk-agree').checked); };
+    $('#chk-adult').addEventListener('change', syncAgree);
+    $('#chk-agree').addEventListener('change', syncAgree);
+    agreeBtn.addEventListener('click', () => {
+      if (agreeBtn.disabled) return;
+      store.set('qmp-terms', `${TERMS}|${new Date().toISOString()}`);
+      closeGate();
+    });
+    $('#reopen-terms').addEventListener('click', openGate);
+    const termsRecord = () => (store.get('qmp-terms') || '').split('|');
+    if (termsRecord()[0] !== TERMS) openGate();
+
+    // ── storage: IndexedDB on this phone ────────────────────
+    const DB = 'qmp-sound-hunt', OS = 'recs';
+    let memory = [];
     function openDb() {
       return new Promise((res, rej) => {
         const r = indexedDB.open(DB, 1);
-        r.onupgradeneeded = () => r.result.createObjectStore(STORE, { keyPath: 'id' });
-        r.onsuccess = () => res(r.result);
-        r.onerror = () => rej(r.error);
+        r.onupgradeneeded = () => r.result.createObjectStore(OS, { keyPath: 'id' });
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
       });
     }
     async function dbAll() {
-      try {
-        const db = await openDb();
-        return await new Promise((res, rej) => {
-          const q = db.transaction(STORE).objectStore(STORE).getAll();
-          q.onsuccess = () => res(q.result || []); q.onerror = () => rej(q.error);
-        });
+      try { const db = await openDb();
+        return await new Promise((res, rej) => { const q = db.transaction(OS).objectStore(OS).getAll();
+          q.onsuccess = () => res(q.result || []); q.onerror = () => rej(q.error); });
       } catch (e) { return memory; }
     }
     async function dbPut(rec) {
-      try {
-        const db = await openDb();
-        await new Promise((res, rej) => {
-          const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put(rec);
-          tx.oncomplete = res; tx.onerror = () => rej(tx.error);
-        });
-      } catch (e) { memory.push(rec); }
+      try { const db = await openDb();
+        await new Promise((res, rej) => { const tx = db.transaction(OS, 'readwrite'); tx.objectStore(OS).put(rec);
+          tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
+      } catch (e) { memory = memory.filter((r) => r.id !== rec.id).concat(rec); }
     }
     async function dbDel(id) {
-      try {
-        const db = await openDb();
-        await new Promise((res, rej) => {
-          const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).delete(id);
-          tx.oncomplete = res; tx.onerror = () => rej(tx.error);
-        });
+      try { const db = await openDb();
+        await new Promise((res, rej) => { const tx = db.transaction(OS, 'readwrite'); tx.objectStore(OS).delete(id);
+          tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
       } catch (e) { memory = memory.filter((r) => r.id !== id); }
     }
 
     // ── neighbourhood ───────────────────────────────────────
-    let hood = '';
-    try { hood = localStorage.getItem('qmp-hood') || ''; } catch (e) {}
+    let hood = store.get('qmp-hood') || '';
     $$('.sh-hood').forEach((b) => {
       b.setAttribute('aria-checked', String(b.dataset.hood === hood));
       b.addEventListener('click', () => {
         hood = b.dataset.hood;
         $$('.sh-hood').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
-        try { localStorage.setItem('qmp-hood', hood); } catch (e) {}
+        store.set('qmp-hood', hood);
       });
     });
 
-    // ── recorder ────────────────────────────────────────────
-    // Apple devices record AAC in an .m4a, which plays everywhere; Chrome on
-    // Android records Opus in .webm. The first type the phone supports wins.
-    const TYPES = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
+    // ── microphone: explain first, then ask, then say what went wrong ──
+    // Brave on iPhone refuses websites the microphone without ever showing a
+    // prompt; in-app browsers (WhatsApp, Instagram) may have no microphone at
+    // all; a site blocked once is refused silently. Each gets its own message.
+    const UA = navigator.userAgent;
+    const isIOS = /iP(hone|ad|od)/.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/.test(UA);
+    const inApp = /FBAN|FBAV|Instagram|Line\/|WhatsApp|Snapchat|TikTok|; wv\)/.test(UA);
+    let isBrave = false;
+    try { if (navigator.brave && navigator.brave.isBrave) navigator.brave.isBrave().then((v) => { isBrave = !!v; }); } catch (e) {}
     const canRecord = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+
+    function fixFor(kind) {
+      if (isBrave && isIOS) return [
+        'Brave on iPhone doesn’t let websites use the microphone, and it doesn’t ask. Copy the link below and open this page in Safari.',
+        'Brave en iPhone no deja a las webs usar el micrófono, y no lo pregunta. Copia el enlace de abajo y abre esta página en Safari.'];
+      if (kind === 'unsupported') return inApp
+        ? ['Open this page in Safari or Chrome: tap ··· or the share button and choose “Open in browser”.', 'Abre esta página en Safari o Chrome: toca ··· o compartir y elige «Abrir en el navegador».']
+        : ['Open this page in Safari or Chrome.', 'Abre esta página en Safari o Chrome.'];
+      if (kind === 'blocked') {
+        if (isIOS) return ['On iPhone: in Safari, tap “aA” in the address bar › Website Settings › Microphone › Allow. In Chrome: Settings app › Chrome › Microphone on.',
+                           'En iPhone: en Safari, toca «aA» en la barra de dirección › Ajustes del sitio web › Micrófono › Permitir. En Chrome: app Ajustes › Chrome › Micrófono activado.'];
+        if (isAndroid) return ['On Android: tap the icon left of the address › Permissions › Microphone › Allow, then try again.',
+                               'En Android: toca el icono a la izquierda de la dirección › Permisos › Micrófono › Permitir, y prueba otra vez.'];
+        return ['Allow the microphone for this site in your browser’s settings, then try again.', 'Permite el micrófono para esta web en los ajustes del navegador y prueba otra vez.'];
+      }
+      if (kind === 'busy') return ['Close any call or app that is using the microphone, then try again.', 'Cierra cualquier llamada o app que esté usando el micrófono y prueba otra vez.'];
+      if (kind === 'none') return ['This device does not seem to have a microphone.', 'Este aparato no parece tener micrófono.'];
+      return ['Try again, or send the sound by email.', 'Prueba otra vez o envía el sonido por correo.'];
+    }
+    const WHY = {
+      unsupported: ['This browser can’t use the microphone.', 'Este navegador no puede usar el micrófono.'],
+      blocked: ['The microphone is blocked for this page.', 'El micrófono está bloqueado para esta página.'],
+      busy: ['The microphone is busy.', 'El micrófono está ocupado.'],
+      none: ['No microphone found.', 'No se encontró micrófono.'],
+      other: ['The microphone didn’t start.', 'El micrófono no arrancó.'],
+    };
+    function showNoMic(kind, detail) {
+      const [w, wEs] = WHY[kind] || WHY.other;
+      const [f, fEs] = fixFor(kind);
+      $('#nomic-why').innerHTML = `${w}<i>${wEs}</i>` + (detail ? `<i style="font-size:11px">(${detail})</i>` : '');
+      $('#nomic-fix').innerHTML = `${f}<i>${fEs}</i>`;
+      $('#copy-link').hidden = !(isBrave || inApp || kind === 'unsupported');
+      const s = SOUNDS[current] || SOUNDS.mystery;
+      const place = hood ? hood.replace(' · Otro', '') : '';
+      const subject = `Sound Hunt: ${s.en}${place ? ' · ' + place : ''}`;
+      const body = `Hi Guillermo! Here is my sound for ${PROJECT}.\n¡Hola Guillermo! Aquí está mi sonido para el Pasaporte Musical de Queens.\n\nSound · Sonido: ${s.en} · ${s.es}\nNeighborhood · Barrio: ${place || '—'}\n\n(Attach your recording · Adjunta tu grabación)\n`;
+      $('#mail-fallback').href = `mailto:${CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      $('#stage-rec').hidden = true; $('#stage-review').hidden = true; $('#stage-nomic').hidden = false;
+    }
+    async function micState() {
+      try { const p = await navigator.permissions.query({ name: 'microphone' }); return p.state; } catch (e) { return 'unknown'; }
+    }
+
+    // ── recorder ────────────────────────────────────────────
+    const TYPES = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
     let current = null, stream = null, recorder = null, chunks = [], meterCtx = null, raf = 0, stopT = 0, t0 = 0;
     let draft = null, draftUrl = null, player = null;
     const bars = $$('#meter span');
     const ring = $('#ring');
+    const MIC_FACE = $('#rec-face').innerHTML;
 
-    function openSheet(key) {
+    async function openSheet(key) {
       current = key;
       $('#rec-ico').innerHTML = ICONS[key];
       $('#rec-title').textContent = SOUNDS[key].en;
       $('#rec-title-es').textContent = SOUNDS[key].es;
-      $('#stage-rec').hidden = false; $('#stage-review').hidden = true; $('#err').hidden = true;
+      $('#stage-rec').hidden = false; $('#stage-review').hidden = true; $('#stage-nomic').hidden = true;
       resetRecUi();
-      if (!canRecord) showErr('This browser can’t record sound. Try Safari or Chrome. · Este navegador no puede grabar. Prueba con Safari o Chrome.');
       $('#sheet').hidden = false;
       document.body.style.overflow = 'hidden';
+      if (!canRecord) { showNoMic('unsupported'); return; }
+      const state = await micState();
+      $('#askmic').hidden = state === 'granted';
+      if (state === 'denied') showNoMic('blocked');
     }
     function closeSheet() {
       stopAll(true);
@@ -485,15 +681,13 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
       document.body.style.overflow = '';
       dropDraft();
     }
-    function showErr(msg) { const e = $('#err'); e.textContent = msg; e.hidden = false; }
     function resetRecUi() {
       $('#rec').classList.remove('on');
-      $('#rec-face').innerHTML = $('#rec-face').dataset.mic || $('#rec-face').innerHTML;
+      $('#rec-face').innerHTML = MIC_FACE;
       $('#timer').textContent = 'Tap to record · Toca para grabar';
       ring.style.strokeDashoffset = '339.3';
       bars.forEach((b) => { b.style.height = '6px'; });
     }
-    $('#rec-face').dataset.mic = $('#rec-face').innerHTML;
 
     async function startRec() {
       try {
@@ -501,9 +695,14 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
           audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
         });
       } catch (e) {
-        showErr('We need the microphone. Ask a grown-up to allow it. · Necesitamos el micrófono. Pide a un adulto que lo permita.');
+        const n = (e && e.name) || 'Error';
+        const kind = /NotAllowed|PermissionDenied|Security/.test(n) ? 'blocked'
+                   : /NotFound|DevicesNotFound/.test(n) ? 'none'
+                   : /NotReadable|TrackStart|Abort/.test(n) ? 'busy' : 'other';
+        showNoMic(kind, n);
         return;
       }
+      $('#askmic').hidden = true;
       const type = TYPES.find((t) => window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t));
       try { recorder = new MediaRecorder(stream, type ? { mimeType: type } : undefined); }
       catch (e) { recorder = new MediaRecorder(stream); }
@@ -512,7 +711,6 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
       recorder.onstop = finished;
       recorder.start(250);
       t0 = performance.now();
-
       try {
         const AC = window.AudioContext || window.webkitAudioContext;
         meterCtx = new AC();
@@ -522,12 +720,10 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
         const tick = () => {
           an.getByteFrequencyData(data);
           bars.forEach((b, i) => { const v = data[Math.min(data.length - 1, i + 1)] / 255; b.style.height = `${6 + v * 50}px`; });
-          paint();
-          raf = requestAnimationFrame(tick);
+          paint(); raf = requestAnimationFrame(tick);
         };
         tick();
       } catch (e) { const tick = () => { paint(); raf = requestAnimationFrame(tick); }; tick(); }
-
       $('#rec').classList.add('on');
       $('#rec-face').innerHTML = '<span class="stop"></span>';
       stopT = setTimeout(stopRec, MAX * 1000);
@@ -539,10 +735,7 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
     }
     function stopAll(discard) {
       clearTimeout(stopT); cancelAnimationFrame(raf);
-      if (recorder && recorder.state !== 'inactive') {
-        if (discard) recorder.onstop = null;
-        recorder.stop();
-      }
+      if (recorder && recorder.state !== 'inactive') { if (discard) recorder.onstop = null; recorder.stop(); }
       if (stream) stream.getTracks().forEach((t) => t.stop());
       if (meterCtx) { try { meterCtx.close(); } catch (e) {} }
       stream = null; meterCtx = null;
@@ -563,8 +756,16 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
     }
 
     $('#rec').addEventListener('click', () => {
-      if (!canRecord) return;
+      if (!canRecord) { showNoMic('unsupported'); return; }
       if (recorder && recorder.state === 'recording') stopRec(); else startRec();
+    });
+    $('#retry-mic').addEventListener('click', () => {
+      $('#stage-nomic').hidden = true; $('#stage-rec').hidden = false; resetRecUi();
+      if (!canRecord) showNoMic('unsupported'); else startRec();
+    });
+    $('#copy-link').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(location.href.split('#')[0]); $('#copy-link').textContent = '✓ Link copied · Enlace copiado'; }
+      catch (e) { prompt('Link', location.href.split('#')[0]); }
     });
     $('#play').addEventListener('click', () => {
       if (!draftUrl) return;
@@ -578,15 +779,14 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
       if (!draft) return;
       const ext = draft.type.includes('mp4') ? 'm4a' : draft.type.includes('ogg') ? 'ogg' : 'webm';
       const place = (hood && !hood.startsWith('Other')) ? hood.toLowerCase().replace(/[^a-z]+/g, '-') : 'queens';
-      const stamp = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '');
-      const rec = {
+      const when = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '');
+      await dbPut({
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-        sound: current, hood: hood || '', blob: draft.blob, type: draft.type, dur: draft.dur,
-        name: `queens-musical-passport_${place}_${current}_${stamp}.${ext}`,
-      };
-      await dbPut(rec);
-      closeSheet();
-      render();
+        sound: current, hood: hood || '', blob: draft.blob, type: draft.type, dur: draft.dur, sent: false,
+        name: `queens-musical-passport_${place}_${current}_${when}.${ext}`,
+      });
+      closeSheet(); render();
+      $('#thanks').hidden = true; $('#fail').hidden = true;
       setTimeout(() => $('#mine').scrollIntoView({ behavior: 'smooth' }), 120);
     });
     $('#close').addEventListener('click', closeSheet);
@@ -602,10 +802,12 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
       $$('.sh-snd').forEach((b) => b.classList.toggle('has', have.has(b.dataset.snd)));
       const ul = $('#stamps'); ul.innerHTML = '';
       recs.forEach((r) => {
-        const li = document.createElement('li'); li.className = 'sh-stamp';
+        const s = SOUNDS[r.sound] || SOUNDS.mystery;
+        const li = document.createElement('li'); li.className = 'sh-stamp' + (r.sent ? ' sent' : '');
         li.innerHTML =
+          (r.sent ? '<span class="sh-sent">Sent · Enviado</span>' : '') +
           `<svg viewBox="0 0 64 64" aria-hidden="true">${ICONS[r.sound] || ICONS.mystery}</svg>` +
-          `<b>${(SOUNDS[r.sound] || SOUNDS.mystery).en}</b>` +
+          `<b>${s.en}</b>` +
           `<small>${r.hood ? r.hood.replace(' · Otro', '') + ' · ' : ''}${Math.max(1, Math.round(r.dur))}s</small>` +
           `<div class="sh-stamp-btns"><button type="button" class="play" aria-label="Listen">▶</button>` +
           `<button type="button" class="del" aria-label="Delete">✕</button></div>`;
@@ -620,40 +822,107 @@ const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" widt
         });
         ul.appendChild(li);
       });
+      const pending = recs.filter((r) => !r.sent).length;
+      $('#send-label').textContent = pending
+        ? `Send ${pending} sound${pending === 1 ? '' : 's'} · Enviar ${pending} sonido${pending === 1 ? '' : 's'}`
+        : 'Send my sounds · Enviar mis sonidos';
       return recs;
     }
 
-    // ── send ────────────────────────────────────────────────
-    // The phone's own share sheet carries the files to Mail, WhatsApp or
-    // Messages. Where a browser cannot share files, they are downloaded instead.
-    $('#send-btn').addEventListener('click', async () => {
-      const recs = await dbAll();
-      if (!recs.length) { $('#mine').scrollIntoView({ behavior: 'smooth' }); return; }
-      const asFiles = (alt) => recs.map((r) => {
-        const t = alt && r.type.includes('mp4') ? 'audio/x-m4a' : r.type.split(';')[0];
-        return new File([r.blob], r.name, { type: t });
-      });
-      for (const files of [asFiles(false), asFiles(true)]) {
+    // ── send: a real form post, one email per sound ─────────
+    // Each recording goes as an ordinary multipart form to FormSubmit, which
+    // emails it to CONTACT as an attachment. A hidden iframe receives the
+    // reply so the page never leaves. FormSubmit only redirects to _next, a
+    // page on this site, once the email has gone out; if the frame shows
+    // anything else (FormSubmit's own pages: activation pending, an error) it
+    // is on another origin and cannot be read, and that counts as not sent.
+    // The email also records which version of the terms the grown-
+    // up accepted, and when: that is Guillermo's evidence of permission.
+    const ENDPOINT = `https://formsubmit.co/${CONTACT}`;
+    const NEXT = new URL('sent/', location.href.split(/[?#]/)[0]).href;
+    function postOne(rec) {
+      return new Promise((resolve) => {
+        if (typeof DataTransfer === 'undefined') { resolve(false); return; }
+        const name = `fs-${rec.id}`;
+        const frame = document.createElement('iframe');
+        frame.name = name; frame.hidden = true; frame.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(frame);
+        const form = document.createElement('form');
+        form.action = ENDPOINT; form.method = 'POST'; form.enctype = 'multipart/form-data'; form.target = name; form.hidden = true;
+        const s = SOUNDS[rec.sound] || SOUNDS.mystery;
+        const place = rec.hood ? rec.hood.replace(' · Otro', '') : 'Not given';
+        const [ver, at] = termsRecord();
+        const fields = {
+          _subject: `Sound Hunt · ${s.en} · ${place}`,
+          _captcha: 'false',
+          _template: 'table',
+          _next: NEXT,
+          Project: PROJECT,
+          Sound: `${s.en} · ${s.es}`,
+          Neighborhood: place,
+          'Length (s)': String(Math.max(1, Math.round(rec.dur))),
+          'Recorded file': rec.name,
+          'Terms accepted': `Version ${ver || '?'} on ${at || '?'}, by a grown-up who confirmed they are 18+ and the child's parent or guardian`,
+        };
+        for (const [k, v] of Object.entries(fields)) {
+          const i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; form.appendChild(i);
+        }
         try {
-          if (navigator.canShare && navigator.canShare({ files })) {
-            await navigator.share({ files, title: 'Sounds for Guillermo Laporta',
-              text: `For ${CONTACT} · ${recs.length} sound${recs.length === 1 ? '' : 's'} for The Queens Musical Passport` });
-            $('#thanks').hidden = false;
-            return;
-          }
-        } catch (e) { if (e && e.name === 'AbortError') return; }
+          const dt = new DataTransfer();
+          dt.items.add(new File([rec.blob], rec.name, { type: rec.type.split(';')[0] }));
+          const fi = document.createElement('input'); fi.type = 'file'; fi.name = 'attachment'; fi.files = dt.files;
+          form.appendChild(fi);
+        } catch (e) { frame.remove(); resolve(false); return; }
+        document.body.appendChild(form);
+        let done = false;
+        const finish = (ok) => { if (done) return; done = true; clearTimeout(timer); setTimeout(() => { form.remove(); frame.remove(); }, 1500); resolve(ok); };
+        const timer = setTimeout(() => finish(false), 90000);
+        frame.addEventListener('load', () => {
+          let href;
+          try { href = frame.contentWindow.location.href; } catch (e) { finish(false); return; }
+          if (href === 'about:blank') return;          // the empty frame, before the post
+          finish(href.startsWith(NEXT));
+        });
+        form.submit();
+      });
+    }
+
+    let sending = false;
+    $('#send-btn').addEventListener('click', async () => {
+      if (sending) return;
+      const recs = (await dbAll()).filter((r) => !r.sent).sort((a, b) => a.id.localeCompare(b.id));
+      if (!recs.length) { $('#mine').scrollIntoView({ behavior: 'smooth' }); return; }
+      if (termsRecord()[0] !== TERMS) { openGate(); return; }
+      if (navigator.onLine === false) { $('#fail').hidden = false; return; }
+      sending = true;
+      const btn = $('#send-btn'); btn.disabled = true;
+      $('#thanks').hidden = true; $('#fail').hidden = true; $('#progress').hidden = false;
+      let ok = 0;
+      for (let i = 0; i < recs.length; i++) {
+        $('#send-label').textContent = `Sending ${i + 1} of ${recs.length}… · Enviando ${i + 1} de ${recs.length}…`;
+        $('#progress-bar').style.width = `${(i / recs.length) * 100}%`;
+        if (await postOne(recs[i])) { recs[i].sent = true; await dbPut(recs[i]); ok++; }
+        else break;
       }
-      for (const r of recs) {
+      $('#progress-bar').style.width = '100%';
+      setTimeout(() => { $('#progress').hidden = true; }, 600);
+      btn.disabled = false; sending = false;
+      await render();
+      if (ok === recs.length) $('#thanks').hidden = false; else $('#fail').hidden = false;
+    });
+
+    $('#save-all').addEventListener('click', async () => {
+      const recs = await dbAll();
+      for (const r of recs.filter((x) => !x.sent)) {
         const a = document.createElement('a'); a.href = URL.createObjectURL(r.blob); a.download = r.name;
         document.body.appendChild(a); a.click(); a.remove();
         await new Promise((ok) => setTimeout(ok, 400));
       }
-      alert(`Your sounds were saved. Email them to ${CONTACT} · Tus sonidos se guardaron. Envíalos por correo a ${CONTACT}`);
     });
-    $('#copy').addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(CONTACT); $('#copy').textContent = '✓ Copied · Copiado'; }
+    $$('.sh-copy').forEach((btn) => btn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(CONTACT); btn.textContent = '✓ Copied · Copiado'; }
       catch (e) { prompt('Email', CONTACT); }
-    });
+    }));
 
     render();
   </script>
