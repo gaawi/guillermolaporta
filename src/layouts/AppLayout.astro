@@ -8,7 +8,13 @@ const {
   // Unlisted pages: still reachable by their URL, but kept out of search
   // results and without a canonical pointing at them.
   noindex = false,
+  // A bare page carries none of the site's chrome: no top bar, no mobile pill
+  // nav, no footer. For the children's sound recorder, where a stray tap on
+  // "Catalogue" would throw away whatever a child had just recorded.
+  bare = false,
 } = Astro.props;
+
+const bodyClass = [fullscreen && 'is-fullscreen', bare && 'is-bare'].filter(Boolean).join(' ') || undefined;
 
 const _base = import.meta.env.BASE_URL || '/';
 const b = _base.endsWith('/') ? _base : _base + '/';
@@ -77,6 +83,8 @@ html,body{background:var(--bg);color:var(--ink)}
 body.is-fullscreen{height:100svh;overflow:hidden;display:flex;flex-direction:column}
 body.is-fullscreen>.topbar{flex:0 0 auto}
 body.is-fullscreen>.cover{flex:1 1 auto;min-height:0}
+body.is-bare>.topbar,body.is-bare>.pill-nav,body.is-bare>.footer{display:none!important}
+body.is-bare{padding-bottom:0!important}
 body{font-family:var(--sans);font-size:15px;line-height:1.55;font-weight:400;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;overscroll-behavior-y:none}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit;text-decoration:none}
@@ -354,7 +362,7 @@ img[loading=lazy]{background:var(--bg-warm)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
     </style>
   </head>
-  <body class={fullscreen ? 'is-fullscreen' : undefined}>
+  <body class={bodyClass}>
     <header class="topbar">
       <a href={b} class="brand">
         <span class="brand-name">Guillermo Laporta</span>

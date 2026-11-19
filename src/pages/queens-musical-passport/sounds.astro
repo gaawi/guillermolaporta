@@ -1,0 +1,660 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import { asset } from '../../lib/asset.js';
+import { grant } from '../../data/grant.js';
+
+const _base = import.meta.env.BASE_URL || '/';
+const b = _base.endsWith('/') ? _base : _base + '/';
+
+// The Sound Hunt: after the concert (never during it), children record the
+// sounds of their neighbourhood and send them to Guillermo, who writes new
+// music from them. This is the field-recording part of the original project.
+//
+// Recordings never touch a server. They stay on the phone (in IndexedDB, so
+// closing the page does not lose them) until a grown-up sends them with the
+// phone's own share sheet. The site receives nothing and stores nothing.
+//
+// The icons are drawn here, in the poster's colours, in a flat style. They are
+// not Flaticon's: those need a licence or a visible attribution.
+const contact = 'guillermo@creartbox.nyc';
+const MAX_SECONDS = 15;
+
+const N = '#1F2A3C', Y = '#F2C230', R = '#E2563E', B = '#3866D6', G = '#2E9E6B';
+const LB = '#BFD3FF', OR = '#F28C38', CR = '#FFF6DD', TAN = '#F2B880', PU = '#A98BEA';
+const st = `stroke="${N}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
+const drop = (x, y) => `<path d="M${x} ${y} C${x - 4} ${y + 6} ${x - 4} ${y + 10} ${x} ${y + 10} C${x + 4} ${y + 10} ${x + 4} ${y + 6} ${x} ${y} Z" fill="${B}" ${st}/>`;
+
+const ICONS = {
+  subway: `<path d="M8 57 H56" ${st} fill="none"/><path d="M21 49 L15 57 M43 49 L49 57" ${st} fill="none"/>
+    <rect x="13" y="7" width="38" height="42" rx="10" fill="${B}" ${st}/>
+    <rect x="19" y="13" width="26" height="15" rx="4" fill="${LB}" ${st}/>
+    <rect x="14.5" y="32" width="35" height="5" fill="${R}"/>
+    <circle cx="22" cy="43" r="3.5" fill="${Y}" ${st}/><circle cx="42" cy="43" r="3.5" fill="${Y}" ${st}/>`,
+  birds: `<path d="M27 50 V57 M35 50 V57" ${st} fill="none"/>
+    <path d="M12 38 C12 25 23 18 35 20 C46 22 50 33 46 42 C42 51 20 53 12 38 Z" fill="${Y}" ${st}/>
+    <path d="M20 35 C27 30 34 32 36 39 C29 42 23 42 20 35 Z" fill="${OR}" ${st}/>
+    <circle cx="44" cy="21" r="10" fill="${Y}" ${st}/>
+    <path d="M53 19 L61 22.5 L53 26 Z" fill="${OR}" ${st}/>
+    <circle cx="46" cy="19" r="2.2" fill="${N}"/>`,
+  voices: `<rect x="5" y="8" width="34" height="24" rx="8" fill="${R}" ${st}/>
+    <path d="M13 32 L11 41 L22 32" fill="${R}" ${st}/>
+    <circle cx="14" cy="20" r="2.6" fill="#fff"/><circle cx="22" cy="20" r="2.6" fill="#fff"/><circle cx="30" cy="20" r="2.6" fill="#fff"/>
+    <rect x="25" y="26" width="34" height="24" rx="8" fill="${B}" ${st}/>
+    <path d="M50 50 L53 58 L42 50" fill="${B}" ${st}/>
+    <circle cx="34" cy="38" r="2.6" fill="#fff"/><circle cx="42" cy="38" r="2.6" fill="#fff"/><circle cx="50" cy="38" r="2.6" fill="#fff"/>`,
+  music: `<circle cx="32" cy="32" r="26" fill="${G}" ${st}/>
+    <path d="M25 43 V20 L45 15 V38" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M25 26 L45 21" stroke="#fff" stroke-width="4"/>
+    <ellipse cx="20" cy="43" rx="6" ry="4.6" fill="${Y}" ${st}/><ellipse cx="40" cy="38" rx="6" ry="4.6" fill="${Y}" ${st}/>`,
+  horns: `<path d="M51 13 q4 4 0 8" fill="none" ${st}/><path d="M56 9 q8 8 0 16" fill="none" ${st}/>
+    <path d="M6 42 V33 L15 22 H37 L46 32 H54 a5 5 0 0 1 5 5 V42 Z" fill="${R}" ${st}/>
+    <path d="M18 26 H35 L40 32 H14 Z" fill="${LB}" ${st}/>
+    <circle cx="17" cy="43" r="6.5" fill="${N}"/><circle cx="17" cy="43" r="2.4" fill="#fff"/>
+    <circle cx="47" cy="43" r="6.5" fill="${N}"/><circle cx="47" cy="43" r="2.4" fill="#fff"/>
+    <circle cx="56" cy="37" r="1.8" fill="${Y}"/>`,
+  planes: `<path d="M28 30 L40 12 H47 L41 30 Z" fill="${B}" ${st}/>
+    <path d="M9 30 L5 18 H12 L19 30 Z" fill="${R}" ${st}/>
+    <path d="M5 37 C5 32 10 30 16 30 H50 C57 30 61 33 61 37 C61 41 57 44 50 44 H16 C10 44 5 41 5 37 Z" fill="#fff" ${st}/>
+    <path d="M28 44 L40 58 H47 L41 44 Z" fill="${B}" ${st}/>
+    <circle cx="22" cy="37" r="2.3" fill="${B}"/><circle cx="29" cy="37" r="2.3" fill="${B}"/><circle cx="36" cy="37" r="2.3" fill="${B}"/>
+    <path d="M53 33 C57 34 58 38 55 40" fill="${LB}" ${st}/>`,
+  rain: `<path d="M17 35 C8 35 6 24 14 22 C14 13 25 9 31 15 C35 7 49 9 49 20 C57 20 59 35 49 35 Z" fill="#EAF0FB" ${st}/>
+    ${drop(18, 41)}${drop(32, 46)}${drop(46, 41)}`,
+  dogs: `<path d="M17 21 C8 21 5 39 12 44 C17 42 19 31 19 25 Z" fill="${N}"/>
+    <path d="M47 21 C56 21 59 39 52 44 C47 42 45 31 45 25 Z" fill="${N}"/>
+    <ellipse cx="32" cy="35" rx="17" ry="17" fill="${TAN}" ${st}/>
+    <circle cx="25" cy="31" r="2.6" fill="${N}"/><circle cx="39" cy="31" r="2.6" fill="${N}"/>
+    <ellipse cx="32" cy="42" rx="8.5" ry="6.5" fill="${CR}" ${st}/>
+    <ellipse cx="32" cy="38.5" rx="3.6" ry="2.6" fill="${N}"/>
+    <path d="M29 46 Q32 53 35 46 Z" fill="${R}"/>`,
+  steps: `<path d="M13 30 C9 20 13 7 21 7 C29 7 31 20 27 30 Z" fill="${R}" ${st}/>
+    <ellipse cx="20" cy="39" rx="6.5" ry="6" fill="${R}" ${st}/>
+    <path d="M37 42 C33 32 37 19 45 19 C53 19 55 32 51 42 Z" fill="${B}" ${st}/>
+    <ellipse cx="44" cy="51" rx="6.5" ry="6" fill="${B}" ${st}/>`,
+  wind: `<path d="M6 21 H37 C45 21 45 9 37 9 C32 9 31 14 32 16" fill="none" stroke="${B}" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M6 33 H49 C58 33 58 46 49 46 C44 46 43 41 44 39" fill="none" stroke="${B}" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M6 45 H27" fill="none" stroke="${B}" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M44 9 C48 2 58 3 59 3 C59 12 51 16 44 9 Z" fill="${G}" ${st}/>
+    <path d="M18 52 C22 46 30 47 31 47 C30 55 23 58 18 52 Z" fill="${G}" ${st}/>`,
+  build: `<path d="M9 22 l5 5 -5 5 5 5" fill="none" ${st}/><path d="M55 22 l-5 5 5 5 -5 5" fill="none" ${st}/>
+    <rect x="15" y="50" width="34" height="7" rx="2" fill="${OR}" ${st}/>
+    <path d="M23 50 L32 9 L41 50 Z" fill="${OR}" ${st}/>
+    <path d="M27.4 31 H36.6" stroke="#fff" stroke-width="4.5"/><path d="M25.6 40 H38.4" stroke="#fff" stroke-width="4.5"/>`,
+  mystery: `<circle cx="32" cy="33" r="25" fill="${PU}" ${st}/>
+    <path d="M24 27 C24 16 40 16 40 27 C40 33 32 34 32 41" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/>
+    <circle cx="32" cy="49" r="3.4" fill="#fff"/>
+    <path d="M53 5 l2.2 5 5 2.2 -5 2.2 -2.2 5 -2.2 -5 -5 -2.2 5 -2.2 z" fill="${Y}" ${st}/>`,
+};
+
+const sounds = [
+  ['subway', 'Subway', 'Metro'], ['birds', 'Birds', 'Pájaros'], ['voices', 'Voices', 'Voces'],
+  ['music', 'Music', 'Música'], ['horns', 'Car horns', 'Bocinas'], ['planes', 'Airplanes', 'Aviones'],
+  ['rain', 'Rain', 'Lluvia'], ['dogs', 'Dogs', 'Perros'], ['steps', 'Footsteps', 'Pasos'],
+  ['wind', 'Wind', 'Viento'], ['build', 'Construction', 'Obras'], ['mystery', 'Mystery sound', 'Sonido misterioso'],
+];
+
+const hoods = [
+  'Long Island City', 'Astoria', 'Sunnyside', 'Woodside', 'Jackson Heights',
+  'Elmhurst', 'Corona', 'Flushing', 'Jamaica', 'Other · Otro',
+];
+
+const MIC = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="7" width="18" height="31" rx="9" fill="#fff"/><path d="M15 30 C15 44 49 44 49 30" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/><path d="M32 43 V53 M23 55 H41" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/></svg>`;
+---
+<AppLayout
+  bare
+  title={`Sound Hunt · ${grant.project}`}
+  description="After the concert, children record the sounds of their Queens neighborhood and send them to composer Guillermo Laporta, who turns them into new music."
+>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,500;0,700;0,800;0,900;1,500&display=swap" />
+
+  <main class="sh" id="sh" data-contact={contact} data-max={MAX_SECONDS}
+        data-icons={JSON.stringify(ICONS)} data-sounds={JSON.stringify(sounds)}>
+
+    <!-- ── the ticket ──────────────────────────────────────── -->
+    <header class="sh-ticket">
+      <div class="sh-ticket-bar">
+        <span>♪ Sound hunt</span><span>Caza de sonidos</span>
+      </div>
+      <div class="sh-ticket-body">
+        <div class="sh-kicker">{grant.project}</div>
+        <div class="sh-stickers">
+          <div class="sh-sticker sh-sticker-red">For kids<i>Para niños</i></div>
+          <div class="sh-sticker sh-sticker-blue">With a grown-up<i>Con un adulto</i></div>
+        </div>
+        <h1 class="sh-title">Record your neighborhood!</h1>
+        <p class="sh-title-es">¡Graba tu barrio!</p>
+        <p class="sh-lead">
+          Go outside and find the sounds where you live. Record them and send them to
+          Guillermo: he will turn them into <b>new music</b>!
+        </p>
+        <p class="sh-lead sh-es">
+          Sal a buscar los sonidos de donde vives. Grábalos y envíaselos a Guillermo:
+          ¡los convertirá en <b>música nueva</b>!
+        </p>
+        <div class="sh-rule">
+          <div class="sh-rule-i"><span class="sh-rule-ico"><svg viewBox="0 0 56 56" aria-hidden="true"><path d="M28 5 V24" stroke="#1F2A3C" stroke-width="3.5" stroke-linecap="round"/><circle cx="28" cy="6" r="3.4" fill="#1F2A3C"/><path d="M28 23 C19 23 17 29 20.5 33 C16 35.5 15 43 21 47.5 C24.5 50 31.5 50 35 47.5 C41 43 40 35.5 35.5 33 C39 29 37 23 28 23 Z" fill="#C8742C" stroke="#1F2A3C" stroke-width="3" stroke-linejoin="round"/><path d="M23.5 36 v5 M32.5 36 v5" stroke="#1F2A3C" stroke-width="2.4" stroke-linecap="round"/><path d="M25 46 h6" stroke="#1F2A3C" stroke-width="3" stroke-linecap="round"/></svg></span>
+            <div><b>At the concert: listen</b><i>En el concierto: escucha</i></div></div>
+          <div class="sh-rule-i"><span class="sh-rule-ico sh-rule-mic" set:html={MIC}></span>
+            <div><b>After: record!</b><i>Después: ¡graba!</i></div></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── 1 · where ───────────────────────────────────────── -->
+    <section class="sh-card">
+      <div class="sh-step"><span>1</span> Where are you? <i>¿Dónde estás?</i></div>
+      <div class="sh-hoods" role="radiogroup" aria-label="Neighborhood">
+        {hoods.map((h, i) => (
+          <button type="button" class={`sh-hood c${i % 4}`} role="radio" aria-checked="false" data-hood={h}>{h}</button>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── 2 · what ────────────────────────────────────────── -->
+    <section class="sh-card">
+      <div class="sh-step"><span>2</span> What sound did you find? <i>¿Qué sonido encontraste?</i></div>
+      <p class="sh-hint">Tap it, then record it · Tócalo y grábalo</p>
+      <div class="sh-sounds">
+        {sounds.map(([key, en, es]) => (
+          <button type="button" class="sh-snd" data-snd={key}>
+            <svg viewBox="0 0 64 64" aria-hidden="true" set:html={ICONS[key]}></svg>
+            <b>{en}</b><i>{es}</i>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── 3 · my sound passport ───────────────────────────── -->
+    <section class="sh-card" id="mine">
+      <div class="sh-step"><span>3</span> My sound passport <i>Mi pasaporte de sonidos</i></div>
+      <div class="sh-empty" id="empty">No sounds yet. Find one above! <i>Todavía no hay sonidos. ¡Busca uno arriba!</i></div>
+      <ul class="sh-stamps" id="stamps"></ul>
+    </section>
+
+    <!-- ── 4 · send ────────────────────────────────────────── -->
+    <section class="sh-card sh-send" id="send">
+      <div class="sh-step"><span>4</span> Send them to Guillermo <i>Envíaselos a Guillermo</i></div>
+      <button type="button" class="sh-big sh-big-blue" id="send-btn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#fff"/></svg>
+        Send my sounds · Enviar mis sonidos
+      </button>
+      <p class="sh-to">
+        Choose Mail or WhatsApp and send them to · Elige Correo o WhatsApp y envíalos a
+        <span class="sh-addr"><b id="addr">{contact}</b><button type="button" id="copy">Copy · Copiar</button></span>
+      </p>
+      <div class="sh-thanks" id="thanks" hidden>
+        <b>Thank you!</b> Your sounds are on their way to becoming music.
+        <i>¡Gracias! Tus sonidos van camino de convertirse en música.</i>
+      </div>
+
+      <div class="sh-grown">
+        <b>For grown-ups · Para adultos</b>
+        <p>
+          Recordings stay on this phone until you send them; this website never receives or
+          stores them. Please record sounds, not people: avoid recording anyone talking up
+          close, and don’t say names. By sending sounds to Guillermo Laporta, you agree that he
+          may use them, or parts of them, in a new piece of music for {grant.project}.
+        </p>
+        <p lang="es">
+          Las grabaciones se quedan en este teléfono hasta que usted las envíe; esta web nunca
+          las recibe ni las guarda. Por favor, grabe sonidos, no personas: evite grabar a
+          alguien hablando de cerca y no diga nombres. Al enviar sonidos a Guillermo Laporta,
+          acepta que pueda usarlos, enteros o en parte, en una nueva obra musical para
+          El Pasaporte Musical de Queens.
+        </p>
+      </div>
+    </section>
+
+    <footer class="sh-credit">
+      <a href={grant.administratorUrl} target="_blank" rel="noopener">
+        <img src={asset(grant.logo)} width={grant.logoWidth} height={grant.logoHeight}
+             loading="lazy" alt={grant.administrator} />
+      </a>
+      <p>{grant.credit}</p>
+      <a class="sh-about" href={`${b}queens-musical-passport/`}>About the project · Sobre el proyecto →</a>
+    </footer>
+
+    <!-- ── the recorder sheet ──────────────────────────────── -->
+    <div class="sh-sheet-wrap" id="sheet" hidden>
+      <div class="sh-backdrop" id="backdrop"></div>
+      <div class="sh-sheet" role="dialog" aria-modal="true" aria-labelledby="rec-title">
+        <button type="button" class="sh-close" id="close" aria-label="Close">✕</button>
+        <svg class="sh-sheet-ico" id="rec-ico" viewBox="0 0 64 64" aria-hidden="true"></svg>
+        <h2 class="sh-sheet-title" id="rec-title"></h2>
+        <p class="sh-sheet-es" id="rec-title-es"></p>
+
+        <div id="stage-rec">
+          <p class="sh-sheet-hint">Hold the phone near the sound. Up to {MAX_SECONDS} seconds.<i>Acerca el teléfono al sonido. Hasta {MAX_SECONDS} segundos.</i></p>
+          <div class="sh-meter" id="meter" aria-hidden="true">
+            {Array.from({ length: 14 }, (_, i) => <span class={`m${i % 4}`}></span>)}
+          </div>
+          <div class="sh-recwrap">
+            <svg class="sh-ring" viewBox="0 0 120 120" aria-hidden="true">
+              <circle cx="60" cy="60" r="54" class="sh-ring-bg" />
+              <circle cx="60" cy="60" r="54" class="sh-ring-fg" id="ring" />
+            </svg>
+            <button type="button" class="sh-rec" id="rec" aria-label="Record">
+              <span id="rec-face" set:html={MIC}></span>
+            </button>
+          </div>
+          <div class="sh-timer" id="timer">Tap to record · Toca para grabar</div>
+          <p class="sh-err" id="err" hidden></p>
+        </div>
+
+        <div id="stage-review" hidden>
+          <button type="button" class="sh-big sh-big-green" id="play">▶ Listen · Escuchar</button>
+          <div class="sh-review-btns">
+            <button type="button" class="sh-big sh-big-red" id="keep">✓ Keep it! · ¡Me lo quedo!</button>
+            <button type="button" class="sh-big sh-big-white" id="redo">↺ Try again · Otra vez</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <style is:global>
+    /* Global on purpose: most of these elements are created by the script,
+       and Astro's scoped styles never reach nodes inserted at runtime. Every
+       selector is namespaced .sh. */
+    body.is-bare{background:#F2C230}
+    .sh{
+      --n:#1F2A3C;--y:#F2C230;--r:#E2563E;--b:#3866D6;--g:#2E9E6B;--cr:#FFFDF5;--mut:#5A6474;
+      font-family:'Rubik',system-ui,sans-serif;color:var(--n);
+      max-width:620px;margin:0 auto;padding:18px 16px 60px;
+    }
+    .sh i{font-style:italic;font-weight:500}
+    .sh button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+
+    /* ticket */
+    .sh-ticket{background:var(--cr);border:3px solid var(--n);border-radius:24px;overflow:hidden;box-shadow:6px 6px 0 var(--n)}
+    .sh-ticket-bar{display:flex;justify-content:space-between;background:var(--n);color:var(--y);
+      padding:13px 18px;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+    .sh-ticket-body{position:relative;padding:22px 18px 20px}
+    .sh-kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--b)}
+    .sh-title{font-weight:900;font-size:clamp(36px,10.5vw,54px);line-height:.95;letter-spacing:-.02em;margin-top:16px}
+    .sh-title-es{font-style:italic;font-weight:500;font-size:20px;color:var(--mut);margin-top:6px}
+    .sh-lead{font-size:17px;line-height:1.45;margin-top:14px;font-weight:500}
+    .sh-lead.sh-es{font-style:italic;color:var(--mut);font-size:15.5px;margin-top:6px}
+    .sh-lead b{background:var(--y);padding:0 4px;border-radius:4px}
+
+    .sh-stickers{display:flex;gap:12px;align-items:center;margin-top:14px}
+    .sh-sticker{display:grid;place-items:center;align-content:center;text-align:center;font-weight:900;font-size:14px;line-height:1.1;
+      color:#fff;border:3px solid #fff;box-shadow:0 0 0 3px var(--n)}
+    .sh-sticker i{display:block;font-size:11.5px;font-weight:700;margin-top:2px}
+    .sh-sticker-red{width:96px;height:96px;border-radius:50%;background:var(--r);transform:rotate(-8deg)}
+    .sh-sticker-blue{min-height:64px;padding:8px 14px;border-radius:16px;background:var(--b);transform:rotate(5deg)}
+
+    .sh-rule{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+    @media(max-width:440px){.sh-rule{grid-template-columns:1fr}}
+    .sh-rule-i{display:flex;gap:10px;align-items:center;background:#fff;border:2.5px solid var(--n);border-radius:16px;padding:10px}
+    .sh-rule-i b{display:block;font-size:14px;line-height:1.15}
+    .sh-rule-i i{display:block;font-size:12.5px;color:var(--mut)}
+    .sh-rule-ico{flex:0 0 40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:var(--y);border:2.5px solid var(--n)}
+    .sh-rule-mic{background:var(--r)}
+    .sh-rule-mic svg{width:24px;height:24px}
+    .sh-rule-ico svg{width:30px;height:30px}
+
+    /* cards */
+    .sh-card{background:var(--cr);border:3px solid var(--n);border-radius:24px;padding:18px 16px 20px;margin-top:22px;box-shadow:6px 6px 0 var(--n);scroll-margin-top:16px}
+    .sh-step{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-weight:800;font-size:21px;line-height:1.15}
+    .sh-step span{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--n);color:var(--y);font-size:17px}
+    .sh-step i{flex-basis:100%;padding-left:44px;font-size:15px;color:var(--mut)}
+    .sh-hint{font-size:14px;font-weight:600;color:var(--mut);margin-top:8px;padding-left:44px}
+
+    /* neighbourhoods */
+    .sh-hoods{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .sh-hood{border:2.5px solid var(--n);border-radius:999px;background:#fff;padding:9px 14px;font-weight:700;font-size:15px}
+    .sh-hood[aria-checked=true].c0{background:var(--r);color:#fff}
+    .sh-hood[aria-checked=true].c1{background:var(--b);color:#fff}
+    .sh-hood[aria-checked=true].c2{background:var(--g);color:#fff}
+    .sh-hood[aria-checked=true].c3{background:var(--y)}
+    .sh-hood[aria-checked=true]{box-shadow:3px 3px 0 var(--n);transform:translate(-1px,-1px)}
+
+    /* sound cards */
+    .sh-sounds{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .sh-snd{display:grid;justify-items:center;gap:2px;background:#fff;border:2.5px solid var(--n);border-radius:18px;padding:12px 4px 10px;
+      box-shadow:3px 3px 0 var(--n);transition:transform .08s}
+    .sh-snd:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--n)}
+    .sh-snd svg{width:58px;height:58px}
+    .sh-snd b{font-size:14px;font-weight:800;line-height:1.1;margin-top:4px;text-align:center}
+    .sh-snd i{font-size:12px;color:var(--mut);text-align:center;line-height:1.1}
+    .sh-snd{position:relative}
+    .sh-snd.has{background:#FFF3C4}
+    .sh-snd.has::after{content:"✓";position:absolute;top:-9px;right:-9px;width:28px;height:28px;border-radius:50%;background:var(--g);color:#fff;border:2.5px solid var(--n);display:grid;place-items:center;font-weight:900;font-size:14px}
+
+    /* stamps */
+    .sh-empty{margin-top:12px;font-weight:600;font-size:15px}
+    .sh-empty i{display:block;color:var(--mut);font-size:14px}
+    .sh-stamps{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .sh-stamp{position:relative;border:3px dashed var(--n);border-radius:20px;padding:12px 10px 10px;background:#fff;display:grid;justify-items:center;gap:3px;text-align:center}
+    .sh-stamp:nth-child(4n+1){transform:rotate(-2deg)}.sh-stamp:nth-child(4n+2){transform:rotate(1.5deg)}
+    .sh-stamp:nth-child(4n+3){transform:rotate(1deg)}.sh-stamp:nth-child(4n){transform:rotate(-1.2deg)}
+    .sh-stamp svg{width:54px;height:54px}
+    .sh-stamp b{font-size:14px;font-weight:800;line-height:1.1}
+    .sh-stamp small{font-size:12px;color:var(--mut);font-weight:600}
+    .sh-stamp-btns{display:flex;gap:6px;margin-top:6px}
+    .sh-stamp-btns button{width:42px;height:38px;border-radius:12px;border:2.5px solid var(--n);background:var(--y);font-weight:900;font-size:15px}
+    .sh-stamp-btns .del{background:#fff;font-size:13px}
+
+    /* big buttons */
+    .sh-big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;border-radius:18px;border:3px solid var(--n);
+      font-weight:800;font-size:17px;padding:12px 14px;box-shadow:4px 4px 0 var(--n);transition:transform .08s}
+    .sh-big:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--n)}
+    .sh-big svg{width:22px;height:22px;flex:0 0 22px}
+    .sh-big-blue svg path{fill:#fff}
+    .sh-big-blue{background:var(--b);color:#fff!important;margin-top:14px}
+    .sh-big-green{background:var(--g);color:#fff!important}
+    .sh-big-red{background:var(--r);color:#fff!important}
+    .sh-big-white{background:#fff}
+    .sh-to{font-size:14px;font-weight:600;margin-top:14px;line-height:1.5}
+    .sh-addr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}
+    .sh-addr b{font-size:16px;background:#fff;border:2px solid var(--n);border-radius:10px;padding:5px 9px}
+    .sh-addr button{border:2px solid var(--n);border-radius:10px;background:var(--y);font-weight:700;padding:6px 10px;font-size:13px}
+    .sh-thanks{margin-top:14px;background:var(--g);color:#fff;border-radius:16px;padding:12px 14px;font-weight:700;font-size:16px}
+    .sh-thanks i{display:block;font-size:14px;margin-top:3px}
+    .sh-grown{margin-top:20px;padding-top:14px;border-top:2.5px dashed #CBBF95;font-size:13px;line-height:1.5;font-weight:500}
+    .sh-grown p{margin-top:6px}.sh-grown p[lang=es]{color:var(--mut)}
+
+    .sh-credit{margin-top:30px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:var(--cr);border:3px solid var(--n);border-radius:20px;padding:14px}
+    .sh-credit img{display:block;height:62px;width:auto}
+    .sh-credit p{font-size:12px;line-height:1.45;font-weight:500}
+    .sh-about{grid-column:1/-1;font-weight:700;font-size:14px;text-decoration:underline}
+
+    /* recorder sheet */
+    .sh-sheet-wrap[hidden]{display:none}
+    .sh-sheet-wrap{position:fixed;inset:0;z-index:100}
+    .sh-backdrop{position:absolute;inset:0;background:rgba(31,42,60,.55)}
+    .sh-sheet{position:absolute;left:0;right:0;bottom:0;max-width:620px;margin:0 auto;background:var(--cr);border:3px solid var(--n);border-bottom:0;
+      border-radius:28px 28px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom,0px));text-align:center;
+      max-height:94svh;overflow:auto;animation:up .22s ease-out}
+    @keyframes up{from{transform:translateY(40%)}to{transform:none}}
+    .sh-close{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;border:2.5px solid var(--n);background:#fff;font-weight:900;font-size:16px}
+    .sh-sheet-ico{width:84px;height:84px;margin:4px auto 0;display:block}
+    .sh-sheet-title{font-weight:900;font-size:28px;line-height:1.05;margin-top:6px}
+    .sh-sheet-es{font-style:italic;font-weight:500;color:var(--mut);font-size:17px}
+    .sh-sheet-hint{font-weight:600;font-size:14.5px;margin-top:12px}
+    .sh-sheet-hint i{display:block;color:var(--mut);font-size:13.5px}
+
+    .sh-meter{display:flex;justify-content:center;align-items:flex-end;gap:5px;height:56px;margin-top:14px}
+    .sh-meter span{width:12px;height:6px;border-radius:6px;border:2px solid var(--n);transition:height .06s}
+    .sh-meter .m0{background:var(--r)}.sh-meter .m1{background:var(--y)}.sh-meter .m2{background:var(--b)}.sh-meter .m3{background:var(--g)}
+
+    .sh-recwrap{position:relative;width:150px;height:150px;margin:10px auto 0}
+    .sh-ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+    .sh-ring-bg{fill:none;stroke:#E9DFC0;stroke-width:9}
+    .sh-ring-fg{fill:none;stroke:var(--b);stroke-width:9;stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:339.3}
+    .sh-rec{position:absolute;inset:17px;border-radius:50%;border:4px solid var(--n);background:var(--r);display:grid;place-items:center;box-shadow:4px 4px 0 var(--n)}
+    .sh-rec svg{width:58px;height:58px}
+    .sh-rec.on{animation:pulse 1s ease-in-out infinite}
+    .sh-rec .stop{width:40px;height:40px;border-radius:8px;background:#fff;display:block}
+    @keyframes pulse{50%{transform:scale(1.06)}}
+    .sh-timer{font-weight:800;font-size:18px;margin-top:12px}
+    .sh-err{margin-top:12px;background:#FDE3DE;border:2px solid var(--r);border-radius:12px;padding:10px;font-weight:600;font-size:14px}
+
+    #stage-review{margin-top:20px;display:grid;gap:12px}
+    #stage-review[hidden]{display:none}
+    .sh-review-btns{display:grid;gap:10px}
+  </style>
+
+  <script>
+    const root = document.getElementById('sh');
+    const CONTACT = root.dataset.contact;
+    const MAX = Number(root.dataset.max);
+    const ICONS = JSON.parse(root.dataset.icons);
+    const SOUNDS = Object.fromEntries(JSON.parse(root.dataset.sounds).map(([k, en, es]) => [k, { en, es }]));
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+
+    // ── storage: IndexedDB on this phone, nowhere else ──────
+    const DB = 'qmp-sound-hunt', STORE = 'recs';
+    let memory = [];                  // fallback if IndexedDB is unavailable
+    function openDb() {
+      return new Promise((res, rej) => {
+        const r = indexedDB.open(DB, 1);
+        r.onupgradeneeded = () => r.result.createObjectStore(STORE, { keyPath: 'id' });
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => rej(r.error);
+      });
+    }
+    async function dbAll() {
+      try {
+        const db = await openDb();
+        return await new Promise((res, rej) => {
+          const q = db.transaction(STORE).objectStore(STORE).getAll();
+          q.onsuccess = () => res(q.result || []); q.onerror = () => rej(q.error);
+        });
+      } catch (e) { return memory; }
+    }
+    async function dbPut(rec) {
+      try {
+        const db = await openDb();
+        await new Promise((res, rej) => {
+          const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put(rec);
+          tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+        });
+      } catch (e) { memory.push(rec); }
+    }
+    async function dbDel(id) {
+      try {
+        const db = await openDb();
+        await new Promise((res, rej) => {
+          const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).delete(id);
+          tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+        });
+      } catch (e) { memory = memory.filter((r) => r.id !== id); }
+    }
+
+    // ── neighbourhood ───────────────────────────────────────
+    let hood = '';
+    try { hood = localStorage.getItem('qmp-hood') || ''; } catch (e) {}
+    $$('.sh-hood').forEach((b) => {
+      b.setAttribute('aria-checked', String(b.dataset.hood === hood));
+      b.addEventListener('click', () => {
+        hood = b.dataset.hood;
+        $$('.sh-hood').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+        try { localStorage.setItem('qmp-hood', hood); } catch (e) {}
+      });
+    });
+
+    // ── recorder ────────────────────────────────────────────
+    // Apple devices record AAC in an .m4a, which plays everywhere; Chrome on
+    // Android records Opus in .webm. The first type the phone supports wins.
+    const TYPES = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
+    const canRecord = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+    let current = null, stream = null, recorder = null, chunks = [], meterCtx = null, raf = 0, stopT = 0, t0 = 0;
+    let draft = null, draftUrl = null, player = null;
+    const bars = $$('#meter span');
+    const ring = $('#ring');
+
+    function openSheet(key) {
+      current = key;
+      $('#rec-ico').innerHTML = ICONS[key];
+      $('#rec-title').textContent = SOUNDS[key].en;
+      $('#rec-title-es').textContent = SOUNDS[key].es;
+      $('#stage-rec').hidden = false; $('#stage-review').hidden = true; $('#err').hidden = true;
+      resetRecUi();
+      if (!canRecord) showErr('This browser can’t record sound. Try Safari or Chrome. · Este navegador no puede grabar. Prueba con Safari o Chrome.');
+      $('#sheet').hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSheet() {
+      stopAll(true);
+      $('#sheet').hidden = true;
+      document.body.style.overflow = '';
+      dropDraft();
+    }
+    function showErr(msg) { const e = $('#err'); e.textContent = msg; e.hidden = false; }
+    function resetRecUi() {
+      $('#rec').classList.remove('on');
+      $('#rec-face').innerHTML = $('#rec-face').dataset.mic || $('#rec-face').innerHTML;
+      $('#timer').textContent = 'Tap to record · Toca para grabar';
+      ring.style.strokeDashoffset = '339.3';
+      bars.forEach((b) => { b.style.height = '6px'; });
+    }
+    $('#rec-face').dataset.mic = $('#rec-face').innerHTML;
+
+    async function startRec() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+        });
+      } catch (e) {
+        showErr('We need the microphone. Ask a grown-up to allow it. · Necesitamos el micrófono. Pide a un adulto que lo permita.');
+        return;
+      }
+      const type = TYPES.find((t) => window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t));
+      try { recorder = new MediaRecorder(stream, type ? { mimeType: type } : undefined); }
+      catch (e) { recorder = new MediaRecorder(stream); }
+      chunks = [];
+      recorder.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+      recorder.onstop = finished;
+      recorder.start(250);
+      t0 = performance.now();
+
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        meterCtx = new AC();
+        const src = meterCtx.createMediaStreamSource(stream);
+        const an = meterCtx.createAnalyser(); an.fftSize = 64; src.connect(an);
+        const data = new Uint8Array(an.frequencyBinCount);
+        const tick = () => {
+          an.getByteFrequencyData(data);
+          bars.forEach((b, i) => { const v = data[Math.min(data.length - 1, i + 1)] / 255; b.style.height = `${6 + v * 50}px`; });
+          paint();
+          raf = requestAnimationFrame(tick);
+        };
+        tick();
+      } catch (e) { const tick = () => { paint(); raf = requestAnimationFrame(tick); }; tick(); }
+
+      $('#rec').classList.add('on');
+      $('#rec-face').innerHTML = '<span class="stop"></span>';
+      stopT = setTimeout(stopRec, MAX * 1000);
+    }
+    function paint() {
+      const s = Math.min(MAX, (performance.now() - t0) / 1000);
+      ring.style.strokeDashoffset = String(339.3 * (1 - s / MAX));
+      $('#timer').textContent = `● ${Math.ceil(MAX - s)}s · Tap to stop · Toca para parar`;
+    }
+    function stopAll(discard) {
+      clearTimeout(stopT); cancelAnimationFrame(raf);
+      if (recorder && recorder.state !== 'inactive') {
+        if (discard) recorder.onstop = null;
+        recorder.stop();
+      }
+      if (stream) stream.getTracks().forEach((t) => t.stop());
+      if (meterCtx) { try { meterCtx.close(); } catch (e) {} }
+      stream = null; meterCtx = null;
+    }
+    function stopRec() { stopAll(false); }
+    function finished() {
+      const type = (recorder && recorder.mimeType) || (chunks[0] && chunks[0].type) || 'audio/webm';
+      const dur = Math.min(MAX, (performance.now() - t0) / 1000);
+      draft = { blob: new Blob(chunks, { type }), type, dur };
+      draftUrl = URL.createObjectURL(draft.blob);
+      $('#stage-rec').hidden = true; $('#stage-review').hidden = false;
+      resetRecUi();
+    }
+    function dropDraft() {
+      if (player) { player.pause(); player = null; }
+      if (draftUrl) URL.revokeObjectURL(draftUrl);
+      draft = null; draftUrl = null;
+    }
+
+    $('#rec').addEventListener('click', () => {
+      if (!canRecord) return;
+      if (recorder && recorder.state === 'recording') stopRec(); else startRec();
+    });
+    $('#play').addEventListener('click', () => {
+      if (!draftUrl) return;
+      if (player) player.pause();
+      player = new Audio(draftUrl); player.play().catch(() => {});
+    });
+    $('#redo').addEventListener('click', () => {
+      dropDraft(); $('#stage-review').hidden = true; $('#stage-rec').hidden = false; resetRecUi();
+    });
+    $('#keep').addEventListener('click', async () => {
+      if (!draft) return;
+      const ext = draft.type.includes('mp4') ? 'm4a' : draft.type.includes('ogg') ? 'ogg' : 'webm';
+      const place = (hood && !hood.startsWith('Other')) ? hood.toLowerCase().replace(/[^a-z]+/g, '-') : 'queens';
+      const stamp = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '');
+      const rec = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        sound: current, hood: hood || '', blob: draft.blob, type: draft.type, dur: draft.dur,
+        name: `queens-musical-passport_${place}_${current}_${stamp}.${ext}`,
+      };
+      await dbPut(rec);
+      closeSheet();
+      render();
+      setTimeout(() => $('#mine').scrollIntoView({ behavior: 'smooth' }), 120);
+    });
+    $('#close').addEventListener('click', closeSheet);
+    $('#backdrop').addEventListener('click', closeSheet);
+    $$('.sh-snd').forEach((b) => b.addEventListener('click', () => openSheet(b.dataset.snd)));
+
+    // ── my sound passport ───────────────────────────────────
+    let listen = null;
+    async function render() {
+      const recs = (await dbAll()).sort((a, b) => a.id.localeCompare(b.id));
+      $('#empty').hidden = recs.length > 0;
+      const have = new Set(recs.map((r) => r.sound));
+      $$('.sh-snd').forEach((b) => b.classList.toggle('has', have.has(b.dataset.snd)));
+      const ul = $('#stamps'); ul.innerHTML = '';
+      recs.forEach((r) => {
+        const li = document.createElement('li'); li.className = 'sh-stamp';
+        li.innerHTML =
+          `<svg viewBox="0 0 64 64" aria-hidden="true">${ICONS[r.sound] || ICONS.mystery}</svg>` +
+          `<b>${(SOUNDS[r.sound] || SOUNDS.mystery).en}</b>` +
+          `<small>${r.hood ? r.hood.replace(' · Otro', '') + ' · ' : ''}${Math.max(1, Math.round(r.dur))}s</small>` +
+          `<div class="sh-stamp-btns"><button type="button" class="play" aria-label="Listen">▶</button>` +
+          `<button type="button" class="del" aria-label="Delete">✕</button></div>`;
+        li.querySelector('.play').addEventListener('click', () => {
+          if (listen) listen.pause();
+          const u = URL.createObjectURL(r.blob); listen = new Audio(u);
+          listen.onended = () => URL.revokeObjectURL(u); listen.play().catch(() => {});
+        });
+        li.querySelector('.del').addEventListener('click', async () => {
+          if (!confirm('Delete this sound? · ¿Borrar este sonido?')) return;
+          await dbDel(r.id); render();
+        });
+        ul.appendChild(li);
+      });
+      return recs;
+    }
+
+    // ── send ────────────────────────────────────────────────
+    // The phone's own share sheet carries the files to Mail, WhatsApp or
+    // Messages. Where a browser cannot share files, they are downloaded instead.
+    $('#send-btn').addEventListener('click', async () => {
+      const recs = await dbAll();
+      if (!recs.length) { $('#mine').scrollIntoView({ behavior: 'smooth' }); return; }
+      const asFiles = (alt) => recs.map((r) => {
+        const t = alt && r.type.includes('mp4') ? 'audio/x-m4a' : r.type.split(';')[0];
+        return new File([r.blob], r.name, { type: t });
+      });
+      for (const files of [asFiles(false), asFiles(true)]) {
+        try {
+          if (navigator.canShare && navigator.canShare({ files })) {
+            await navigator.share({ files, title: 'Sounds for Guillermo Laporta',
+              text: `For ${CONTACT} · ${recs.length} sound${recs.length === 1 ? '' : 's'} for The Queens Musical Passport` });
+            $('#thanks').hidden = false;
+            return;
+          }
+        } catch (e) { if (e && e.name === 'AbortError') return; }
+      }
+      for (const r of recs) {
+        const a = document.createElement('a'); a.href = URL.createObjectURL(r.blob); a.download = r.name;
+        document.body.appendChild(a); a.click(); a.remove();
+        await new Promise((ok) => setTimeout(ok, 400));
+      }
+      alert(`Your sounds were saved. Email them to ${CONTACT} · Tus sonidos se guardaron. Envíalos por correo a ${CONTACT}`);
+    });
+    $('#copy').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(CONTACT); $('#copy').textContent = '✓ Copied · Copiado'; }
+      catch (e) { prompt('Email', CONTACT); }
+    });
+
+    render();
+  </script>
+</AppLayout>
